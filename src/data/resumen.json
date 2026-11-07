@@ -1,0 +1,14 @@
+{
+  "pistas": 20,
+  "km": 68,
+  "remontes": 15,
+  "desnivel": 2263,
+  "cotaMin": 1620,
+  "cotaMax": 3883,
+  "porDificultad": {
+    "azul": 6,
+    "roja": 8,
+    "negra": 5,
+    "freeride": 1
+  }
+}

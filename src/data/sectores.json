@@ -1,0 +1,32 @@
+[
+  {
+    "id": "sunnegga",
+    "numero": 1,
+    "nombre": "Sunnegga – Rothorn",
+    "cotaMax": 3103,
+    "descripcion": {
+      "es": "Sol desde primera hora y pistas anchas sobre el lago de Stellisee. El sector de las familias y de las vistas al Matterhorn.",
+      "en": "Sunshine from first light and wide runs above Lake Stellisee. The family sector, with the best views of the Matterhorn."
+    }
+  },
+  {
+    "id": "gornergrat",
+    "numero": 2,
+    "nombre": "Gornergrat",
+    "cotaMax": 3286,
+    "descripcion": {
+      "es": "Se sube en el tren de cremallera de siempre y se baja entre glaciares. Pistas rojas largas y la mejor panorámica de la estación.",
+      "en": "Ride up on the historic cog railway and ski down between glaciers. Long red runs and the finest panorama in the resort."
+    }
+  },
+  {
+    "id": "glacier-paradise",
+    "numero": 3,
+    "nombre": "Matterhorn Glacier Paradise",
+    "cotaMax": 3883,
+    "descripcion": {
+      "es": "Glaciar y nieve todo el año, en la estación más alta de los Alpes. Aquí empiezan los descensos más largos de Valserra.",
+      "en": "Glacier and snow all year round at the highest station in the Alps. Valserra's longest descents start here."
+    }
+  }
+]

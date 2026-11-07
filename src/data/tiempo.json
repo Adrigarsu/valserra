@@ -1,0 +1,171 @@
+{
+  "fuente": "Open-Meteo",
+  "licencia": "CC BY 4.0",
+  "cotas": [
+    {
+      "id": "cumbre",
+      "nombre": "Cumbre",
+      "cota": 3883,
+      "lat": 45.9381,
+      "lon": 7.7296
+    },
+    {
+      "id": "gornergrat",
+      "nombre": "Gornergrat",
+      "cota": 3089,
+      "lat": 45.9837,
+      "lon": 7.7849
+    },
+    {
+      "id": "pueblo",
+      "nombre": "Pueblo",
+      "cota": 1620,
+      "lat": 46.0207,
+      "lon": 7.7491
+    }
+  ],
+  "efectos": {
+    "vientoFuerteKmh": 50,
+    "nieblaVisibilidadKm": 1
+  },
+  "codigos": [
+    {
+      "wmo": [
+        0
+      ],
+      "id": "despejado",
+      "icono": "sol",
+      "efecto": "despejado",
+      "texto": {
+        "es": "Despejado",
+        "en": "Clear"
+      }
+    },
+    {
+      "wmo": [
+        1,
+        2
+      ],
+      "id": "sol-y-nubes",
+      "icono": "solnube",
+      "efecto": "ninguno",
+      "texto": {
+        "es": "Sol y nubes",
+        "en": "Partly cloudy"
+      }
+    },
+    {
+      "wmo": [
+        3
+      ],
+      "id": "nublado",
+      "icono": "nube",
+      "efecto": "ninguno",
+      "texto": {
+        "es": "Nublado",
+        "en": "Overcast"
+      }
+    },
+    {
+      "wmo": [
+        45,
+        48
+      ],
+      "id": "niebla",
+      "icono": "niebla",
+      "efecto": "niebla",
+      "texto": {
+        "es": "Niebla",
+        "en": "Fog"
+      }
+    },
+    {
+      "wmo": [
+        51,
+        53,
+        55,
+        56,
+        57
+      ],
+      "id": "llovizna",
+      "icono": "nube",
+      "efecto": "ninguno",
+      "texto": {
+        "es": "Llovizna",
+        "en": "Drizzle"
+      }
+    },
+    {
+      "wmo": [
+        61,
+        63,
+        65,
+        66,
+        67,
+        80,
+        81,
+        82
+      ],
+      "id": "lluvia",
+      "icono": "nube",
+      "efecto": "ninguno",
+      "texto": {
+        "es": "Lluvia",
+        "en": "Rain"
+      }
+    },
+    {
+      "wmo": [
+        71,
+        77,
+        85
+      ],
+      "id": "nieve-debil",
+      "icono": "nievedebil",
+      "efecto": "nieve-debil",
+      "texto": {
+        "es": "Nieve débil",
+        "en": "Light snow"
+      }
+    },
+    {
+      "wmo": [
+        73
+      ],
+      "id": "nieve",
+      "icono": "nieve",
+      "efecto": "nieve",
+      "texto": {
+        "es": "Nieve",
+        "en": "Snow"
+      }
+    },
+    {
+      "wmo": [
+        75,
+        86
+      ],
+      "id": "nieve-fuerte",
+      "icono": "nieve",
+      "efecto": "nieve-fuerte",
+      "texto": {
+        "es": "Nieve fuerte",
+        "en": "Heavy snow"
+      }
+    },
+    {
+      "wmo": [
+        95,
+        96,
+        99
+      ],
+      "id": "tormenta",
+      "icono": "nube",
+      "efecto": "ninguno",
+      "texto": {
+        "es": "Tormenta",
+        "en": "Thunderstorm"
+      }
+    }
+  ]
+}

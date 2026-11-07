@@ -1,0 +1,137 @@
+[
+  {
+    "id": "zermatt-sunnegga",
+    "nombre": "Zermatt – Sunnegga",
+    "tipo": "funicular",
+    "sector": "sunnegga",
+    "cotaBase": 1620,
+    "cotaCima": 2288,
+    "estadoDemo": "abierto"
+  },
+  {
+    "id": "sunnegga-blauherd",
+    "nombre": "Sunnegga – Blauherd",
+    "tipo": "combinado",
+    "sector": "sunnegga",
+    "cotaBase": 2288,
+    "cotaCima": 2571,
+    "estadoDemo": "abierto"
+  },
+  {
+    "id": "blauherd-rothorn",
+    "nombre": "Blauherd – Rothorn",
+    "tipo": "teleferico",
+    "sector": "sunnegga",
+    "cotaBase": 2571,
+    "cotaCima": 3103,
+    "estadoDemo": "abierto"
+  },
+  {
+    "id": "patrullarve-blauherd",
+    "nombre": "Patrullarve – Blauherd",
+    "tipo": "telesilla",
+    "sector": "sunnegga",
+    "cotaBase": 2180,
+    "cotaCima": 2571,
+    "estadoDemo": "abierto"
+  },
+  {
+    "id": "kumme",
+    "nombre": "Kumme",
+    "tipo": "telecabina",
+    "sector": "sunnegga",
+    "cotaBase": 2223,
+    "cotaCima": 2571,
+    "estadoDemo": "abierto"
+  },
+  {
+    "id": "tren-gornergrat",
+    "nombre": "Tren del Gornergrat",
+    "tipo": "tren",
+    "sector": "gornergrat",
+    "cotaBase": 1620,
+    "cotaCima": 3089,
+    "estadoDemo": "abierto"
+  },
+  {
+    "id": "gant-hohtaelli",
+    "nombre": "Gant – Hohtälli",
+    "tipo": "teleferico",
+    "sector": "gornergrat",
+    "cotaBase": 2223,
+    "cotaCima": 3286,
+    "estadoDemo": "abierto"
+  },
+  {
+    "id": "riffelberg-gifthittli",
+    "nombre": "Riffelberg – Gifthittli",
+    "tipo": "telesilla",
+    "sector": "gornergrat",
+    "cotaBase": 2582,
+    "cotaCima": 2950,
+    "estadoDemo": "cerrado"
+  },
+  {
+    "id": "zermatt-furi",
+    "nombre": "Zermatt – Furi",
+    "tipo": "telecabina",
+    "sector": "glacier-paradise",
+    "cotaBase": 1620,
+    "cotaCima": 1867,
+    "estadoDemo": "abierto"
+  },
+  {
+    "id": "furi-schwarzsee",
+    "nombre": "Furi – Schwarzsee",
+    "tipo": "telecabina",
+    "sector": "glacier-paradise",
+    "cotaBase": 1867,
+    "cotaCima": 2583,
+    "estadoDemo": "abierto"
+  },
+  {
+    "id": "furi-trockener-steg",
+    "nombre": "Furi – Trockener Steg",
+    "tipo": "teleferico",
+    "sector": "glacier-paradise",
+    "cotaBase": 1867,
+    "cotaCima": 2939,
+    "estadoDemo": "abierto"
+  },
+  {
+    "id": "trockener-steg-mgp",
+    "nombre": "Trockener Steg – Matterhorn Glacier Paradise",
+    "tipo": "teleferico",
+    "sector": "glacier-paradise",
+    "cotaBase": 2939,
+    "cotaCima": 3883,
+    "estadoDemo": "abierto"
+  },
+  {
+    "id": "hirli",
+    "nombre": "Hirli",
+    "tipo": "telesilla",
+    "sector": "glacier-paradise",
+    "cotaBase": 2583,
+    "cotaCima": 2770,
+    "estadoDemo": "abierto"
+  },
+  {
+    "id": "furggsattel",
+    "nombre": "Furggsattel",
+    "tipo": "telesilla",
+    "sector": "glacier-paradise",
+    "cotaBase": 2939,
+    "cotaCima": 3365,
+    "estadoDemo": "cerrado"
+  },
+  {
+    "id": "furi-riffelberg",
+    "nombre": "Furi – Riffelberg",
+    "tipo": "telecabina",
+    "sector": "puente",
+    "cotaBase": 1867,
+    "cotaCima": 2582,
+    "estadoDemo": "abierto"
+  }
+]

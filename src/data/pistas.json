@@ -1,0 +1,342 @@
+[
+  {
+    "numero": 6,
+    "nombre": "Easy run",
+    "dificultad": "azul",
+    "sector": "sunnegga",
+    "longitudKm": 2.1,
+    "salida": {
+      "lugar": "Blauherd",
+      "cota": 2571
+    },
+    "llegada": {
+      "lugar": "Sunnegga",
+      "cota": 2288
+    },
+    "desnivel": 283,
+    "estadoDemo": "abierta"
+  },
+  {
+    "numero": 7,
+    "nombre": "Standard",
+    "dificultad": "azul",
+    "sector": "sunnegga",
+    "longitudKm": 3.4,
+    "salida": {
+      "lugar": "Blauherd",
+      "cota": 2571
+    },
+    "llegada": {
+      "lugar": "Patrullarve",
+      "cota": 2180
+    },
+    "desnivel": 391,
+    "estadoDemo": "abierta"
+  },
+  {
+    "numero": 9,
+    "nombre": "Tuftern",
+    "dificultad": "roja",
+    "sector": "sunnegga",
+    "longitudKm": 3.0,
+    "salida": {
+      "lugar": "Blauherd",
+      "cota": 2571
+    },
+    "llegada": {
+      "lugar": "Sunnegga",
+      "cota": 2288
+    },
+    "desnivel": 283,
+    "estadoDemo": "abierta"
+  },
+  {
+    "numero": 19,
+    "nombre": "Fluhalp",
+    "dificultad": "roja",
+    "sector": "sunnegga",
+    "longitudKm": 2.6,
+    "salida": {
+      "lugar": "Rothorn",
+      "cota": 3103
+    },
+    "llegada": {
+      "lugar": "Fluhalp",
+      "cota": 2616
+    },
+    "desnivel": 487,
+    "estadoDemo": "abierta"
+  },
+  {
+    "numero": 8,
+    "nombre": "Obere National",
+    "dificultad": "negra",
+    "sector": "sunnegga",
+    "longitudKm": 1.9,
+    "salida": {
+      "lugar": "Rothorn",
+      "cota": 3103
+    },
+    "llegada": {
+      "lugar": "Blauherd",
+      "cota": 2571
+    },
+    "desnivel": 532,
+    "estadoDemo": "abierta"
+  },
+  {
+    "numero": 13,
+    "nombre": "Downhill",
+    "dificultad": "negra",
+    "sector": "sunnegga",
+    "longitudKm": 3.2,
+    "salida": {
+      "lugar": "Rothorn",
+      "cota": 3103
+    },
+    "llegada": {
+      "lugar": "Gant",
+      "cota": 2223
+    },
+    "desnivel": 880,
+    "estadoDemo": "cerrada"
+  },
+  {
+    "numero": 16,
+    "nombre": "Chamois",
+    "dificultad": "freeride",
+    "sector": "sunnegga",
+    "longitudKm": 2.4,
+    "salida": {
+      "lugar": "Rothorn",
+      "cota": 3103
+    },
+    "llegada": {
+      "lugar": "Kumme",
+      "cota": 2300
+    },
+    "desnivel": 803,
+    "estadoDemo": "cerrada"
+  },
+  {
+    "numero": 36,
+    "nombre": "Gornergrat",
+    "dificultad": "azul",
+    "sector": "gornergrat",
+    "longitudKm": 3.8,
+    "salida": {
+      "lugar": "Gornergrat",
+      "cota": 3089
+    },
+    "llegada": {
+      "lugar": "Riffelberg",
+      "cota": 2582
+    },
+    "desnivel": 507,
+    "estadoDemo": "abierta"
+  },
+  {
+    "numero": 37,
+    "nombre": "Riffelhorn",
+    "dificultad": "azul",
+    "sector": "gornergrat",
+    "longitudKm": 2.9,
+    "salida": {
+      "lugar": "Rotenboden",
+      "cota": 2815
+    },
+    "llegada": {
+      "lugar": "Riffelberg",
+      "cota": 2582
+    },
+    "desnivel": 233,
+    "estadoDemo": "abierta"
+  },
+  {
+    "numero": 26,
+    "nombre": "Grünsee",
+    "dificultad": "roja",
+    "sector": "gornergrat",
+    "longitudKm": 3.3,
+    "salida": {
+      "lugar": "Riffelberg",
+      "cota": 2582
+    },
+    "llegada": {
+      "lugar": "Grünsee",
+      "cota": 2300
+    },
+    "desnivel": 282,
+    "estadoDemo": "abierta"
+  },
+  {
+    "numero": 28,
+    "nombre": "White Hare",
+    "dificultad": "roja",
+    "sector": "gornergrat",
+    "longitudKm": 2.4,
+    "salida": {
+      "lugar": "Hohtälli",
+      "cota": 3286
+    },
+    "llegada": {
+      "lugar": "Riffelberg",
+      "cota": 2582
+    },
+    "desnivel": 704,
+    "estadoDemo": "abierta"
+  },
+  {
+    "numero": 39,
+    "nombre": "Riffelalp",
+    "dificultad": "roja",
+    "sector": "gornergrat",
+    "longitudKm": 2.2,
+    "salida": {
+      "lugar": "Riffelberg",
+      "cota": 2582
+    },
+    "llegada": {
+      "lugar": "Riffelalp",
+      "cota": 2211
+    },
+    "desnivel": 371,
+    "estadoDemo": "abierta"
+  },
+  {
+    "numero": 25,
+    "nombre": "Berter",
+    "dificultad": "negra",
+    "sector": "gornergrat",
+    "longitudKm": 1.6,
+    "salida": {
+      "lugar": "Hohtälli",
+      "cota": 3286
+    },
+    "llegada": {
+      "lugar": "Gifthittli",
+      "cota": 2950
+    },
+    "desnivel": 336,
+    "estadoDemo": "abierta"
+  },
+  {
+    "numero": 56,
+    "nombre": "Kuhbodmen",
+    "dificultad": "azul",
+    "sector": "glacier-paradise",
+    "longitudKm": 4.5,
+    "salida": {
+      "lugar": "Trockener Steg",
+      "cota": 2939
+    },
+    "llegada": {
+      "lugar": "Schwarzsee",
+      "cota": 2583
+    },
+    "desnivel": 356,
+    "estadoDemo": "abierta"
+  },
+  {
+    "numero": 73,
+    "nombre": "Gandegg",
+    "dificultad": "azul",
+    "sector": "glacier-paradise",
+    "longitudKm": 3.6,
+    "salida": {
+      "lugar": "Matterhorn Glacier Paradise",
+      "cota": 3883
+    },
+    "llegada": {
+      "lugar": "Trockener Steg",
+      "cota": 2939
+    },
+    "desnivel": 944,
+    "estadoDemo": "abierta"
+  },
+  {
+    "numero": 51,
+    "nombre": "Weisse Perle",
+    "dificultad": "roja",
+    "sector": "glacier-paradise",
+    "longitudKm": 6.2,
+    "salida": {
+      "lugar": "Matterhorn Glacier Paradise",
+      "cota": 3883
+    },
+    "llegada": {
+      "lugar": "Furi",
+      "cota": 1867
+    },
+    "desnivel": 2016,
+    "estadoDemo": "abierta"
+  },
+  {
+    "numero": 65,
+    "nombre": "Rennstrecke",
+    "dificultad": "roja",
+    "sector": "glacier-paradise",
+    "longitudKm": 4.1,
+    "salida": {
+      "lugar": "Furggsattel",
+      "cota": 3365
+    },
+    "llegada": {
+      "lugar": "Trockener Steg",
+      "cota": 2939
+    },
+    "desnivel": 426,
+    "estadoDemo": "abierta"
+  },
+  {
+    "numero": 71,
+    "nombre": "Theodulgletscher",
+    "dificultad": "roja",
+    "sector": "glacier-paradise",
+    "longitudKm": 5.3,
+    "salida": {
+      "lugar": "Matterhorn Glacier Paradise",
+      "cota": 3883
+    },
+    "llegada": {
+      "lugar": "Trockener Steg",
+      "cota": 2939
+    },
+    "desnivel": 944,
+    "estadoDemo": "abierta"
+  },
+  {
+    "numero": 54,
+    "nombre": "Hörnli",
+    "dificultad": "negra",
+    "sector": "glacier-paradise",
+    "longitudKm": 2.8,
+    "salida": {
+      "lugar": "Hirli",
+      "cota": 2770
+    },
+    "llegada": {
+      "lugar": "Schwarzsee",
+      "cota": 2583
+    },
+    "desnivel": 187,
+    "estadoDemo": "cerrada"
+  },
+  {
+    "numero": 62,
+    "nombre": "Furgg – Furi",
+    "dificultad": "negra",
+    "sector": "glacier-paradise",
+    "longitudKm": 6.7,
+    "salida": {
+      "lugar": "Trockener Steg",
+      "cota": 2939
+    },
+    "llegada": {
+      "lugar": "Furi",
+      "cota": 1867
+    },
+    "desnivel": 1072,
+    "estadoDemo": "abierta"
+  }
+]

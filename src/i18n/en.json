@@ -1,0 +1,291 @@
+{
+  "meta": {
+    "titulo": "Valserra · Ski resort",
+    "descripcion": "Three mountains, one village and a 2,263-metre descent. A fictional ski resort, built as a portfolio project.",
+    "titulos": {
+      "inicio": "Valserra · Ski resort",
+      "mapa": "Piste map · Valserra",
+      "tiempo": "Today's report · Valserra",
+      "forfaits": "Lift passes · Valserra",
+      "noEncontrada": "You've gone off-piste · Valserra"
+    }
+  },
+  "nav": {
+    "inicio": "Home",
+    "mapa": "Map",
+    "tiempo": "Weather",
+    "forfaits": "Lift passes",
+    "comprar": "Buy lift passes",
+    "abrirMenu": "Open menu",
+    "cerrarMenu": "Close menu",
+    "saltarAlContenido": "Skip to content",
+    "estado": "Summit {temp} · {abiertos}/{total} lifts",
+    "estadoCorto": "{temp} · {abiertos}/{total}"
+  },
+  "ajustes": {
+    "idioma": "Language",
+    "moneda": "Currency",
+    "modo": "Mode",
+    "dia": "Day",
+    "noche": "Night",
+    "modoNocheActivar": "Turn on night mode",
+    "modoNocheDesactivar": "Back to day mode"
+  },
+  "altimetro": {
+    "etiqueta": "Altimeter: {cota} m, {lugar}",
+    "paradas": {
+      "cumbre": "Summit",
+      "nubes": "Sea of clouds",
+      "gornergrat": "Gornergrat",
+      "riffelberg": "Riffelberg",
+      "sunnegga": "Sunnegga",
+      "pueblo": "Village"
+    }
+  },
+  "inicio": {
+    "hero": {
+      "antetitulo": "Dawn in Valserra",
+      "titulo": "The summit is already awake",
+      "texto": "First light paints the peaks red long before it reaches the valley. Start at the top, 3,883 metres up, and ski down with us to the village.",
+      "accion": "Start the descent",
+      "secundaria": "See the map"
+    },
+    "hoyNoche": {
+      "antetitulo": "Night in Valserra",
+      "titulo": "The summit sleeps below zero",
+      "texto": "The village lights are still on and the first lifts open at 8:30. Tomorrow you ski on freshly groomed snow."
+    },
+    "nubes": {
+      "titulo": "Above the clouds",
+      "texto": "At 3,412 metres the valley vanishes under a white sea. Keep going down: on the other side the day has begun."
+    },
+    "hoy": {
+      "antetitulo": "The mountain today",
+      "actualizado": "Updated at {hora} · Data from Open-Meteo",
+      "cumbre": "Summit",
+      "pueblo": "Village",
+      "temperatura": "Temperature",
+      "viento": "Wind",
+      "visibilidad": "Visibility",
+      "nieve": "Snow",
+      "remontesAbiertos": "Lifts open",
+      "pistasAbiertas": "Runs open",
+      "aludes": "Avalanche danger",
+      "deTotal": "{n} of {total}",
+      "verParte": "See the full report"
+    },
+    "cabinas": {
+      "antetitulo": "Three mountains, one resort",
+      "titulo": "Ride up to any sector",
+      "hasta": "Up to {cota} m",
+      "resumen": "{pistas} runs · {remontes} lifts",
+      "explorar": "Explore on the map"
+    },
+    "vistazo": {
+      "antetitulo": "The resort at a glance",
+      "titulo": "From village to glacier",
+      "texto": "Three sectors linked by lifts, from the village at 1,620 metres to the glacier at 3,883.",
+      "km": "Kilometres of runs",
+      "remontes": "Lifts",
+      "pistas": "Runs",
+      "desnivel": "Vertical drop",
+      "abrirMapa": "Open the full map"
+    },
+    "forfaits": {
+      "antetitulo": "Full lift pass",
+      "titulo": "Your lift passes",
+      "texto": "Unlimited access to every lift in all three sectors, including the Sunnegga funicular and the Gornergrat railway.",
+      "calcular": "Price my pass"
+    }
+  },
+  "mapa": {
+    "titulo": "Piste map",
+    "vistaMapa": "Map",
+    "vistaLista": "List",
+    "dificultad": "Difficulty",
+    "todas": "All",
+    "soloAbierto": "Open only",
+    "sectores": "Sectors",
+    "vistaGeneral": "Overview",
+    "zoomMas": "Zoom in",
+    "zoomMenos": "Zoom out",
+    "zoomTodo": "All",
+    "leyenda": "Key",
+    "remonte": "Lift",
+    "pueblo": "Village · 1,620 m",
+    "dificultades": {
+      "azul": "Blue",
+      "roja": "Red",
+      "negra": "Black",
+      "freeride": "Freeride"
+    },
+    "dificultadesPlural": {
+      "azul": "blues",
+      "roja": "reds",
+      "negra": "blacks",
+      "freeride": "freeride routes"
+    },
+    "dificultadesLeyenda": {
+      "azul": "Blue · easy",
+      "roja": "Red · intermediate",
+      "negra": "Black · difficult",
+      "freeride": "Freeride · unmarked"
+    },
+    "tiposRemonte": {
+      "funicular": "Funicular",
+      "tren": "Cog railway",
+      "telecabina": "Gondola",
+      "teleferico": "Cable car",
+      "telesilla": "Chairlift",
+      "combinado": "Gondola and chairlift"
+    },
+    "ficha": {
+      "pista": "Run {numero} · {dificultad}",
+      "abierta": "Open",
+      "cerrada": "Closed",
+      "longitud": "Length",
+      "desnivel": "Vertical drop",
+      "salida": "Start",
+      "llegada": "Finish",
+      "ahoraEnLaSalida": "Now at the start",
+      "verParte": "See the report for this altitude",
+      "cerrar": "Close"
+    },
+    "vacio": {
+      "titulo": "No {dificultad} runs are open right now",
+      "texto": "Try another difficulty or turn off the open-only filter.",
+      "sugerencia": "Show the {dificultad}",
+      "quitarFiltros": "Clear filters"
+    }
+  },
+  "tiempo": {
+    "antetitulo": "Today's report",
+    "actualizado": "Updated at {hora} · Data from Open-Meteo",
+    "intro": "The flakes you see are falling right now at 3,883 metres. If they get in the way, switch the effects off: the report stays the same.",
+    "efectos": "On-screen effects",
+    "deLaCumbreAlPueblo": "From summit to village",
+    "viento": "Wind",
+    "visibilidad": "Visibility",
+    "proximosDias": "Next five days · Summit",
+    "hoy": "Today",
+    "nieveNueva": "{cm} cm of fresh snow",
+    "laMontanaHoy": "The mountain today",
+    "nieve": "Snow",
+    "nieveArribaAbajo": "{arriba} cm up top · {abajo} cm below",
+    "aludes": "Avalanches",
+    "riesgo": "Level {nivel} · {texto}",
+    "nivelesAludes": {
+      "1": "Low",
+      "2": "Moderate",
+      "3": "Considerable",
+      "4": "High",
+      "5": "Very high"
+    },
+    "remontes": "Lifts",
+    "abiertosDeTotal": "{n} of {total} open",
+    "verAbierto": "See what's open",
+    "cargando": {
+      "titulo": "Wiping the goggles…",
+      "texto": "Loading today's report",
+      "saltar": "Skip"
+    },
+    "error": {
+      "titulo": "We couldn't update the report.",
+      "texto": "Showing data from {hora}.",
+      "reintentar": "Try again"
+    }
+  },
+  "forfaits": {
+    "antetitulo": "Full lift pass",
+    "titulo": "Your lift passes",
+    "texto": "Unlimited access to every lift in all three sectors, including the Sunnegga funicular and the Gornergrat railway. One pass per person, all in a single purchase.",
+    "paso1": "1 · When",
+    "primerDia": "First day",
+    "diasDeEsqui": "Ski days",
+    "unDiaMas": "One more day",
+    "unDiaMenos": "One day less",
+    "rango": "{inicio} to {fin} · {temporada}",
+    "temporadaAlta": "High season",
+    "temporadaBaja": "Low season",
+    "paso2": "2 · Who's coming",
+    "tipos": {
+      "adulto": "Adults",
+      "joven": "Young adults",
+      "nino": "Children",
+      "senior": "Seniors"
+    },
+    "tiposSingular": {
+      "adulto": "Adult",
+      "joven": "Young adult",
+      "nino": "Child",
+      "senior": "Senior"
+    },
+    "uno": {
+      "mas": "Add: {tipo}",
+      "menos": "Remove: {tipo}"
+    },
+    "gratis": "Children under 6 ride free with an adult.",
+    "billete": {
+      "temporada": "Season 2026/27",
+      "producto": "Full pass · 3 sectors",
+      "incluye": "All lifts · Railway included",
+      "numero": "No.",
+      "valido": "Valid",
+      "tipoYDias": "{tipo} · {dias, plural, one {# day} other {# days}}"
+    },
+    "linea": "{n} × {tipo} pass · {dias, plural, one {# day} other {# days}}",
+    "total": "Total · {n, plural, one {# pass} other {# passes}}",
+    "comprar": "Buy {n, plural, one {# pass} other {# passes}}",
+    "simulacion": "Concept project: checkout is simulated and nothing is charged.",
+    "errores": {
+      "fechaPasada": "That date has passed. Pick a day from today, {hoy}, onwards.",
+      "fueraDeTemporada": "That date is outside the season. The resort is open from {inicio} to {fin}.",
+      "sinPersonas": "Add at least one person to see the price.",
+      "menorSolo": "Under-16s must ride with an adult."
+    },
+    "confirmacion": {
+      "titulo": "Ready to ride!",
+      "pedido": "Order {codigo} · {n, plural, one {# pass} other {# passes}} · {inicio} to {fin}",
+      "sello": "Simulation",
+      "selloTexto": "Nothing has been charged",
+      "texto": "At a real resort, your passes would arrive on your phone here, and you could collect them at any ticket office with this order number.",
+      "volver": "Back to the summit",
+      "verMapa": "See the map"
+    },
+    "faqTitulo": "Frequently asked questions",
+    "faq": [
+      {
+        "pregunta": "Can I use the pass in all three sectors?",
+        "respuesta": "Yes. The full pass opens every lift in Sunnegga, Gornergrat and Glacier Paradise, plus the cog railway between them."
+      },
+      {
+        "pregunta": "What if the lifts close because of wind?",
+        "respuesta": "If more than half the lifts are closed for a whole day, that day is refunded as credit for a pass in the same season."
+      },
+      {
+        "pregunta": "Is there a family discount?",
+        "respuesta": "Yes: with at least one adult and two children in the same purchase, the total drops by 10%. Children under 6 ride free."
+      },
+      {
+        "pregunta": "Do I need a printed pass?",
+        "respuesta": "No. Each pass has a number the gates read from your phone, and you can also collect it as a card at any ticket office."
+      }
+    ]
+  },
+  "aviso": {
+    "texto": "Valserra is a fictional resort: a portfolio project inspired by Zermatt.",
+    "entendido": "Got it"
+  },
+  "footer": {
+    "lema": "One resort, three mountains and a village at the end of the descent.",
+    "proyecto": "Valserra is a portfolio project: a fictional resort inspired by the geography of Zermatt. Prices, availability and checkout are simulated.",
+    "creditos": "Weather data: Open-Meteo (CC BY 4.0) · Design and development: Adri García · {anio}"
+  },
+  "noEncontrada": {
+    "antetitulo": "Error 404",
+    "titulo": "You've gone off-piste",
+    "texto": "This page doesn't exist, but the snow is still here. Get back on the track and keep going down.",
+    "volver": "Back to the summit",
+    "mapa": "Open the map"
+  }
+}

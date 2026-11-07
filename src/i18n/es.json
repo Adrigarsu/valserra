@@ -1,0 +1,291 @@
+{
+  "meta": {
+    "titulo": "Valserra · Estación de esquí",
+    "descripcion": "Tres montañas, un pueblo y un descenso de 2.263 metros. Estación de esquí ficticia, proyecto de portfolio.",
+    "titulos": {
+      "inicio": "Valserra · Estación de esquí",
+      "mapa": "Mapa de pistas · Valserra",
+      "tiempo": "El parte de hoy · Valserra",
+      "forfaits": "Forfaits · Valserra",
+      "noEncontrada": "Te has salido de pista · Valserra"
+    }
+  },
+  "nav": {
+    "inicio": "Inicio",
+    "mapa": "Mapa",
+    "tiempo": "Tiempo",
+    "forfaits": "Forfaits",
+    "comprar": "Comprar forfaits",
+    "abrirMenu": "Abrir menú",
+    "cerrarMenu": "Cerrar menú",
+    "saltarAlContenido": "Saltar al contenido",
+    "estado": "Cumbre {temp} · {abiertos}/{total} remontes",
+    "estadoCorto": "{temp} · {abiertos}/{total}"
+  },
+  "ajustes": {
+    "idioma": "Idioma",
+    "moneda": "Moneda",
+    "modo": "Modo",
+    "dia": "Día",
+    "noche": "Noche",
+    "modoNocheActivar": "Activar el modo noche",
+    "modoNocheDesactivar": "Volver al modo día"
+  },
+  "altimetro": {
+    "etiqueta": "Altímetro: {cota} m, {lugar}",
+    "paradas": {
+      "cumbre": "Cumbre",
+      "nubes": "Mar de nubes",
+      "gornergrat": "Gornergrat",
+      "riffelberg": "Riffelberg",
+      "sunnegga": "Sunnegga",
+      "pueblo": "Pueblo"
+    }
+  },
+  "inicio": {
+    "hero": {
+      "antetitulo": "Amanece en Valserra",
+      "titulo": "La cumbre ya está despierta",
+      "texto": "La primera luz tiñe de rojo las cumbres antes que el valle. Empieza arriba, a 3.883 metros, y baja con nosotros hasta el pueblo.",
+      "accion": "Empezar el descenso",
+      "secundaria": "Ver el mapa"
+    },
+    "hoyNoche": {
+      "antetitulo": "La noche en Valserra",
+      "titulo": "La cumbre duerme bajo cero",
+      "texto": "Las luces del pueblo siguen encendidas y los primeros remontes abren a las 8:30. Mañana se baja con nieve recién pisada."
+    },
+    "nubes": {
+      "titulo": "Por encima de las nubes",
+      "texto": "A 3.412 metros el valle desaparece bajo un mar blanco. Sigue bajando: al otro lado ya es de día."
+    },
+    "hoy": {
+      "antetitulo": "Así está la montaña hoy",
+      "actualizado": "Actualizado a las {hora} · Datos de Open-Meteo",
+      "cumbre": "Cumbre",
+      "pueblo": "Pueblo",
+      "temperatura": "Temperatura",
+      "viento": "Viento",
+      "visibilidad": "Visibilidad",
+      "nieve": "Nieve",
+      "remontesAbiertos": "Remontes abiertos",
+      "pistasAbiertas": "Pistas abiertas",
+      "aludes": "Riesgo de aludes",
+      "deTotal": "{n} de {total}",
+      "verParte": "Ver el parte completo"
+    },
+    "cabinas": {
+      "antetitulo": "Tres montañas, una estación",
+      "titulo": "Sube a cualquier sector",
+      "hasta": "Hasta {cota} m",
+      "resumen": "{pistas} pistas · {remontes} remontes",
+      "explorar": "Explorar en el mapa"
+    },
+    "vistazo": {
+      "antetitulo": "La estación de un vistazo",
+      "titulo": "Del pueblo al glaciar",
+      "texto": "Tres sectores unidos por remontes, desde los 1.620 metros del pueblo hasta los 3.883 del glaciar.",
+      "km": "Kilómetros de pistas",
+      "remontes": "Remontes",
+      "pistas": "Pistas",
+      "desnivel": "De desnivel",
+      "abrirMapa": "Abrir el mapa completo"
+    },
+    "forfaits": {
+      "antetitulo": "Forfait completo",
+      "titulo": "Vuestros forfaits",
+      "texto": "Acceso ilimitado a todos los remontes de los tres sectores, incluidos el funicular de Sunnegga y el tren de Gornergrat.",
+      "calcular": "Calcular mi forfait"
+    }
+  },
+  "mapa": {
+    "titulo": "Mapa de pistas",
+    "vistaMapa": "Mapa",
+    "vistaLista": "Lista",
+    "dificultad": "Dificultad",
+    "todas": "Todas",
+    "soloAbierto": "Solo lo que está abierto",
+    "sectores": "Sectores",
+    "vistaGeneral": "Vista general",
+    "zoomMas": "Acercar",
+    "zoomMenos": "Alejar",
+    "zoomTodo": "Todo",
+    "leyenda": "Leyenda",
+    "remonte": "Remonte",
+    "pueblo": "Pueblo · 1.620 m",
+    "dificultades": {
+      "azul": "Azul",
+      "roja": "Roja",
+      "negra": "Negra",
+      "freeride": "Freeride"
+    },
+    "dificultadesPlural": {
+      "azul": "azules",
+      "roja": "rojas",
+      "negra": "negras",
+      "freeride": "freeride"
+    },
+    "dificultadesLeyenda": {
+      "azul": "Azul · fácil",
+      "roja": "Roja · media",
+      "negra": "Negra · difícil",
+      "freeride": "Freeride · sin balizar"
+    },
+    "tiposRemonte": {
+      "funicular": "Funicular",
+      "tren": "Tren de cremallera",
+      "telecabina": "Telecabina",
+      "teleferico": "Teleférico",
+      "telesilla": "Telesilla",
+      "combinado": "Telecabina y telesilla"
+    },
+    "ficha": {
+      "pista": "Pista {numero} · {dificultad}",
+      "abierta": "Abierta",
+      "cerrada": "Cerrada",
+      "longitud": "Longitud",
+      "desnivel": "Desnivel",
+      "salida": "Salida",
+      "llegada": "Llegada",
+      "ahoraEnLaSalida": "Ahora en la salida",
+      "verParte": "Ver el parte de esta cota",
+      "cerrar": "Cerrar la ficha"
+    },
+    "vacio": {
+      "titulo": "Ahora mismo no hay ninguna pista {dificultad} abierta",
+      "texto": "Prueba con otra dificultad o quita el filtro de abiertas.",
+      "sugerencia": "Ver las {dificultad}",
+      "quitarFiltros": "Quitar filtros"
+    }
+  },
+  "tiempo": {
+    "antetitulo": "El parte de hoy",
+    "actualizado": "Actualizado a las {hora} · Datos de Open-Meteo",
+    "intro": "Los copos que ves caen ahora mismo a 3.883 metros. Si molestan, apaga los efectos: el parte sigue igual.",
+    "efectos": "Efectos en pantalla",
+    "deLaCumbreAlPueblo": "De la cumbre al pueblo",
+    "viento": "Viento",
+    "visibilidad": "Visibilidad",
+    "proximosDias": "Próximos cinco días · Cumbre",
+    "hoy": "Hoy",
+    "nieveNueva": "Nieve nueva {cm} cm",
+    "laMontanaHoy": "La montaña hoy",
+    "nieve": "Nieve",
+    "nieveArribaAbajo": "{arriba} cm arriba · {abajo} cm abajo",
+    "aludes": "Aludes",
+    "riesgo": "Riesgo {nivel} · {texto}",
+    "nivelesAludes": {
+      "1": "Débil",
+      "2": "Limitado",
+      "3": "Notable",
+      "4": "Fuerte",
+      "5": "Muy fuerte"
+    },
+    "remontes": "Remontes",
+    "abiertosDeTotal": "{n} de {total} abiertos",
+    "verAbierto": "Ver qué está abierto",
+    "cargando": {
+      "titulo": "Limpiando las gafas…",
+      "texto": "Cargando el parte de hoy",
+      "saltar": "Saltar"
+    },
+    "error": {
+      "titulo": "No hemos podido actualizar el parte.",
+      "texto": "Mostrando los datos de las {hora}.",
+      "reintentar": "Reintentar"
+    }
+  },
+  "forfaits": {
+    "antetitulo": "Forfait completo",
+    "titulo": "Vuestros forfaits",
+    "texto": "Acceso ilimitado a todos los remontes de los tres sectores, incluidos el funicular de Sunnegga y el tren de Gornergrat. Un forfait por persona, todos en una compra.",
+    "paso1": "1 · Cuándo",
+    "primerDia": "Primer día",
+    "diasDeEsqui": "Días de esquí",
+    "unDiaMas": "Un día más",
+    "unDiaMenos": "Un día menos",
+    "rango": "Del {inicio} al {fin} · {temporada}",
+    "temporadaAlta": "Temporada alta",
+    "temporadaBaja": "Temporada baja",
+    "paso2": "2 · Quién sube",
+    "tipos": {
+      "adulto": "Adultos",
+      "joven": "Jóvenes",
+      "nino": "Niños",
+      "senior": "Sénior"
+    },
+    "tiposSingular": {
+      "adulto": "Adulto",
+      "joven": "Joven",
+      "nino": "Niño",
+      "senior": "Sénior"
+    },
+    "uno": {
+      "mas": "Añadir: {tipo}",
+      "menos": "Quitar: {tipo}"
+    },
+    "gratis": "Menores de 6 años suben gratis con un adulto.",
+    "billete": {
+      "temporada": "Temporada 2026/27",
+      "producto": "Forfait completo · 3 sectores",
+      "incluye": "Todos los remontes · Tren incluido",
+      "numero": "Nº",
+      "valido": "Válido",
+      "tipoYDias": "{tipo} · {dias, plural, one {# día} other {# días}}"
+    },
+    "linea": "{n} × Forfait {tipo} · {dias, plural, one {# día} other {# días}}",
+    "total": "Total · {n, plural, one {# forfait} other {# forfaits}}",
+    "comprar": "Comprar {n, plural, one {# forfait} other {# forfaits}}",
+    "simulacion": "Proyecto conceptual: la compra es una simulación y no se cobra nada.",
+    "errores": {
+      "fechaPasada": "Esa fecha ya ha pasado. Elige un día a partir de hoy, {hoy}.",
+      "fueraDeTemporada": "Esa fecha está fuera de temporada. La estación abre del {inicio} al {fin}.",
+      "sinPersonas": "Añade al menos una persona para calcular el precio.",
+      "menorSolo": "Los menores de 16 años tienen que subir con un adulto."
+    },
+    "confirmacion": {
+      "titulo": "¡Listos para subir!",
+      "pedido": "Pedido {codigo} · {n, plural, one {# forfait} other {# forfaits}} · del {inicio} al {fin}",
+      "sello": "Simulación",
+      "selloTexto": "No se ha cobrado nada",
+      "texto": "En una estación real, aquí recibirías los forfaits en el móvil y podrías recogerlos en cualquier taquilla con este número de pedido.",
+      "volver": "Volver a la cumbre",
+      "verMapa": "Ver el mapa"
+    },
+    "faqTitulo": "Preguntas frecuentes",
+    "faq": [
+      {
+        "pregunta": "¿Puedo usar el forfait en los tres sectores?",
+        "respuesta": "Sí. El forfait completo abre todos los remontes de Sunnegga, Gornergrat y Glacier Paradise, y el tren de cremallera entre ellos."
+      },
+      {
+        "pregunta": "¿Qué pasa si cierran los remontes por viento?",
+        "respuesta": "Si más de la mitad de los remontes cierran durante todo un día, ese día se devuelve en un forfait de la misma temporada."
+      },
+      {
+        "pregunta": "¿Hay descuento para familias?",
+        "respuesta": "Sí: con al menos un adulto y dos niños en la misma compra, el total baja un 10 %. Los menores de 6 años no pagan."
+      },
+      {
+        "pregunta": "¿Necesito llevar el forfait impreso?",
+        "respuesta": "No. Cada forfait tiene un número que se lee en los tornos desde el móvil, y también se puede recoger en tarjeta en cualquier taquilla."
+      }
+    ]
+  },
+  "aviso": {
+    "texto": "Valserra es una estación ficticia: un proyecto de portfolio inspirado en Zermatt.",
+    "entendido": "Entendido"
+  },
+  "footer": {
+    "lema": "Una estación, tres montañas y un pueblo al final del descenso.",
+    "proyecto": "Valserra es un proyecto de portfolio: una estación ficticia inspirada en la geografía de Zermatt. Precios, disponibilidad y compra son simulados.",
+    "creditos": "Datos del tiempo: Open-Meteo (CC BY 4.0) · Diseño y desarrollo: Adri García · {anio}"
+  },
+  "noEncontrada": {
+    "antetitulo": "Error 404",
+    "titulo": "Te has salido de pista",
+    "texto": "Esta página no existe, pero la nieve sigue ahí. Vuelve al trazado y sigue bajando.",
+    "volver": "Volver a la cumbre",
+    "mapa": "Abrir el mapa"
+  }
+}

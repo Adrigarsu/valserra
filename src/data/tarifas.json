@@ -1,0 +1,110 @@
+{
+  "temporada": {
+    "id": "2026-27",
+    "inicio": "2026-11-21",
+    "fin": "2027-04-25",
+    "alta": [
+      {
+        "inicio": "2026-12-19",
+        "fin": "2027-01-06"
+      },
+      {
+        "inicio": "2027-02-06",
+        "fin": "2027-03-07"
+      }
+    ],
+    "factorBaja": 0.9
+  },
+  "moneda": "CHF",
+  "cambioDemo": {
+    "EUR": 1.07,
+    "nota": {
+      "es": "Tipo de cambio fijo de demostración.",
+      "en": "Fixed demo exchange rate."
+    }
+  },
+  "diasMin": 1,
+  "diasMax": 7,
+  "gratisMenoresDe": 6,
+  "descuentoFamilia": {
+    "porcentaje": 10,
+    "requisito": {
+      "adultosMin": 1,
+      "ninosMin": 2
+    },
+    "texto": {
+      "es": "Descuento familia",
+      "en": "Family discount"
+    }
+  },
+  "tipos": [
+    {
+      "id": "adulto",
+      "edad": {
+        "es": "26–64 años",
+        "en": "26–64 years"
+      },
+      "factor": 1.0,
+      "precios": {
+        "1": 9200,
+        "2": 17500,
+        "3": 24900,
+        "4": 31800,
+        "5": 38000,
+        "6": 43800,
+        "7": 49000
+      }
+    },
+    {
+      "id": "joven",
+      "edad": {
+        "es": "16–25 años",
+        "en": "16–25 years"
+      },
+      "factor": 0.85,
+      "precios": {
+        "1": 7800,
+        "2": 14900,
+        "3": 21200,
+        "4": 27000,
+        "5": 32300,
+        "6": 37200,
+        "7": 41700
+      }
+    },
+    {
+      "id": "nino",
+      "edad": {
+        "es": "6–15 años",
+        "en": "6–15 years"
+      },
+      "factor": 0.5,
+      "precios": {
+        "1": 4600,
+        "2": 8800,
+        "3": 12500,
+        "4": 15900,
+        "5": 19000,
+        "6": 21900,
+        "7": 24500
+      }
+    },
+    {
+      "id": "senior",
+      "edad": {
+        "es": "65 años o más",
+        "en": "65 and over"
+      },
+      "factor": 0.85,
+      "precios": {
+        "1": 7800,
+        "2": 14900,
+        "3": 21200,
+        "4": 27000,
+        "5": 32300,
+        "6": 37200,
+        "7": 41700
+      }
+    }
+  ]
+}
