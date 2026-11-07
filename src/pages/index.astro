@@ -1,18 +1,8 @@
 ---
-// Página provisional: muestrario de los estilos de texto para compararlos
-// con Figma. Las rutas /es y /en llegan en la Fase 1; entonces las
-// importaciones y la precarga pasan al layout base.
-import '../styles/fonts.css';
-import '../styles/tokens.css';
-import '../styles/base.css';
-import '../styles/typography.css';
-
-// Fuentes del hero: se precargan para que el titular no espere al CSS.
-// ?url devuelve la ruta final del archivo (con la base y el hash).
-import yellowtail from '@fontsource/yellowtail/files/yellowtail-latin-400-normal.woff2?url';
-import josefinSans from '@fontsource-variable/josefin-sans/files/josefin-sans-latin-wght-normal.woff2?url';
-
-const preloads = [yellowtail, josefinSans];
+// Página provisional: muestrario de los estilos de texto dentro del layout
+// base. Se sustituye cuando lleguen las rutas /es y /en (#9) y el
+// catálogo de componentes (#15).
+import Base from '../layouts/Base.astro';
 
 const estilos = [
   { clase: 'text-display-xl', nombre: 'Display/XL', texto: 'Valserra' },
@@ -67,27 +57,16 @@ const estilos = [
 ];
 ---
 
-<!doctype html>
-<html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    {preloads.map((href) => (
-      <link rel="preload" href={href} as="font" type="font/woff2" crossorigin />
+<Base pagina="inicio">
+  <div class="muestrario">
+    {estilos.map(({ clase, nombre, texto }) => (
+      <section class="muestra">
+        <p class="text-etiqueta-pequena nombre">{nombre}</p>
+        <p class={clase}>{texto}</p>
+      </section>
     ))}
-    <title>Valserra</title>
-  </head>
-  <body>
-    <main class="muestrario">
-      {estilos.map(({ clase, nombre, texto }) => (
-        <section class="muestra">
-          <p class="text-etiqueta-pequena nombre">{nombre}</p>
-          <p class={clase}>{texto}</p>
-        </section>
-      ))}
-    </main>
-  </body>
-</html>
+  </div>
+</Base>
 
 <style>
   .muestrario {

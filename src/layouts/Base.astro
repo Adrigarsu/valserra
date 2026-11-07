@@ -1,0 +1,94 @@
+---
+/*
+ * Layout base de todas las páginas: <head>, enlace "Saltar al contenido",
+ * cartel de navegación, contenido, footer y menú.
+ */
+import '../styles/fonts.css';
+import '../styles/tokens.css';
+import '../styles/base.css';
+import '../styles/typography.css';
+
+// Fuentes del hero: se precargan para que el titular no espere al CSS.
+// ?url devuelve la ruta final del archivo (con la base y el hash).
+import yellowtail from '@fontsource/yellowtail/files/yellowtail-latin-400-normal.woff2?url';
+import josefinSans from '@fontsource-variable/josefin-sans/files/josefin-sans-latin-wght-normal.woff2?url';
+
+import Navegacion from '../components/Navegacion.astro';
+import Menu from '../components/Menu.astro';
+import Pie from '../components/Pie.astro';
+import { idiomaPorDefecto, textos, type Idioma } from '../lib/i18n.ts';
+import type { Pagina } from '../lib/rutas.ts';
+
+interface Props {
+  idioma?: Idioma;
+  /** Título de la pestaña. Por defecto, el de la portada. */
+  titulo?: string;
+  descripcion?: string;
+  /** Página actual, para marcar su enlace en la navegación. */
+  pagina?: Pagina;
+}
+
+const { idioma = idiomaPorDefecto, pagina } = Astro.props;
+const { meta, nav } = textos[idioma];
+const titulo = Astro.props.titulo ?? meta.titulo;
+const descripcion = Astro.props.descripcion ?? meta.descripcion;
+
+const preloads = [yellowtail, josefinSans];
+---
+
+<!doctype html>
+<html lang={idioma}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {preloads.map((href) => (
+      <link rel="preload" href={href} as="font" type="font/woff2" crossorigin />
+    ))}
+    <title>{titulo}</title>
+    <meta name="description" content={descripcion} />
+  </head>
+  <body>
+    <a class="saltar text-boton" href="#contenido">
+      {nav.saltarAlContenido}
+    </a>
+    <Navegacion idioma={idioma} pagina={pagina} />
+    <main id="contenido">
+      <slot />
+    </main>
+    <Pie idioma={idioma} pagina={pagina} />
+    <Menu idioma={idioma} pagina={pagina} />
+  </body>
+</html>
+
+<style>
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  main {
+    flex-grow: 1;
+  }
+
+  /*
+   * "Saltar al contenido": el primer enlace de la página. Queda fuera de
+   * la pantalla y baja al recibir el foco con el teclado, para saltarse
+   * la navegación (WCAG 2.4.1).
+   */
+  .saltar {
+    position: fixed;
+    inset-block-start: var(--space-12);
+    inset-inline-start: var(--space-12);
+    z-index: 20;
+    padding: var(--space-16) var(--space-24);
+    border-radius: var(--radius-pill);
+    background-color: var(--color-bg-inverse);
+    color: var(--color-text-on-inverse);
+    text-decoration: none;
+    transform: translateY(-200%);
+  }
+
+  .saltar:focus {
+    transform: none;
+  }
+</style>
