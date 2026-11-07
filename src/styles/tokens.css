@@ -248,3 +248,61 @@
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1); /* cámara y remontes */
   --ease-in: cubic-bezier(0.7, 0, 0.84, 0); /* salidas */
 }
+
+/*
+ * 5. Tipografía (estilos de texto de Figma, página Fundamentos).
+ * Figma no tiene variables de texto: los valores salen de sus 14 estilos.
+ * Tamaños en rem (px / 16), interlineado sin unidad (porcentaje / 100)
+ * e interletrado en em (porcentaje / 100). Las clases que los usan
+ * están en src/styles/typography.css.
+ */
+:root {
+  --font-display: 'Yellowtail', 'Brush Script MT', cursive;
+  --font-sans: 'Josefin Sans Variable', 'Futura', 'Century Gothic', sans-serif;
+  --font-serif: 'Fraunces Variable', 'Georgia', serif;
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+
+  /* Fraunces con las variantes "wonky" activadas, como en Figma */
+  --font-serif-variation: 'WONK' 1;
+
+  /* Display/XL crece de 72 px a 390 px de ancho hasta 124 px a 1440 px */
+  --text-display-xl: clamp(4.5rem, 3.2929rem + 4.9524vw, 7.75rem);
+  --text-display-l: 4.5rem;
+  --text-display-m: 3rem;
+  --text-display-s: 2.125rem;
+  --text-titulo-h2: 1.875rem;
+  --text-titulo-h3: 1.25rem;
+  --text-etiqueta-antetitulo: 0.8125rem;
+  --text-etiqueta-pequena: 0.6875rem;
+  --text-boton: 0.875rem;
+  --text-dato-grande: 2.75rem;
+  --text-dato-medio: 1.625rem;
+  --text-cuerpo-base: 1.125rem;
+  --text-cuerpo-pequeno: 0.9375rem;
+  --text-cuerpo-nota: 0.9375rem;
+
+  --leading-display-xl: 0.95;
+  --leading-display-l: 0.95;
+  --leading-display-m: 1;
+  --leading-display-s: 1;
+  --leading-titulo-h2: 1.25;
+  --leading-titulo-h3: 1.3;
+  --leading-etiqueta-antetitulo: 1.3;
+  --leading-etiqueta-pequena: 1.3;
+  --leading-boton: 1;
+  --leading-dato-grande: 1;
+  --leading-dato-medio: 1.1;
+  --leading-cuerpo-base: 1.65;
+  --leading-cuerpo-pequeno: 1.6;
+  --leading-cuerpo-nota: 1.6;
+
+  --tracking-titulo-h2: 0.18em;
+  --tracking-titulo-h3: 0.12em;
+  --tracking-etiqueta-antetitulo: 0.3em;
+  --tracking-etiqueta-pequena: 0.2em;
+  --tracking-boton: 0.2em;
+  --tracking-dato-grande: -0.01em;
+}
