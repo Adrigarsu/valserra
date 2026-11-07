@@ -1,0 +1,250 @@
+/*
+ * Tokens de Valserra.
+ * Cada variable sale de una variable de Figma y usa su sintaxis WEB.
+ * La tabla de equivalencias está en docs/tokens.md.
+ *
+ * Capas:
+ * 1. Primitivos: la paleta en bruto. Los componentes no los usan nunca.
+ * 2. Color e Ilustración: tokens semánticos que apuntan a primitivos.
+ *    Son los únicos que cambian en el modo noche.
+ * 3. Dimensiones y movimiento: iguales en los dos modos.
+ */
+
+/* 1. Primitivos (colección Primitivos, modo Valor) */
+:root {
+  --crema-base: #f3ebdd;
+  --crema-claro: #faf6ee;
+  --blanco: #ffffff;
+
+  --burdeos-500: #81171b;
+  --burdeos-400: #9a2b25;
+  --rosa-400: #d9776e;
+  --rosa-300: #e8a39b;
+  --ambar-400: #d9a441;
+
+  --pino-800: #1c2e27;
+  --pino-600: #2e4a3f;
+  --pino-300: #8fb89a;
+
+  --azul-100: #dce6ec;
+  --azul-200: #c9d9e4;
+  --azul-300: #a9c1d3;
+  --azul-400: #7fa3c0;
+  --azul-500: #5c7f9c;
+  --azul-600: #3f5f7c;
+  --azul-700: #2f4a63;
+  --azul-800: #1f2a33;
+  --azul-900: #16202a;
+
+  --pista-azul: #3e6e9e;
+  --pista-roja: #b8463a;
+}
+
+/* 2. Semánticos, modo Día (por defecto) */
+:root {
+  color-scheme: light;
+
+  /* Color */
+  --color-bg-page: var(--crema-base);
+  --color-bg-surface: var(--crema-claro);
+  --color-bg-card: var(--blanco);
+  --color-bg-inverse: var(--azul-800);
+  --color-bg-accent: var(--burdeos-500);
+  --color-bg-accent-hover: var(--burdeos-400);
+  --color-bg-subtle: var(--azul-100);
+  --color-bg-disabled: var(--azul-100);
+
+  --color-text-primary: var(--azul-800);
+  --color-text-heading: var(--azul-700);
+  --color-text-secondary: var(--azul-600);
+  --color-text-accent: var(--burdeos-500);
+  --color-text-on-accent: var(--crema-base);
+  --color-text-on-inverse: var(--crema-base);
+  --color-text-disabled: var(--azul-500);
+
+  --color-border-strong: var(--azul-800);
+  --color-border-subtle: var(--azul-200);
+  --color-border-accent: var(--burdeos-500);
+  --color-border-focus: var(--ambar-400);
+
+  --color-pista-azul: var(--pista-azul);
+  --color-pista-roja: var(--pista-roja);
+  --color-pista-negra: var(--azul-800);
+  --color-pista-freeride: var(--ambar-400);
+
+  --color-estado-abierto: var(--pino-600);
+  --color-estado-cerrado: var(--burdeos-500);
+  --color-detalle-ambar: var(--ambar-400);
+
+  /* Ilustración */
+  --ilus-cielo: var(--azul-100);
+  --ilus-astro: var(--ambar-400);
+  --ilus-estrella: var(--azul-100);
+  --ilus-lejos: var(--azul-300);
+  --ilus-nieve-luz: var(--crema-claro);
+  --ilus-nieve-sombra: var(--azul-400);
+  --ilus-roca: var(--azul-600);
+  --ilus-resplandor: var(--crema-claro);
+  --ilus-bosque: var(--pino-600);
+  --ilus-fachada: var(--crema-base);
+  --ilus-tejado: var(--burdeos-400);
+  --ilus-ventana: var(--azul-800);
+  --ilus-trazo: var(--burdeos-500);
+  --ilus-nube-sombra: var(--crema-base);
+}
+
+/*
+ * 2b. Semánticos, modo Noche.
+ * Se activa con la preferencia del sistema (salvo que se elija el modo
+ * día con data-theme="light") o a mano con data-theme="dark" en <html>.
+ * CSS no deja agrupar los dos selectores en una sola regla, así que el
+ * bloque está dos veces: si cambias uno, cambia el otro.
+ */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+
+    --color-bg-page: var(--azul-900);
+    --color-bg-surface: var(--azul-800);
+    --color-bg-card: var(--azul-700);
+    --color-bg-inverse: var(--crema-base);
+    --color-bg-accent: var(--rosa-400);
+    --color-bg-accent-hover: var(--rosa-300);
+    --color-bg-subtle: var(--azul-700);
+    --color-bg-disabled: var(--azul-700);
+
+    --color-text-primary: var(--crema-base);
+    --color-text-heading: var(--crema-claro);
+    --color-text-secondary: var(--azul-300);
+    --color-text-accent: var(--rosa-400);
+    --color-text-on-accent: var(--azul-900);
+    --color-text-on-inverse: var(--azul-900);
+    --color-text-disabled: var(--azul-500);
+
+    --color-border-strong: var(--crema-base);
+    --color-border-subtle: var(--azul-600);
+    --color-border-accent: var(--rosa-400);
+    --color-border-focus: var(--ambar-400);
+
+    --color-pista-azul: var(--azul-400);
+    --color-pista-roja: var(--pista-roja);
+    --color-pista-negra: var(--crema-base);
+    --color-pista-freeride: var(--ambar-400);
+
+    --color-estado-abierto: var(--pino-300);
+    --color-estado-cerrado: var(--rosa-400);
+    --color-detalle-ambar: var(--ambar-400);
+
+    --ilus-cielo: var(--azul-900);
+    --ilus-astro: var(--crema-base);
+    --ilus-estrella: var(--crema-base);
+    --ilus-lejos: var(--azul-800);
+    --ilus-nieve-luz: var(--azul-300);
+    --ilus-nieve-sombra: var(--azul-600);
+    --ilus-roca: var(--azul-800);
+    --ilus-resplandor: var(--rosa-300);
+    --ilus-bosque: var(--pino-800);
+    --ilus-fachada: var(--azul-700);
+    --ilus-tejado: var(--burdeos-500);
+    --ilus-ventana: var(--ambar-400);
+    --ilus-trazo: var(--rosa-400);
+    --ilus-nube-sombra: var(--azul-500);
+  }
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --color-bg-page: var(--azul-900);
+  --color-bg-surface: var(--azul-800);
+  --color-bg-card: var(--azul-700);
+  --color-bg-inverse: var(--crema-base);
+  --color-bg-accent: var(--rosa-400);
+  --color-bg-accent-hover: var(--rosa-300);
+  --color-bg-subtle: var(--azul-700);
+  --color-bg-disabled: var(--azul-700);
+
+  --color-text-primary: var(--crema-base);
+  --color-text-heading: var(--crema-claro);
+  --color-text-secondary: var(--azul-300);
+  --color-text-accent: var(--rosa-400);
+  --color-text-on-accent: var(--azul-900);
+  --color-text-on-inverse: var(--azul-900);
+  --color-text-disabled: var(--azul-500);
+
+  --color-border-strong: var(--crema-base);
+  --color-border-subtle: var(--azul-600);
+  --color-border-accent: var(--rosa-400);
+  --color-border-focus: var(--ambar-400);
+
+  --color-pista-azul: var(--azul-400);
+  --color-pista-roja: var(--pista-roja);
+  --color-pista-negra: var(--crema-base);
+  --color-pista-freeride: var(--ambar-400);
+
+  --color-estado-abierto: var(--pino-300);
+  --color-estado-cerrado: var(--rosa-400);
+  --color-detalle-ambar: var(--ambar-400);
+
+  --ilus-cielo: var(--azul-900);
+  --ilus-astro: var(--crema-base);
+  --ilus-estrella: var(--crema-base);
+  --ilus-lejos: var(--azul-800);
+  --ilus-nieve-luz: var(--azul-300);
+  --ilus-nieve-sombra: var(--azul-600);
+  --ilus-roca: var(--azul-800);
+  --ilus-resplandor: var(--rosa-300);
+  --ilus-bosque: var(--pino-800);
+  --ilus-fachada: var(--azul-700);
+  --ilus-tejado: var(--burdeos-500);
+  --ilus-ventana: var(--ambar-400);
+  --ilus-trazo: var(--rosa-400);
+  --ilus-nube-sombra: var(--azul-500);
+}
+
+/*
+ * 3. Dimensiones (colección Dimensiones, modo Valor).
+ * Figma trabaja en px. Los espacios pasan a rem (px / 16) para que
+ * crezcan si la persona sube el tamaño de letra del navegador. Radios,
+ * bordes y área táctil se quedan en px porque no deben escalar con el texto.
+ */
+:root {
+  --space-4: 0.25rem;
+  --space-8: 0.5rem;
+  --space-12: 0.75rem;
+  --space-16: 1rem;
+  --space-24: 1.5rem;
+  --space-32: 2rem;
+  --space-48: 3rem;
+  --space-64: 4rem;
+  --space-96: 6rem;
+  --space-128: 8rem;
+  --space-192: 12rem;
+
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-pill: 999px;
+
+  --border-thin: 1.5px;
+  --border-thick: 3px;
+
+  --touch-min: 44px;
+}
+
+/*
+ * 4. Movimiento (docs/ideario.md, Lenguaje de movimiento).
+ * No está en Figma. Lento, suave y sin rebotes.
+ */
+:root {
+  --dur-micro: 250ms; /* hover, foco, botones */
+  --dur-base: 600ms; /* tabs, filtros, desplegables */
+  --dur-reveal: 1200ms; /* entrada de contenido con el scroll */
+  --dur-scene: 2400ms; /* transiciones de página, mapa, cabinas */
+  --stagger: 120ms; /* retardo entre elementos de una lista */
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1); /* entradas (expo-out) */
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1); /* cámara y remontes */
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0); /* salidas */
+}
