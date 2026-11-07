@@ -29,7 +29,7 @@ Web de una estación de esquí ficticia inspirada en Zermatt. Proyecto de portfo
 
 ## Calidad de código
 
-- Scripts: `dev`, `build`, `preview`, `check`, `lint`, `format` y `format:check`.
+- Scripts: `dev`, `build`, `preview`, `check`, `validar`, `lint`, `format` y `format:check`. `check` y `build` ejecutan antes `validar` (`scripts/validar-contenido.ts`, que Node ejecuta sin compilar).
 - ESLint 10 con configuración plana (`eslint.config.js`): recomendadas de JS y `typescript-eslint`, `eslint-plugin-astro` con sus reglas de accesibilidad para `.astro`, `eslint-plugin-jsx-a11y-x` para `.tsx` y `eslint-config-prettier` al final. Se usa `jsx-a11y-x` y no `eslint-plugin-jsx-a11y` porque este no soporta ESLint 10.
 - Prettier con `prettier-plugin-astro` y comillas simples. No formatea Markdown (`.prettierignore`): los documentos se escriben a mano.
 - `.editorconfig`: UTF-8, LF y 2 espacios; CRLF en `*.ps1`, igual que `.gitattributes`.
@@ -40,6 +40,7 @@ Web de una estación de esquí ficticia inspirada en Zermatt. Proyecto de portfo
 - Tokens: las variables de Figma se traducen a variables CSS en `src/styles/tokens.css` con el nombre de su sintaxis WEB en Figma (`bg/page` → `--color-bg-page`, `espacio/16` → `--space-16`, `ilus/cielo` → `--ilus-cielo`). La tabla completa está en `docs/tokens.md`. Los componentes usan los tokens semánticos (`--color-*`, `--ilus-*`), nunca los primitivos (`--azul-800`). Nada de colores, tamaños o duraciones sueltos en los componentes.
 - Modo noche: solo cambian los tokens semánticos y de ilustración, nunca los componentes. Se activa con `prefers-color-scheme` o con `data-theme="dark"` en `<html>` (`data-theme="light"` fuerza el día). El bloque de noche está repetido en `tokens.css`: si cambias uno, cambia el otro.
 - Datos en `src/data/*.json` y textos en `src/i18n/{es,en}.json`. Las dos lenguas tienen las mismas claves. Los textos usan huecos `{nombre}` y plurales ICU.
+- Los datos se importan desde `src/lib/datos.ts` (validados con los esquemas Zod de `src/lib/esquemas.ts`, que también exportan los tipos) y los textos desde `src/lib/i18n.ts`; nunca el JSON directamente. Si cambia la forma de un JSON, se cambia su esquema en el mismo commit. Los imports de JSON llevan `with { type: 'json' }` y los de TypeScript la extensión `.ts`, para que Node pueda ejecutar el script de validación.
 - Números sin formato en los datos; se formatean con `Intl` según el idioma. Importes en céntimos de CHF.
 - Las etiquetas en mayúsculas se escriben en minúscula y se transforman con CSS (`text-transform: uppercase`).
 - Accesibilidad WCAG 2.2 AA: HTML semántico, foco visible, áreas táctiles de 44 px, `prefers-reduced-motion` respetado en toda animación.
@@ -56,9 +57,9 @@ Web de una estación de esquí ficticia inspirada en Zermatt. Proyecto de portfo
 
 ## Estado del proyecto
 
-Fase 0 · Montaje (hito en GitHub). Última actualización: 7 de noviembre de 2026 (#4).
+Fase 0 · Montaje (hito en GitHub). Última actualización: 7 de noviembre de 2026 (#5).
 
-- Hecho: #1 proyecto Astro con TypeScript estricto y React (PR #35); #2 ESLint, Prettier, EditorConfig y `.gitattributes` (PR #36); #3 tokens de Figma en `src/styles/tokens.css` y reset con estilos base en `src/styles/base.css` (PR #37); #4 fuentes con Fontsource en `src/styles/fonts.css`, tokens de tipografía en `tokens.css` y una clase por cada uno de los 14 estilos de texto de Figma en `src/styles/typography.css` (`.text-display-xl`, `.text-titulo-h2`…; tabla en `docs/tokens.md`).
-- Siguiente: #5 datos y textos con tipos, después #6 CI y GitHub Pages y #7 preparar Figma.
-- Estructura: `src/{components,layouts,lib}` y `src/pages/{es,en}` están vacías (con `.gitkeep`). `src/pages/index.astro` es una página provisional con un muestrario de los 14 estilos de texto; importa `fonts.css`, `tokens.css`, `base.css` y `typography.css` y precarga Yellowtail y Josefin Sans (latin) con imports `?url`. Cuando exista el layout base (Fase 1), las importaciones y la precarga pasan allí y el muestrario se borra.
+- Hecho: #1 proyecto Astro con TypeScript estricto y React (PR #35); #2 ESLint, Prettier, EditorConfig y `.gitattributes` (PR #36); #3 tokens de Figma en `src/styles/tokens.css` y reset con estilos base en `src/styles/base.css` (PR #37); #4 fuentes con Fontsource en `src/styles/fonts.css`, tokens de tipografía en `tokens.css` y una clase por cada uno de los 14 estilos de texto de Figma en `src/styles/typography.css` (`.text-display-xl`, `.text-titulo-h2`…; tabla en `docs/tokens.md`) (PR #38); #5 esquemas Zod y tipos para los datos, comprobación de que `es.json` y `en.json` tienen las mismas claves, ningún texto vacío y los mismos huecos, y script `validar` dentro de `check` y `build`.
+- Siguiente: #6 CI y GitHub Pages (la CI solo tiene que llamar a `check`, `lint`, `format:check` y `build`: la validación ya va dentro), después #7 preparar Figma.
+- Estructura: `src/{components,layouts}` y `src/pages/{es,en}` están vacías (con `.gitkeep`). `src/lib` tiene `esquemas.ts`, `datos.ts` e `i18n.ts`; falta la función que formatea los textos (huecos y plurales ICU con `Intl`), que llega con las páginas en la Fase 1. `src/pages/index.astro` es una página provisional con un muestrario de los 14 estilos de texto; importa `fonts.css`, `tokens.css`, `base.css` y `typography.css` y precarga Yellowtail y Josefin Sans (latin) con imports `?url`. Cuando exista el layout base (Fase 1), las importaciones y la precarga pasan allí y el muestrario se borra.
 - Pendiente para fases siguientes: las rutas `/es` y `/en` (configuración `i18n` de Astro y redirección desde la raíz) son de la Fase 1. La CI (#6) tiene que usar Node 22.23.4 o superior.

@@ -20,9 +20,10 @@ npm run dev            # http://localhost:4321/valserra/
 | Script | Qué hace |
 | --- | --- |
 | `npm run dev` | Servidor de desarrollo |
-| `npm run build` | Genera la web estática en `dist/` |
+| `npm run build` | Valida datos y textos y genera la web estática en `dist/` |
 | `npm run preview` | Sirve `dist/` para probar la versión construida |
-| `npm run check` | Comprueba los tipos de TypeScript y de los `.astro` |
+| `npm run check` | Valida datos y textos y comprueba los tipos de TypeScript y de los `.astro` |
+| `npm run validar` | Valida `src/data` con sus esquemas y que `es.json` y `en.json` tengan las mismas claves y huecos |
 | `npm run lint` | ESLint: errores, malas prácticas y accesibilidad |
 | `npm run format` | Formatea el código con Prettier |
 | `npm run format:check` | Comprueba el formato sin cambiar nada |
