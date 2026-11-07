@@ -1,0 +1,41 @@
+---
+/*
+ * Botón redondo con solo un icono (abrir y cerrar el menú).
+ * Como no tiene texto visible, la etiqueta va en aria-label.
+ * Mide 44 × 44 px, el área táctil mínima.
+ */
+import type { HTMLAttributes } from 'astro/types';
+import Icono from './Icono.astro';
+
+type Props = HTMLAttributes<'button'> & {
+  /** Lo que anuncia el lector de pantalla: "Abrir menú". */
+  etiqueta: string;
+  icono: 'menu' | 'cerrar';
+};
+
+const { etiqueta, icono, ...resto } = Astro.props;
+---
+
+<button type="button" class="boton-icono" aria-label={etiqueta} {...resto}>
+  <Icono nombre={icono} />
+</button>
+
+<style>
+  .boton-icono {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    inline-size: var(--touch-min);
+    block-size: var(--touch-min);
+    padding: 0;
+    border: var(--border-thin) solid var(--color-border-strong);
+    border-radius: var(--radius-pill);
+    background-color: transparent;
+    color: var(--color-text-primary);
+    cursor: pointer;
+  }
+
+  .boton-icono:hover {
+    background-color: var(--color-bg-subtle);
+  }
+</style>

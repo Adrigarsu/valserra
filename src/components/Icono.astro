@@ -1,0 +1,44 @@
+---
+/*
+ * Iconos de interfaz de Phosphor Icons (peso Regular, licencia MIT):
+ * https://phosphoricons.com. Se copian aquí solo los que usa la web.
+ * Rejilla de 256 unidades con trazo de 16, que a 24 px da 1,5 px.
+ * Color: currentColor. Son decorativos (aria-hidden): el texto o el
+ * aria-label del botón que los contiene es lo que se anuncia.
+ */
+const trazos = {
+  // Equals: el "menú" de dos rayas del cartel
+  menu: ['M40 96h176', 'M40 160h176'],
+  // X
+  cerrar: ['M200 56 56 200', 'M200 200 56 56'],
+  // ArrowRight
+  'flecha-derecha': ['M40 128h176', 'm144 56 72 72-72 72'],
+} as const;
+
+interface Props {
+  nombre: keyof typeof trazos;
+  /** Tamaño en px: 16, 20, 24 o 32 (docs/ideario.md, Sistema de iconos). */
+  tamano?: 16 | 20 | 24 | 32;
+}
+
+const { nombre, tamano = 24 } = Astro.props;
+---
+
+<svg
+  class="icono"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 256 256"
+  width={tamano}
+  height={tamano}
+  fill="none"
+  stroke="currentColor"
+  stroke-width="16"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  focusable="false"
+>
+  {trazos[nombre].map((d) => (
+    <path d={d} />
+  ))}
+</svg>

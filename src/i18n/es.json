@@ -20,7 +20,12 @@
     "cerrarMenu": "Cerrar menú",
     "saltarAlContenido": "Saltar al contenido",
     "estado": "Cumbre {temp} · {abiertos}/{total} remontes",
-    "estadoCorto": "{temp} · {abiertos}/{total}"
+    "estadoCorto": "{temp} · {abiertos}/{total}",
+    "etiqueta": "Navegación principal",
+    "menu": "Menú",
+    "remontes": "{abiertos}/{total} remontes",
+    "remontesCorto": "{abiertos}/{total}",
+    "hoy": "Hoy · {abiertos} de {total} remontes abiertos"
   },
   "ajustes": {
     "idioma": "Idioma",
@@ -279,7 +284,8 @@
   "footer": {
     "lema": "Una estación, tres montañas y un pueblo al final del descenso.",
     "proyecto": "Valserra es un proyecto de portfolio: una estación ficticia inspirada en la geografía de Zermatt. Precios, disponibilidad y compra son simulados.",
-    "creditos": "Datos del tiempo: Open-Meteo (CC BY 4.0) · Diseño y desarrollo: Adri García · {anio}"
+    "creditos": "Datos del tiempo: Open-Meteo (CC BY 4.0) · Diseño y desarrollo: Adri García · {anio}",
+    "etiquetaNav": "Enlaces del pie"
   },
   "noEncontrada": {
     "antetitulo": "Error 404",

@@ -5,7 +5,7 @@ Las variables de Figma se traducen a variables CSS en `src/styles/tokens.css`. E
 ## Reglas
 
 - **Tres capas.** Los primitivos son la paleta en bruto y los componentes no los usan nunca. Los tokens de Color e Ilustración apuntan a primitivos y son los que usan los componentes y los SVG. Dimensiones y movimiento no cambian con el modo.
-- **Modo noche.** Solo cambian las colecciones Color e Ilustración. Se activa solo con `prefers-color-scheme: dark`, salvo que `<html>` tenga `data-theme="light"`, o a mano con `data-theme="dark"`. El bloque de noche está repetido en el CSS (dentro de la media query y con el atributo): si se cambia uno, hay que cambiar el otro.
+- **Modo noche.** Solo cambian las colecciones Color e Ilustración. Se activa solo con `prefers-color-scheme: dark`, salvo que `<html>` tenga `data-theme="light"`, o a mano con `data-theme="dark"`. `data-theme="dark"` vale en cualquier elemento, no solo en `<html>`: el footer lo lleva para ir siempre en paleta de noche. El bloque de noche está repetido en el CSS (dentro de la media query y con el atributo): si se cambia uno, hay que cambiar el otro.
 - **Unidades.** Figma trabaja en px. Los espacios pasan a rem (px / 16) para que crezcan con el tamaño de letra del navegador. Radios, bordes y área táctil se quedan en px.
 - **Cambios.** Si cambia una variable en Figma, se cambia aquí y en `tokens.css` en el mismo commit. Una variable nueva en Figma necesita su sintaxis WEB antes de pasar al código.
 - **Tipografía.** Los estilos de texto de Figma no son variables: sus valores pasan a tokens `--text-*`, `--leading-*` y `--tracking-*`, y cada estilo tiene una clase en `src/styles/typography.css`. Ver la sección Tipografía.
@@ -118,6 +118,18 @@ Colección Dimensiones, modo Valor.
 | borde/fino | `--border-thin` | 1.5 | 1.5px |
 | borde/grueso | `--border-thick` | 3 | 3px |
 | tactil/min | `--touch-min` | 44 | 44px |
+
+## Rejilla
+
+Sale de la rejilla de Fundamentos en Figma (estilos de cuadrícula, no variables) y de `docs/ideario.md`. Se escribe con los espacios de la escala.
+
+| CSS | Móvil (menos de 768 px) | Tablet (768–1023 px) | Escritorio (1024 px o más) |
+| --- | --- | --- | --- |
+| `--margen-pagina` | 20 px | 40 px | `clamp(48px, 6vw, 120px)` |
+| `--ancho-max` | 1.440 px (`90rem`) | igual | igual |
+| `--ancho-contenido` | `--ancho-max` menos los dos márgenes | igual | igual |
+
+Los puntos de ruptura van en rem en las media queries: `48rem` (768 px) y `64rem` (1024 px).
 
 ## Movimiento
 

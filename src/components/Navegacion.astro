@@ -1,0 +1,247 @@
+---
+/*
+ * Cartel de navegación (Figma: Componentes Valserra › Cartel de navegación).
+ * Tres tamaños con el mismo HTML:
+ * - Móvil (menos de 1024 px): logo, estado de hoy en corto y menú.
+ * - Escritorio: logo, enlaces, estado, Comprar forfaits y menú; 64 px.
+ * - Compacto: el de escritorio a 52 px y con filete fino, al bajar más de
+ *   120 px. Lo activa el script de abajo con data-compacto.
+ * Es fijo al hacer scroll (position: sticky).
+ */
+import Boton from './Boton.astro';
+import BotonIcono from './BotonIcono.astro';
+import { formatear, textos, type Idioma } from '../lib/i18n.ts';
+import { ruta, type Pagina } from '../lib/rutas.ts';
+import { remontesAbiertos, remontesTotal } from '../lib/estado.ts';
+
+interface Props {
+  idioma: Idioma;
+  /** Página actual, para marcar su enlace con aria-current. */
+  pagina?: Pagina | undefined;
+}
+
+const { idioma, pagina } = Astro.props;
+const { nav } = textos[idioma];
+
+const enlaces = (['mapa', 'tiempo', 'forfaits'] as const).map((p) => ({
+  href: ruta(idioma, p),
+  texto: nav[p],
+  actual: p === pagina,
+}));
+
+const valores = { abiertos: remontesAbiertos, total: remontesTotal };
+const estado = formatear(idioma, nav.remontes, valores);
+const estadoCorto = formatear(idioma, nav.remontesCorto, valores);
+---
+
+<div class="centinela" data-centinela aria-hidden="true"></div>
+
+<header class="cabecera" data-cabecera>
+  <nav class="cartel" aria-label={nav.etiqueta}>
+    <a
+      class="cartel__logo"
+      href={ruta(idioma, 'inicio')}
+      aria-current={pagina === 'inicio' ? 'page' : undefined}
+    >
+      Valserra
+    </a>
+
+    <ul class="cartel__enlaces">
+      {enlaces.map(({ href, texto, actual }) => (
+        <li>
+          <a
+            class="cartel__enlace text-etiqueta-antetitulo"
+            href={href}
+            aria-current={actual ? 'page' : undefined}
+          >
+            {texto}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <div class="cartel__acciones">
+      <p class="cartel__estado text-etiqueta-pequena">
+        <span class="cartel__estado-largo">{estado}</span>
+        <span class="cartel__estado-corto" aria-hidden="true">
+          {estadoCorto}
+        </span>
+      </p>
+      <div class="cartel__comprar">
+        <Boton href={ruta(idioma, 'forfaits')}>{nav.comprar}</Boton>
+      </div>
+      <BotonIcono
+        etiqueta={nav.abrirMenu}
+        icono="menu"
+        aria-haspopup="dialog"
+        aria-expanded="false"
+        aria-controls="menu"
+        data-abrir-menu
+      />
+    </div>
+  </nav>
+</header>
+
+<script>
+  /*
+   * Cartel compacto al bajar más de 120 px. En vez de escuchar el scroll,
+   * un IntersectionObserver vigila un elemento invisible de 120 px pegado
+   * arriba: cuando sale de la pantalla, el cartel se compacta. Es la forma
+   * estándar de reaccionar a la posición sin recalcular en cada scroll.
+   */
+  const cabecera = document.querySelector<HTMLElement>('[data-cabecera]');
+  const centinela = document.querySelector('[data-centinela]');
+
+  if (cabecera && centinela) {
+    new IntersectionObserver(([entrada]) => {
+      cabecera.toggleAttribute('data-compacto', !entrada?.isIntersecting);
+    }).observe(centinela);
+  }
+</script>
+
+<style>
+  .centinela {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    inline-size: 1px;
+    block-size: calc(var(--space-96) + var(--space-24));
+    pointer-events: none;
+  }
+
+  /*
+   * La cabecera reserva siempre el alto del cartel de su tamaño, así que
+   * compactarlo no mueve el contenido. Es transparente y deja pasar los
+   * clics; solo el cartel los recibe.
+   */
+  .cabecera {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 10;
+    padding: var(--space-12);
+    pointer-events: none;
+  }
+
+  .cartel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-12);
+    block-size: calc(var(--touch-min) + var(--space-12));
+    padding-inline: var(--space-12);
+    border: var(--border-thin) solid var(--color-border-strong);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-bg-surface);
+    pointer-events: auto;
+  }
+
+  .cartel__logo {
+    font-family: var(--font-display);
+    font-size: var(--text-display-s);
+    line-height: var(--leading-display-s);
+    color: var(--color-text-accent);
+    text-decoration: none;
+  }
+
+  .cartel__enlaces {
+    display: none;
+  }
+
+  .cartel__acciones {
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+  }
+
+  .cartel__estado {
+    white-space: nowrap;
+  }
+
+  /* En móvil se ve el estado corto y el largo queda para el lector */
+  .cartel__estado-largo {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .cartel__comprar {
+    display: none;
+  }
+
+  @media (width >= 48rem) {
+    .cabecera {
+      padding: var(--space-24);
+    }
+  }
+
+  @media (width >= 64rem) {
+    .cabecera {
+      block-size: calc(var(--space-24) + var(--space-64));
+      padding-block: var(--space-24) 0;
+      padding-inline: calc(var(--margen-pagina) - var(--space-32));
+    }
+
+    .cartel {
+      block-size: var(--space-64);
+      padding-inline: var(--space-24);
+      border-width: var(--border-thick);
+    }
+
+    .cartel__enlaces {
+      display: flex;
+      gap: var(--space-32);
+      padding: 0;
+      list-style: none;
+    }
+
+    .cartel__enlace {
+      display: inline-flex;
+      align-items: center;
+      min-block-size: var(--touch-min);
+      color: var(--color-text-primary);
+      text-decoration: none;
+    }
+
+    .cartel__enlace:hover {
+      text-decoration: underline;
+      text-decoration-thickness: var(--border-thin);
+      text-underline-offset: var(--space-4);
+    }
+
+    .cartel__enlace[aria-current='page'] {
+      color: var(--color-text-accent);
+    }
+
+    .cartel__estado-largo {
+      position: static;
+      inline-size: auto;
+      block-size: auto;
+      margin: 0;
+      overflow: visible;
+      clip-path: none;
+    }
+
+    .cartel__estado-corto {
+      display: none;
+    }
+
+    .cartel__comprar {
+      display: block;
+    }
+
+    /* Compacto: más estrecho de margen, más bajo y con filete fino */
+    .cabecera[data-compacto] {
+      padding-block-start: var(--space-12);
+      padding-inline: var(--space-24);
+    }
+
+    .cabecera[data-compacto] .cartel {
+      block-size: calc(var(--touch-min) + var(--space-8));
+      border-width: var(--border-thin);
+    }
+  }
+</style>
