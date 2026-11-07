@@ -1,0 +1,22 @@
+name: Diseño
+description: Trabajo en Figma (ilustración, componentes, estados) antes de programarlo.
+title: "design: "
+labels: ["diseño"]
+body:
+  - type: textarea
+    id: objetivo
+    attributes:
+      label: Objetivo
+    validations:
+      required: true
+  - type: input
+    id: figma
+    attributes:
+      label: Página o frame de Figma
+  - type: textarea
+    id: entregable
+    attributes:
+      label: Entregable
+      description: Qué sale de Figma (frames, componentes, SVG exportado, tokens).
+    validations:
+      required: true

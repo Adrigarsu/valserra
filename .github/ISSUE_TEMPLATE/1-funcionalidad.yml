@@ -1,0 +1,38 @@
+name: Funcionalidad
+description: Una pieza nueva de la web (componente, sección, página o comportamiento).
+title: "feat: "
+labels: ["feature"]
+body:
+  - type: textarea
+    id: contexto
+    attributes:
+      label: Contexto
+      description: Qué se construye y por qué.
+    validations:
+      required: true
+  - type: input
+    id: figma
+    attributes:
+      label: Diseño en Figma
+      description: Enlace al frame exacto (clic derecho en el frame, "Copiar enlace a la selección").
+      placeholder: https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra?node-id=
+  - type: textarea
+    id: tareas
+    attributes:
+      label: Tareas
+      value: |
+        - [ ]
+    validations:
+      required: true
+  - type: textarea
+    id: hecho
+    attributes:
+      label: Hecho cuando
+      description: Criterios comprobables para cerrar el issue.
+      value: |
+        - [ ] Coincide con el diseño de Figma en 390, 834 y 1440 px
+        - [ ] Funciona con teclado y tiene foco visible
+        - [ ] Funciona en español e inglés y en modo día y noche
+        - [ ] `npm run check` y `npm run build` pasan sin errores
+    validations:
+      required: true
