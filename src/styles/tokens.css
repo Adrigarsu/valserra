@@ -97,6 +97,8 @@
  * 2b. Semánticos, modo Noche.
  * Se activa con la preferencia del sistema (salvo que se elija el modo
  * día con data-theme="light") o a mano con data-theme="dark" en <html>.
+ * data-theme="dark" vale también en cualquier elemento: el footer lo usa
+ * para ir siempre en paleta de noche.
  * CSS no deja agrupar los dos selectores en una sola regla, así que el
  * bloque está dos veces: si cambias uno, cambia el otro.
  */
@@ -152,7 +154,7 @@
   }
 }
 
-:root[data-theme='dark'] {
+[data-theme='dark'] {
   color-scheme: dark;
 
   --color-bg-page: var(--azul-900);
@@ -305,4 +307,32 @@
   --tracking-etiqueta-pequena: 0.2em;
   --tracking-boton: 0.2em;
   --tracking-dato-grande: -0.01em;
+}
+
+/*
+ * 6. Rejilla (docs/ideario.md, Rejilla y espaciado; Fundamentos en Figma).
+ * Margen lateral de la página: 20 px en móvil, 40 px en tablet y 6vw
+ * entre 48 y 120 px en escritorio. Se escribe con los espacios de la escala.
+ * El contenido mide como mucho 1.440 px; las ilustraciones van a sangre.
+ */
+:root {
+  --ancho-max: 90rem;
+  --ancho-contenido: calc(var(--ancho-max) - 2 * var(--margen-pagina));
+  --margen-pagina: calc(var(--space-16) + var(--space-4));
+}
+
+@media (width >= 48rem) {
+  :root {
+    --margen-pagina: calc(var(--space-32) + var(--space-8));
+  }
+}
+
+@media (width >= 64rem) {
+  :root {
+    --margen-pagina: clamp(
+      var(--space-48),
+      6vw,
+      calc(var(--space-96) + var(--space-24))
+    );
+  }
 }
