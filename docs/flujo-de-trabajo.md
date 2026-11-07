@@ -30,8 +30,8 @@ gh pr create --fill
 
 5. Antes del push, actualizar la documentación en la misma rama con un commit `docs:` (el estado del proyecto en `CLAUDE.md` y lo que haya cambiado en el README o en este documento). Así cada issue empieza con el contexto al día.
 6. Rellenar la plantilla de la pull request: `Closes #12`, enlace a Figma y capturas Figma frente a web.
-7. Esperar a que la CI esté en verde y revisar el diff en GitHub.
-8. Unir con **Squash and merge** y borrar la rama. El issue se cierra solo y la web se publica.
+7. Esperar a que la CI esté en verde (el check `Comprobar` de `.github/workflows/ci.yml`; sin él, `main` no deja unir) y revisar el diff en GitHub.
+8. Unir con **Squash and merge** y borrar la rama. El issue se cierra solo y `.github/workflows/deploy.yml` publica la web en GitHub Pages.
 
 ## 3. Ramas
 
