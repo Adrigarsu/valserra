@@ -56,9 +56,9 @@ Web de una estación de esquí ficticia inspirada en Zermatt. Proyecto de portfo
 
 ## Estado del proyecto
 
-Fase 0 · Montaje (hito en GitHub). Última actualización: 7 de noviembre de 2026.
+Fase 0 · Montaje (hito en GitHub). Última actualización: 7 de noviembre de 2026 (#4).
 
-- Hecho: #1 proyecto Astro con TypeScript estricto y React (PR #35); #2 ESLint, Prettier, EditorConfig y `.gitattributes` (PR #36); #3 tokens de Figma en `src/styles/tokens.css` (primitivos, color, dimensiones, ilustración y movimiento) y reset con estilos base en `src/styles/base.css`.
-- Siguiente: #4 fuentes. Figma ya tiene los estilos de texto (Display XL/L/M/S en Yellowtail; Título H2/H3, Etiqueta, Botón y Dato en Josefin Sans; Cuerpo en Fraunces): se pueden leer con el MCP de Figma (`getLocalTextStylesAsync`) y pasar a tokens de tipografía en `tokens.css` y `docs/tokens.md`; el `font-family` de `body` en `base.css` está pendiente de este issue. Después, #5 datos y textos con tipos, #6 CI y GitHub Pages, #7 preparar Figma.
-- Estructura: `src/{components,layouts,lib}` y `src/pages/{es,en}` están vacías (con `.gitkeep`). `src/pages/index.astro` es una página provisional que importa `tokens.css` y `base.css`; cuando exista el layout base, las importaciones pasan allí.
+- Hecho: #1 proyecto Astro con TypeScript estricto y React (PR #35); #2 ESLint, Prettier, EditorConfig y `.gitattributes` (PR #36); #3 tokens de Figma en `src/styles/tokens.css` y reset con estilos base en `src/styles/base.css` (PR #37); #4 fuentes con Fontsource en `src/styles/fonts.css`, tokens de tipografía en `tokens.css` y una clase por cada uno de los 14 estilos de texto de Figma en `src/styles/typography.css` (`.text-display-xl`, `.text-titulo-h2`…; tabla en `docs/tokens.md`).
+- Siguiente: #5 datos y textos con tipos, después #6 CI y GitHub Pages y #7 preparar Figma.
+- Estructura: `src/{components,layouts,lib}` y `src/pages/{es,en}` están vacías (con `.gitkeep`). `src/pages/index.astro` es una página provisional con un muestrario de los 14 estilos de texto; importa `fonts.css`, `tokens.css`, `base.css` y `typography.css` y precarga Yellowtail y Josefin Sans (latin) con imports `?url`. Cuando exista el layout base (Fase 1), las importaciones y la precarga pasan allí y el muestrario se borra.
 - Pendiente para fases siguientes: las rutas `/es` y `/en` (configuración `i18n` de Astro y redirección desde la raíz) son de la Fase 1. La CI (#6) tiene que usar Node 22.23.4 o superior.

@@ -1,0 +1,13 @@
+/*
+ * Fuentes servidas desde el propio proyecto con Fontsource.
+ * Cada paquete trae sus @font-face con font-display: swap y unicode-range,
+ * así que el navegador solo descarga los subconjuntos que usa la página.
+ *
+ * Fraunces usa el archivo "wonk" (pesos + eje WONK) y no el "full":
+ * Figma activa WONK y deja SOFT a 0, y así pesa un tercio.
+ */
+
+@import '@fontsource/yellowtail/400.css';
+@import '@fontsource-variable/josefin-sans/wght.css';
+@import '@fontsource-variable/fraunces/wonk.css';
+@import '@fontsource-variable/fraunces/wonk-italic.css';

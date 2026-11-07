@@ -1,0 +1,122 @@
+/*
+ * Clases de los 14 estilos de texto de Figma.
+ * Nombre: .text- más el nombre del estilo en minúsculas y sin tildes
+ * (Título/H2 → .text-titulo-h2). Los valores están en tokens.css.
+ * Las mayúsculas las pone el CSS: el texto se escribe en minúscula.
+ */
+
+/* Display: Yellowtail, solo para el logo y titulares grandes */
+.text-display-xl,
+.text-display-l,
+.text-display-m,
+.text-display-s {
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-regular);
+}
+
+.text-display-xl {
+  font-size: var(--text-display-xl);
+  line-height: var(--leading-display-xl);
+}
+
+.text-display-l {
+  font-size: var(--text-display-l);
+  line-height: var(--leading-display-l);
+}
+
+.text-display-m {
+  font-size: var(--text-display-m);
+  line-height: var(--leading-display-m);
+}
+
+.text-display-s {
+  font-size: var(--text-display-s);
+  line-height: var(--leading-display-s);
+}
+
+/* Títulos, etiquetas, botón y datos: Josefin Sans */
+.text-titulo-h2,
+.text-titulo-h3,
+.text-etiqueta-antetitulo,
+.text-etiqueta-pequena,
+.text-boton,
+.text-dato-grande,
+.text-dato-medio {
+  font-family: var(--font-sans);
+  font-weight: var(--font-weight-semibold);
+}
+
+.text-titulo-h2,
+.text-titulo-h3,
+.text-etiqueta-antetitulo,
+.text-etiqueta-pequena,
+.text-boton {
+  text-transform: uppercase;
+}
+
+.text-titulo-h2 {
+  font-size: var(--text-titulo-h2);
+  line-height: var(--leading-titulo-h2);
+  letter-spacing: var(--tracking-titulo-h2);
+}
+
+.text-titulo-h3 {
+  font-size: var(--text-titulo-h3);
+  line-height: var(--leading-titulo-h3);
+  letter-spacing: var(--tracking-titulo-h3);
+}
+
+.text-etiqueta-antetitulo {
+  font-size: var(--text-etiqueta-antetitulo);
+  line-height: var(--leading-etiqueta-antetitulo);
+  letter-spacing: var(--tracking-etiqueta-antetitulo);
+}
+
+.text-etiqueta-pequena {
+  font-size: var(--text-etiqueta-pequena);
+  line-height: var(--leading-etiqueta-pequena);
+  letter-spacing: var(--tracking-etiqueta-pequena);
+}
+
+.text-boton {
+  font-size: var(--text-boton);
+  line-height: var(--leading-boton);
+  letter-spacing: var(--tracking-boton);
+}
+
+.text-dato-grande {
+  font-size: var(--text-dato-grande);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--leading-dato-grande);
+  letter-spacing: var(--tracking-dato-grande);
+}
+
+.text-dato-medio {
+  font-size: var(--text-dato-medio);
+  line-height: var(--leading-dato-medio);
+}
+
+/* Cuerpo: Fraunces */
+.text-cuerpo-base,
+.text-cuerpo-pequeno,
+.text-cuerpo-nota {
+  font-family: var(--font-serif);
+  font-weight: var(--font-weight-regular);
+  font-variation-settings: var(--font-serif-variation);
+}
+
+.text-cuerpo-base {
+  font-size: var(--text-cuerpo-base);
+  line-height: var(--leading-cuerpo-base);
+}
+
+.text-cuerpo-pequeno {
+  font-size: var(--text-cuerpo-pequeno);
+  line-height: var(--leading-cuerpo-pequeno);
+}
+
+.text-cuerpo-nota {
+  font-size: var(--text-cuerpo-nota);
+  font-style: italic;
+  line-height: var(--leading-cuerpo-nota);
+}
