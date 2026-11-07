@@ -1,0 +1,199 @@
+---
+/*
+ * Footer (Figma: Alta fidelidad › Home, 07 · Footer y Footer móvil).
+ * Va siempre en paleta de noche: data-theme="dark" cambia los tokens
+ * semánticos solo dentro del footer, también en modo día.
+ * Incluye el aviso de proyecto ficticio y los créditos.
+ * Las preferencias (idioma, moneda y modo) llegan con #9, #11 y #10.
+ */
+import { formatear, textos, type Idioma } from '../lib/i18n.ts';
+import { paginas, ruta, type Pagina } from '../lib/rutas.ts';
+
+interface Props {
+  idioma: Idioma;
+  pagina?: Pagina | undefined;
+}
+
+const { idioma, pagina } = Astro.props;
+const { nav, footer } = textos[idioma];
+
+// El año va como texto para que Intl no lo escriba "2,026" en inglés
+const creditos = formatear(idioma, footer.creditos, {
+  anio: String(new Date().getFullYear()),
+});
+---
+
+<footer class="pie" data-theme="dark">
+  <div class="pie__principal">
+    <div class="pie__marca">
+      <p class="pie__logo">Valserra</p>
+      <p class="pie__lema text-cuerpo-base">{footer.lema}</p>
+    </div>
+
+    <nav class="pie__nav" aria-label={footer.etiquetaNav}>
+      <ul class="pie__enlaces">
+        {paginas.map((p) => (
+          <li
+            class:list={['pie__item', { 'pie__item--inicio': p === 'inicio' }]}
+          >
+            <a
+              class="pie__enlace text-etiqueta-antetitulo"
+              href={ruta(idioma, p)}
+              aria-current={p === pagina ? 'page' : undefined}
+            >
+              {nav[p]}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+
+  <div class="pie__legal">
+    <p class="text-cuerpo-pequeno">{footer.proyecto}</p>
+    <p class="pie__creditos text-cuerpo-nota">{creditos}</p>
+  </div>
+</footer>
+
+<style>
+  .pie {
+    padding: var(--space-48) var(--margen-pagina) var(--space-64);
+    background-color: var(--color-bg-page);
+    color: var(--color-text-primary);
+  }
+
+  .pie__principal,
+  .pie__legal {
+    display: grid;
+    gap: var(--space-32);
+    max-inline-size: var(--ancho-contenido);
+    margin-inline: auto;
+  }
+
+  .pie__legal {
+    margin-block-start: var(--space-32);
+  }
+
+  .pie__logo {
+    font-family: var(--font-display);
+    font-size: var(--text-display-m);
+    line-height: var(--leading-display-m);
+    color: var(--color-text-accent);
+  }
+
+  /* En móvil el footer es más corto: sin lema ni Inicio (el logo del
+     cartel ya lleva a la portada) y con los enlaces en una fila */
+  .pie__lema {
+    display: none;
+  }
+
+  .pie__enlaces {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    list-style: none;
+  }
+
+  .pie__item {
+    display: flex;
+    align-items: center;
+  }
+
+  .pie__item--inicio {
+    display: none;
+  }
+
+  /* Punto entre enlaces; el lector de pantalla no lo lee (texto alternativo vacío) */
+  .pie__item:not(.pie__item--inicio) ~ .pie__item::before {
+    content: '·' / '';
+    padding-inline: var(--space-16);
+  }
+
+  .pie__enlace {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--touch-min);
+    color: var(--color-text-primary);
+    text-decoration: none;
+  }
+
+  .pie__enlace:hover {
+    text-decoration: underline;
+    text-decoration-thickness: var(--border-thin);
+    text-underline-offset: var(--space-4);
+  }
+
+  .pie__enlace[aria-current='page'] {
+    color: var(--color-text-accent);
+  }
+
+  .pie__creditos {
+    color: var(--color-text-secondary);
+  }
+
+  /*
+   * Escritorio: rejilla de 12 columnas. Marca en las columnas 1 a 5,
+   * enlaces desde la 6; debajo, separador y aviso (1 a 6) frente a
+   * créditos (8 a 12).
+   */
+  @media (width >= 64rem) {
+    .pie {
+      padding-block: var(--space-64);
+    }
+
+    .pie__principal,
+    .pie__legal {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--space-32);
+    }
+
+    .pie__marca {
+      display: grid;
+      gap: var(--space-48);
+      grid-column: 1 / 6;
+      align-content: start;
+    }
+
+    .pie__logo {
+      font-size: var(--text-display-l);
+      line-height: var(--leading-display-l);
+    }
+
+    .pie__lema {
+      display: block;
+    }
+
+    .pie__nav {
+      grid-column: 6 / 9;
+      padding-block-start: var(--space-16);
+    }
+
+    .pie__enlaces {
+      flex-direction: column;
+    }
+
+    .pie__item--inicio {
+      display: flex;
+    }
+
+    .pie__item:not(.pie__item--inicio) ~ .pie__item::before {
+      content: none;
+    }
+
+    .pie__legal {
+      margin-block-start: var(--space-96);
+      padding-block-start: var(--space-24);
+      border-block-start: var(--border-thin) solid
+        color-mix(in srgb, var(--color-border-subtle) 40%, transparent);
+    }
+
+    .pie__legal > :first-child {
+      grid-column: 1 / 7;
+    }
+
+    .pie__creditos {
+      grid-column: 8 / 13;
+      color: var(--color-text-primary);
+    }
+  }
+</style>
