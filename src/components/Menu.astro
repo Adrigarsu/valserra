@@ -1,0 +1,194 @@
+---
+/*
+ * Menú a pantalla completa (Figma: Estados y piezas › Menú móvil abierto).
+ * Lo abre el botón de menú del cartel en cualquier tamaño.
+ *
+ * Es un <dialog> abierto con showModal(), el estándar de HTML para
+ * ventanas modales: el navegador deja inerte el resto de la página (el
+ * foco no puede salir del menú), lo cierra con Esc y devuelve el foco al
+ * botón que lo abrió.
+ *
+ * Idioma, moneda y modo se añaden con los issues #9, #11 y #10.
+ */
+import Boton from './Boton.astro';
+import BotonIcono from './BotonIcono.astro';
+import Icono from './Icono.astro';
+import { formatear, textos, type Idioma } from '../lib/i18n.ts';
+import { paginas, ruta, type Pagina } from '../lib/rutas.ts';
+import { remontesAbiertos, remontesTotal } from '../lib/estado.ts';
+
+interface Props {
+  idioma: Idioma;
+  pagina?: Pagina | undefined;
+}
+
+const { idioma, pagina } = Astro.props;
+const { nav } = textos[idioma];
+
+const hoy = formatear(idioma, nav.hoy, {
+  abiertos: remontesAbiertos,
+  total: remontesTotal,
+});
+---
+
+<dialog id="menu" class="menu" aria-label={nav.menu} data-menu>
+  <div class="menu__contenido">
+    <div class="menu__barra">
+      <a class="menu__logo" href={ruta(idioma, 'inicio')}>
+        Valserra
+      </a>
+      <BotonIcono etiqueta={nav.cerrarMenu} icono="cerrar" data-cerrar-menu />
+    </div>
+
+    <nav class="menu__cuerpo" aria-label={nav.etiqueta}>
+      <ul class="menu__enlaces">
+        {paginas.map((p) => (
+          <li>
+            <a
+              class="menu__enlace"
+              href={ruta(idioma, p)}
+              aria-current={p === pagina ? 'page' : undefined}
+            >
+              <span class="text-display-m">{nav[p]}</span>
+              <Icono nombre="flecha-derecha" tamano={20} />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="menu__cuerpo menu__pie">
+      <p class="menu__hoy text-etiqueta-pequena">{hoy}</p>
+      <Boton href={ruta(idioma, 'forfaits')}>{nav.comprar}</Boton>
+    </div>
+  </div>
+</dialog>
+
+<script>
+  const menu = document.querySelector<HTMLDialogElement>('[data-menu]');
+  const abrir = document.querySelectorAll<HTMLElement>('[data-abrir-menu]');
+
+  const cerrar = menu?.querySelector<HTMLElement>('[data-cerrar-menu]');
+
+  if (menu) {
+    for (const boton of abrir) {
+      boton.addEventListener('click', () => {
+        menu.showModal();
+        // El foco empieza en Cerrar, lo primero que se busca al abrir
+        cerrar?.focus();
+        boton.setAttribute('aria-expanded', 'true');
+      });
+    }
+
+    cerrar?.addEventListener('click', () => menu.close());
+
+    // Esc también dispara "close": así el estado siempre queda al día
+    menu.addEventListener('close', () => {
+      for (const boton of abrir) boton.setAttribute('aria-expanded', 'false');
+    });
+
+    // Un enlace a la propia página (o a un #ancla) no recarga: se cierra
+    for (const enlace of menu.querySelectorAll('a')) {
+      enlace.addEventListener('click', () => menu.close());
+    }
+  }
+</script>
+
+<style>
+  /* Con el menú abierto, la página de detrás no hace scroll */
+  :global(html:has(.menu[open])) {
+    overflow: hidden;
+  }
+
+  .menu {
+    inline-size: 100%;
+    max-inline-size: none;
+    block-size: 100%;
+    max-block-size: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background-color: var(--color-bg-page);
+    color: var(--color-text-primary);
+  }
+
+  .menu::backdrop {
+    background-color: var(--color-bg-page);
+  }
+
+  .menu__contenido {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-48);
+    min-block-size: 100%;
+    max-inline-size: calc(var(--space-192) * 3);
+    margin-inline: auto;
+    padding: var(--space-12) var(--space-12) var(--space-24);
+  }
+
+  .menu__barra {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    block-size: calc(var(--touch-min) + var(--space-12));
+    padding-inline: var(--space-16) var(--space-4);
+    border: var(--border-thick) solid var(--color-border-strong);
+    border-radius: var(--radius-lg);
+  }
+
+  .menu__logo {
+    font-family: var(--font-display);
+    font-size: var(--text-display-s);
+    line-height: var(--leading-display-s);
+    color: var(--color-text-accent);
+    text-decoration: none;
+  }
+
+  .menu__cuerpo {
+    padding-inline: var(--space-12);
+  }
+
+  /* Dentro de <nav>, Safari conserva la semántica de lista sin viñetas */
+  .menu__enlaces {
+    padding: 0;
+    list-style: none;
+  }
+
+  .menu__enlace {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: var(--space-4);
+    border-block-end: var(--border-thin) solid var(--color-border-subtle);
+    color: var(--color-text-heading);
+    text-decoration: none;
+  }
+
+  .menu__enlace[aria-current='page'] {
+    color: var(--color-text-accent);
+  }
+
+  /* El icono es de otro componente: :global para que le llegue el estilo */
+  .menu__enlace :global(.icono) {
+    color: var(--color-text-accent);
+  }
+
+  .menu__enlace:hover .text-display-m {
+    text-decoration: underline;
+    text-decoration-thickness: var(--border-thin);
+    text-underline-offset: var(--space-8);
+  }
+
+  /* El estado y la compra van abajo del todo */
+  .menu__pie {
+    display: grid;
+    gap: var(--space-16);
+    margin-block-start: auto;
+  }
+
+  .menu__hoy {
+    padding: var(--space-12) var(--space-16);
+    border-radius: var(--radius-md);
+    background-color: var(--color-bg-subtle);
+  }
+</style>

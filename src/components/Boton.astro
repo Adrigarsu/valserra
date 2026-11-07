@@ -1,0 +1,45 @@
+---
+/*
+ * Botón de Valserra (Figma: Componentes básicos › Botón).
+ * Por ahora solo el estilo Primario, que es el que usan la navegación y el
+ * menú; Secundario, Texto y los estados llegan con el issue #12.
+ * Con href es un enlace (<a>); sin href, un <button type="button">.
+ */
+import type { HTMLAttributes } from 'astro/types';
+
+type Props = HTMLAttributes<'a'> & HTMLAttributes<'button'>;
+
+const { href, ...resto } = Astro.props;
+const Etiqueta = href ? 'a' : 'button';
+---
+
+<Etiqueta
+  class="boton text-boton"
+  href={href}
+  type={href ? undefined : 'button'}
+  {...resto}
+>
+  <slot />
+</Etiqueta>
+
+<style>
+  .boton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-8);
+    min-block-size: var(--touch-min);
+    padding: var(--space-16) var(--space-24);
+    border: 0;
+    border-radius: var(--radius-pill);
+    background-color: var(--color-bg-accent);
+    color: var(--color-text-on-accent);
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .boton:hover {
+    background-color: var(--color-bg-accent-hover);
+  }
+</style>
