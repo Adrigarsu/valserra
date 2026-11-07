@@ -1,7 +1,7 @@
 name: Funcionalidad
 description: Una pieza nueva de la web (componente, sección, página o comportamiento).
-title: "feat: "
-labels: ["feature"]
+title: 'feat: '
+labels: ['feature']
 body:
   - type: textarea
     id: contexto

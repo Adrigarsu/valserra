@@ -30,9 +30,7 @@
   },
   "codigos": [
     {
-      "wmo": [
-        0
-      ],
+      "wmo": [0],
       "id": "despejado",
       "icono": "sol",
       "efecto": "despejado",
@@ -42,10 +40,7 @@
       }
     },
     {
-      "wmo": [
-        1,
-        2
-      ],
+      "wmo": [1, 2],
       "id": "sol-y-nubes",
       "icono": "solnube",
       "efecto": "ninguno",
@@ -55,9 +50,7 @@
       }
     },
     {
-      "wmo": [
-        3
-      ],
+      "wmo": [3],
       "id": "nublado",
       "icono": "nube",
       "efecto": "ninguno",
@@ -67,10 +60,7 @@
       }
     },
     {
-      "wmo": [
-        45,
-        48
-      ],
+      "wmo": [45, 48],
       "id": "niebla",
       "icono": "niebla",
       "efecto": "niebla",
@@ -80,13 +70,7 @@
       }
     },
     {
-      "wmo": [
-        51,
-        53,
-        55,
-        56,
-        57
-      ],
+      "wmo": [51, 53, 55, 56, 57],
       "id": "llovizna",
       "icono": "nube",
       "efecto": "ninguno",
@@ -96,16 +80,7 @@
       }
     },
     {
-      "wmo": [
-        61,
-        63,
-        65,
-        66,
-        67,
-        80,
-        81,
-        82
-      ],
+      "wmo": [61, 63, 65, 66, 67, 80, 81, 82],
       "id": "lluvia",
       "icono": "nube",
       "efecto": "ninguno",
@@ -115,11 +90,7 @@
       }
     },
     {
-      "wmo": [
-        71,
-        77,
-        85
-      ],
+      "wmo": [71, 77, 85],
       "id": "nieve-debil",
       "icono": "nievedebil",
       "efecto": "nieve-debil",
@@ -129,9 +100,7 @@
       }
     },
     {
-      "wmo": [
-        73
-      ],
+      "wmo": [73],
       "id": "nieve",
       "icono": "nieve",
       "efecto": "nieve",
@@ -141,10 +110,7 @@
       }
     },
     {
-      "wmo": [
-        75,
-        86
-      ],
+      "wmo": [75, 86],
       "id": "nieve-fuerte",
       "icono": "nieve",
       "efecto": "nieve-fuerte",
@@ -154,11 +120,7 @@
       }
     },
     {
-      "wmo": [
-        95,
-        96,
-        99
-      ],
+      "wmo": [95, 96, 99],
       "id": "tormenta",
       "icono": "nube",
       "efecto": "ninguno",

@@ -1,7 +1,7 @@
 name: Error
 description: Algo no funciona como debería.
-title: "fix: "
-labels: ["bug"]
+title: 'fix: '
+labels: ['bug']
 body:
   - type: textarea
     id: que-pasa
@@ -29,7 +29,8 @@ body:
     attributes:
       label: Dónde
       multiple: true
-      options: [Escritorio, Tablet, Móvil, Modo noche, Inglés, Movimiento reducido]
+      options:
+        [Escritorio, Tablet, Móvil, Modo noche, Inglés, Movimiento reducido]
   - type: textarea
     id: capturas
     attributes:
