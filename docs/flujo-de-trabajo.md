@@ -67,4 +67,4 @@ Una pull request se une cuando:
 
 ## 6. Del diseño al código
 
-El diseño vive en [Figma](https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra). Las variables de Figma tienen la misma nomenclatura que las variables CSS (`bg/page` → `--bg-page`), cada issue enlaza su frame y cada pull request compara Figma con la web.
+El diseño vive en [Figma](https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra). Las variables CSS usan el nombre de la sintaxis WEB de cada variable de Figma (`bg/page` → `--color-bg-page`; tabla en [tokens.md](tokens.md)), cada issue enlaza su frame y cada pull request compara Figma con la web.
