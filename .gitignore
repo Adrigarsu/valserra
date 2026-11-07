@@ -1,0 +1,18 @@
+# Dependencias
+node_modules/
+
+# Salida de Astro
+dist/
+.astro/
+
+# Variables de entorno
+.env
+.env.*
+!.env.example
+
+# Registros
+npm-debug.log*
+
+# Sistema operativo y editores
+.DS_Store
+Thumbs.db
