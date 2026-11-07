@@ -20,7 +20,12 @@
     "cerrarMenu": "Close menu",
     "saltarAlContenido": "Skip to content",
     "estado": "Summit {temp} · {abiertos}/{total} lifts",
-    "estadoCorto": "{temp} · {abiertos}/{total}"
+    "estadoCorto": "{temp} · {abiertos}/{total}",
+    "etiqueta": "Main navigation",
+    "menu": "Menu",
+    "remontes": "{abiertos}/{total} lifts",
+    "remontesCorto": "{abiertos}/{total}",
+    "hoy": "Today · {abiertos} of {total} lifts open"
   },
   "ajustes": {
     "idioma": "Language",
@@ -279,7 +284,8 @@
   "footer": {
     "lema": "One resort, three mountains and a village at the end of the descent.",
     "proyecto": "Valserra is a portfolio project: a fictional resort inspired by the geography of Zermatt. Prices, availability and checkout are simulated.",
-    "creditos": "Weather data: Open-Meteo (CC BY 4.0) · Design and development: Adri García · {anio}"
+    "creditos": "Weather data: Open-Meteo (CC BY 4.0) · Design and development: Adri García · {anio}",
+    "etiquetaNav": "Footer links"
   },
   "noEncontrada": {
     "antetitulo": "Error 404",

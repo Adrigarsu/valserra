@@ -87,3 +87,21 @@ function comprobarTextos(): void {
 }
 
 comprobarTextos();
+
+/**
+ * Rellena los huecos {nombre} de un texto. Los números se formatean con
+ * Intl según el idioma (13 → "13", 2263 → "2.263" o "2,263"); las cadenas
+ * se insertan tal cual. Los plurales ICU llegan con el issue #9.
+ */
+export function formatear(
+  idioma: Idioma,
+  texto: string,
+  valores: Record<string, string | number> = {},
+): string {
+  const numero = new Intl.NumberFormat(idioma);
+  return texto.replace(/\{\s*([A-Za-z_]\w*)\s*\}/g, (hueco, nombre: string) => {
+    const valor = valores[nombre];
+    if (valor === undefined) return hueco;
+    return typeof valor === 'number' ? numero.format(valor) : valor;
+  });
+}
