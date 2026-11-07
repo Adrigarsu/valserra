@@ -119,308 +119,205 @@
   "issues": [
     {
       "title": "chore: crear el proyecto Astro con TypeScript estricto y React",
-      "labels": [
-        "infra"
-      ],
+      "labels": ["infra"],
       "milestone": "Fase 0 · Montaje",
       "body": "## Contexto\n\nBase del proyecto. Astro genera HTML estático; React se usa solo en las islas interactivas (Forfaits y Tiempo).\n\n## Tareas\n\n- [ ] Crear el proyecto con la plantilla mínima de Astro\n- [ ] TypeScript en modo `strict`\n- [ ] Añadir la integración de React\n- [ ] Estructura de carpetas: `components`, `layouts`, `pages/es`, `pages/en`, `data`, `i18n`, `styles`, `lib`\n- [ ] `site` y `base: '/valserra'` en `astro.config.mjs` para GitHub Pages\n- [ ] Scripts `dev`, `build`, `preview`, `check`, `lint` y `format`\n\n## Hecho cuando\n\n- [ ] `npm run dev` arranca y muestra una página en blanco con el título\n- [ ] `npm run check` y `npm run build` pasan sin errores\n"
     },
     {
       "title": "chore: configurar ESLint, Prettier, EditorConfig y .gitattributes",
-      "labels": [
-        "infra"
-      ],
+      "labels": ["infra"],
       "milestone": "Fase 0 · Montaje",
       "body": "## Contexto\n\nMismo estilo de código en todo el proyecto y finales de línea iguales en Windows y en el servidor.\n\n## Tareas\n\n- [ ] ESLint con las reglas de Astro, TypeScript y accesibilidad (jsx-a11y)\n- [ ] Prettier con el plugin de Astro\n- [ ] `.editorconfig` (UTF-8, LF, 2 espacios)\n- [ ] `.gitattributes` con `* text=auto eol=lf`\n- [ ] Recomendaciones de extensiones en `.vscode/extensions.json`\n\n## Hecho cuando\n\n- [ ] `npm run lint` y `npm run format` funcionan sin errores\n- [ ] `npm run check` y `npm run build` pasan sin errores\n"
     },
     {
       "title": "feat: pasar los tokens de Figma a variables CSS",
-      "labels": [
-        "feature",
-        "sistema",
-        "diseño"
-      ],
+      "labels": ["feature", "sistema", "diseño"],
       "milestone": "Fase 0 · Montaje",
       "body": "## Contexto\n\nLas colecciones de variables de Figma (Primitivos, Color, Dimensiones e Ilustración) pasan a variables CSS con los mismos nombres que su sintaxis WEB en Figma. El modo noche cambia solo los tokens semánticos.\n\n## Diseño en Figma\n\n- https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra?node-id=3-2\n- https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra?node-id=15-17\n\n## Tareas\n\n- [ ] `tokens.css` con primitivos, color semántico, dimensiones e ilustración\n- [ ] Modo noche con `[data-theme=\"dark\"]` y `prefers-color-scheme`\n- [ ] Tokens de movimiento (duraciones y curvas)\n- [ ] Reset moderno y estilos base de `body`\n- [ ] Tabla de equivalencias Figma → CSS en `docs/tokens.md`\n\n## Hecho cuando\n\n- [ ] Cada variable de Figma tiene su variable CSS\n- [ ] Cambiar el modo cambia todos los colores sin tocar componentes\n- [ ] `npm run check` y `npm run build` pasan sin errores\n"
     },
     {
       "title": "feat: cargar las fuentes y crear las clases de los estilos de texto",
-      "labels": [
-        "feature",
-        "sistema"
-      ],
+      "labels": ["feature", "sistema"],
       "milestone": "Fase 0 · Montaje",
       "body": "## Contexto\n\nYellowtail, Josefin Sans y Fraunces, servidas desde el propio proyecto para no depender de Google Fonts en tiempo de carga.\n\n## Diseño en Figma\n\n- https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra?node-id=3-2\n\n## Tareas\n\n- [ ] Instalar las fuentes con Fontsource\n- [ ] Precargar las fuentes del hero\n- [ ] Clases o mixins para los 14 estilos de texto de Figma\n- [ ] `font-display: swap`\n\n## Hecho cuando\n\n- [ ] Los 14 estilos de texto se ven igual que en Figma\n- [ ] `npm run check` y `npm run build` pasan sin errores\n"
     },
     {
       "title": "chore: añadir los datos y los textos con tipos TypeScript",
-      "labels": [
-        "infra",
-        "i18n"
-      ],
+      "labels": ["infra", "i18n"],
       "milestone": "Fase 0 · Montaje",
       "body": "## Contexto\n\nLos JSON de `src/data` y `src/i18n` ya están preparados. Hay que tiparlos para que el editor avise si falta un dato o un texto.\n\n## Tareas\n\n- [ ] Copiar `src/data` y `src/i18n`\n- [ ] Tipos para pistas, remontes, sectores, tarifas y tiempo\n- [ ] Validar en el build que `es.json` y `en.json` tienen las mismas claves\n\n## Hecho cuando\n\n- [ ] Un texto o dato que falte rompe `npm run check`\n- [ ] `npm run check` y `npm run build` pasan sin errores\n"
     },
     {
       "title": "ci: comprobar y publicar en GitHub Pages con GitHub Actions",
-      "labels": [
-        "infra"
-      ],
+      "labels": ["infra"],
       "milestone": "Fase 0 · Montaje",
       "body": "## Contexto\n\nCada pull request pasa las comprobaciones; cada push a `main` publica la web.\n\n## Tareas\n\n- [ ] Workflow `ci.yml`: instalar, `check`, `lint` y `build` en cada pull request\n- [ ] Workflow `deploy.yml` con la acción oficial de Astro para Pages\n- [ ] Activar Pages en Settings → Pages → Source: GitHub Actions\n- [ ] Regla en `main`: pull request obligatoria y CI en verde\n\n## Hecho cuando\n\n- [ ] La web vacía se ve en https://adrigarsu.github.io/valserra/\n- [ ] Una pull request con un error de tipos no se puede unir\n- [ ] `npm run check` y `npm run build` pasan sin errores\n"
     },
     {
       "title": "docs: preparar el archivo de Figma para enseñarlo",
-      "labels": [
-        "diseño",
-        "docs"
-      ],
+      "labels": ["diseño", "docs"],
       "milestone": "Fase 0 · Montaje",
       "body": "## Contexto\n\nEl archivo de Figma es parte del portfolio: tiene que entenderse sin explicaciones.\n\n## Diseño en Figma\n\n- https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra?node-id=0-1\n\n## Tareas\n\n- [ ] Página de portada con miniatura\n- [ ] Página Fundamentos con paleta, tipografía, espaciado y movimiento\n- [ ] Enlace público de solo lectura\n- [ ] Enlace al Figma en el README\n\n## Hecho cuando\n\n- [ ] Alguien que no conoce el proyecto entiende el sistema en dos minutos\n- [ ] `npm run check` y `npm run build` pasan sin errores\n"
     },
     {
       "title": "feat: layout base con navegación y footer",
-      "labels": [
-        "feature",
-        "sistema"
-      ],
+      "labels": ["feature", "sistema"],
       "milestone": "Fase 1 · Base y componentes",
       "body": "## Contexto\n\nEl cartel de navegación en sus tres tamaños (escritorio, compacto y móvil), el menú móvil y el footer en paleta de noche.\n\n## Diseño en Figma\n\n- https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra?node-id=20-3\n- https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra?node-id=29-2\n\n## Tareas\n\n- [ ] Componente de navegación con sus tres variantes\n- [ ] Menú móvil a pantalla completa con foco atrapado y cierre con Esc\n- [ ] Footer con aviso de proyecto ficticio y créditos\n- [ ] Enlace \"Saltar al contenido\"\n- [ ] Navegación fija al hacer scroll\n\n## Hecho cuando\n\n- [ ] El menú se abre, se cierra y se recorre con teclado\n- [ ] `npm run check` y `npm run build` pasan sin errores\n"
     },
     {
       "title": "feat: rutas /es y /en con selector de idioma",
-      "labels": [
-        "feature",
-        "i18n"
-      ],
+      "labels": ["feature", "i18n"],
       "milestone": "Fase 1 · Base y componentes",
       "body": "## Contexto\n\nDos idiomas desde el principio, con la misma página en las dos rutas.\n\n## Tareas\n\n- [ ] i18n de Astro con `es` por defecto y `en`\n- [ ] Función `t()` con huecos y plurales ICU\n- [ ] Formato de números, fechas y monedas con `Intl`\n- [ ] Selector de idioma que mantiene la página actual\n- [ ] `lang` correcto en `<html>`\n\n## Hecho cuando\n\n- [ ] Cambiar de idioma no cambia de página\n- [ ] Los números salen 2.263 en español y 2,263 en inglés\n- [ ] `npm run check` y `npm run build` pasan sin errores\n"
     },
     {
       "title": "feat: modo noche con preferencia del sistema y recuerdo",
-      "labels": [
-        "feature",
-        "sistema"
-      ],
+      "labels": ["feature", "sistema"],
       "milestone": "Fase 1 · Base y componentes",
       "body": "## Contexto\n\nEl modo noche cambia los tokens de color e ilustración. Respeta la preferencia del sistema y recuerda la elección.\n\n## Diseño en Figma\n\n- https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra?node-id=32-1068\n\n## Tareas\n\n- [ ] Interruptor día/noche\n- [ ] Script en el `<head>` para evitar el parpadeo al cargar\n- [ ] Guardar la elección en `localStorage`\n- [ ] `color-scheme` correcto\n\n## Hecho cuando\n\n- [ ] Al recargar no hay parpadeo de colores\n- [ ] `npm run check` y `npm run build` pasan sin errores\n"
     },
     {
       "title": "feat: selector de moneda CHF / €",
-      "labels": [
-        "feature",
-        "sistema"
-      ],
+      "labels": ["feature", "sistema"],
       "milestone": "Fase 1 · Base y componentes",
       "body": "## Contexto\n\nLos precios se guardan en céntimos de CHF y se convierten con el tipo fijo de `tarifas.json`.\n\n## Tareas\n\n- [ ] Estado de moneda compartido entre islas\n- [ ] Formato con `Intl.NumberFormat` según idioma y moneda\n- [ ] Guardar la elección\n\n## Hecho cuando\n\n- [ ] El total del ejemplo sale 785,70 CHF y su equivalente en euros\n- [ ] `npm run check` y `npm run build` pasan sin errores\n"
     },
     {
       "title": "feat: componentes básicos (botón, chip, segmento, interruptor y botón de cantidad)",
-      "labels": [
-        "feature",
-        "componentes"
-      ],
+      "labels": ["feature", "componentes"],
       "milestone": "Fase 1 · Base y componentes",
       "body": "## Contexto\n\nLos componentes de la página Componentes básicos de Figma, con todos sus estados.\n\n## Diseño en Figma\n\n- https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra?node-id=3-2\n\n## Tareas\n\n- [ ] Botón: primario, secundario y texto, con icono opcional\n- [ ] Chip de filtro: normal y freeride, seleccionado y contador\n- [ ] Segmento e interruptor de dos opciones\n- [ ] Botón de cantidad más y menos\n- [ ] Estados hover, foco y deshabilitado\n\n## Hecho cuando\n\n- [ ] Cada variante de Figma existe en código\n- [ ] `npm run check` y `npm run build` pasan sin errores\n"
     },
     {
       "title": "feat: componentes de Valserra (fila de persona, forfait y ficha de pista)",
-      "labels": [
-        "feature",
-        "componentes"
-      ],
+      "labels": ["feature", "componentes"],
       "milestone": "Fase 1 · Base y componentes",
       "body": "## Contexto\n\nComponentes propios de la estación, página Componentes Valserra de Figma.\n\n## Diseño en Figma\n\n- https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra?node-id=3-3\n\n## Tareas\n\n- [ ] Fila de persona con botones de cantidad\n- [ ] Forfait con resguardo troquelado\n- [ ] Ficha de pista: 4 dificultades, abierta y cerrada\n\n## Hecho cuando\n\n- [ ] Coinciden con Figma en día y noche\n- [ ] `npm run check` y `npm run build` pasan sin errores\n"
     },
     {
       "title": "feat: componentes de Valserra (cabina, instrumento y altímetro)",
-      "labels": [
-        "feature",
-        "componentes"
-      ],
+      "labels": ["feature", "componentes"],
       "milestone": "Fase 1 · Base y componentes",
       "body": "## Contexto\n\nLas piezas ilustradas que usa la home.\n\n## Diseño en Figma\n\n- https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra?node-id=3-3\n\n## Tareas\n\n- [ ] Cabina abierta y cerrada con número en el techo\n- [ ] Instrumento de esfera y de columna\n- [ ] Altímetro con las seis paradas\n\n## Hecho cuando\n\n- [ ] Los instrumentos reciben el valor por props y se leen con lector de pantalla\n- [ ] `npm run check` y `npm run build` pasan sin errores\n"
     },
     {
       "title": "feat: página de catálogo de componentes",
-      "labels": [
-        "feature",
-        "componentes",
-        "docs"
-      ],
+      "labels": ["feature", "componentes", "docs"],
       "milestone": "Fase 1 · Base y componentes",
       "body": "## Contexto\n\nUna página interna (`/componentes`, sin indexar) con todos los componentes y sus estados, para revisar contra Figma.\n\n## Tareas\n\n- [ ] Página con todas las variantes\n- [ ] Conmutadores de idioma y modo\n- [ ] `noindex`\n\n## Hecho cuando\n\n- [ ] Se revisa cada componente en una sola página\n- [ ] `npm run check` y `npm run build` pasan sin errores\n"
     },
     {
       "title": "design: dibujar el mapa definitivo de Valserra en Figma",
-      "labels": [
-        "diseño",
-        "mapa"
-      ],
+      "labels": ["diseño", "mapa"],
       "milestone": "Fase 2 · Mapa definitivo",
       "body": "## Contexto\n\nIlustración original del mapa a partir del boceto y de la tabla de sectores, siguiendo las reglas de ilustración. La dibuja Claude; Adri la revisa.\n\n## Diseño en Figma\n\n- https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra?node-id=26-520\n- https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra?node-id=15-17\n\n## Tareas\n\n- [ ] Relieve por capas con tokens de ilustración\n- [ ] Las 20 pistas con su color\n- [ ] Los 15 remontes con estaciones\n- [ ] Etiquetas de sectores y del pueblo\n- [ ] Versión de noche\n\n## Hecho cuando\n\n- [ ] Adri aprueba el mapa\n- [ ] `npm run check` y `npm run build` pasan sin errores\n"
     },
     {
       "title": "feat: exportar mapa.svg con ids enlazados a los datos",
-      "labels": [
-        "feature",
-        "mapa"
-      ],
+      "labels": ["feature", "mapa"],
       "milestone": "Fase 2 · Mapa definitivo",
       "body": "## Contexto\n\nEl SVG del mapa es la base de la página Mapa: cada pista y remonte se identifica por su id.\n\n## Diseño en Figma\n\n- https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra?node-id=26-520\n\n## Tareas\n\n- [ ] Ids `pista-<numero>` y `remonte-<id>`\n- [ ] Colores con variables CSS\n- [ ] Optimizar con SVGO sin perder ids\n- [ ] Test que comprueba que cada dato del JSON tiene su trazo\n\n## Hecho cuando\n\n- [ ] El test de ids pasa\n- [ ] `npm run check` y `npm run build` pasan sin errores\n"
     },
     {
       "title": "feat: escena SVG del descenso por capas",
-      "labels": [
-        "feature",
-        "home"
-      ],
+      "labels": ["feature", "home"],
       "milestone": "Fase 3 · Home estática",
       "body": "## Contexto\n\nEl fondo continuo de la home: cielo, cumbres, nubes, bosque y pueblo, con los rellenos ligados a los tokens.\n\n## Diseño en Figma\n\n- https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra?node-id=20-3\n- https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra?node-id=25-359\n- https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra?node-id=32-1068\n\n## Tareas\n\n- [ ] Grupos por capa con id\n- [ ] Rellenos con `var(--ilus-*)`\n- [ ] Encuadre vertical para móvil\n- [ ] Trazo de esquí\n\n## Hecho cuando\n\n- [ ] La escena cambia de día a noche sin parpadeo\n- [ ] `npm run check` y `npm run build` pasan sin errores\n"
     },
     {
       "title": "feat: hero, mar de nubes y sección del tiempo de hoy",
-      "labels": [
-        "feature",
-        "home"
-      ],
+      "labels": ["feature", "home"],
       "milestone": "Fase 3 · Home estática",
       "body": "## Contexto\n\nLas tres primeras secciones de la home con datos de ejemplo.\n\n## Diseño en Figma\n\n- https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra?node-id=20-3\n- https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra?node-id=25-359\n\n## Tareas\n\n- [ ] Hero con titular, texto y acciones\n- [ ] Mar de nubes\n- [ ] Sección Hoy con interruptor Cumbre/Pueblo, instrumentos y estado\n\n## Hecho cuando\n\n- [ ] Coincide con Figma\n- [ ] `npm run check` y `npm run build` pasan sin errores\n"
     },
     {
       "title": "feat: cabinas, la estación de un vistazo y forfaits en la home",
-      "labels": [
-        "feature",
-        "home"
-      ],
+      "labels": ["feature", "home"],
       "milestone": "Fase 3 · Home estática",
       "body": "## Contexto\n\nEl resto de secciones de la home.\n\n## Diseño en Figma\n\n- https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra?node-id=20-3\n- https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra?node-id=25-359\n\n## Tareas\n\n- [ ] Cabinas en el cable\n- [ ] Cifras desde `resumen.json` y avance del mapa\n- [ ] Forfaits con abanico y resumen\n\n## Hecho cuando\n\n- [ ] Coincide con Figma\n- [ ] `npm run check` y `npm run build` pasan sin errores\n"
     },
     {
       "title": "feat: home responsive en 390, 834 y 1440 px",
-      "labels": [
-        "feature",
-        "home"
-      ],
+      "labels": ["feature", "home"],
       "milestone": "Fase 3 · Home estática",
       "body": "## Contexto\n\nRevisión de la home en los tres tamaños de referencia.\n\n## Diseño en Figma\n\n- https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra?node-id=20-3\n- https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra?node-id=25-359\n- https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra?node-id=29-2\n\n## Tareas\n\n- [ ] Móvil con barra de compra fija\n- [ ] Tablet con rejilla de 8 columnas\n- [ ] Comparar con las capturas de Figma en la pull request\n\n## Hecho cuando\n\n- [ ] Sin scroll horizontal en ningún tamaño\n- [ ] `npm run check` y `npm run build` pasan sin errores\n"
     },
     {
       "title": "feat: GSAP, ScrollTrigger y Lenis con tokens de movimiento",
-      "labels": [
-        "feature",
-        "animación"
-      ],
+      "labels": ["feature", "animación"],
       "milestone": "Fase 4 · El descenso",
       "body": "## Contexto\n\nBase de la animación del descenso.\n\n## Tareas\n\n- [ ] Instalar y registrar GSAP y ScrollTrigger\n- [ ] Scroll suave con Lenis sincronizado con ScrollTrigger\n- [ ] Tokens de duración y curva en JS\n- [ ] Desactivar todo con `prefers-reduced-motion`\n\n## Hecho cuando\n\n- [ ] Con movimiento reducido no se anima nada\n- [ ] `npm run check` y `npm run build` pasan sin errores\n"
     },
     {
       "title": "feat: parallax por capas y trazo de esquí con el scroll",
-      "labels": [
-        "feature",
-        "animación",
-        "home"
-      ],
+      "labels": ["feature", "animación", "home"],
       "milestone": "Fase 4 · El descenso",
       "body": "## Contexto\n\nLa escena se mueve a cinco velocidades y el trazo se dibuja al bajar.\n\n## Diseño en Figma\n\n- https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra?node-id=20-3\n\n## Tareas\n\n- [ ] Parallax por capa\n- [ ] Trazo con `stroke-dashoffset` ligado al scroll\n- [ ] Altímetro sincronizado con las paradas\n\n## Hecho cuando\n\n- [ ] El altímetro marca la parada correcta en cada sección\n- [ ] `npm run check` y `npm run build` pasan sin errores\n"
     },
     {
       "title": "feat: mar de nubes, cabinas y abanico de forfaits animados",
-      "labels": [
-        "feature",
-        "animación",
-        "home"
-      ],
+      "labels": ["feature", "animación", "home"],
       "milestone": "Fase 4 · El descenso",
       "body": "## Contexto\n\nLos momentos de transición de la home.\n\n## Diseño en Figma\n\n- https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra?node-id=20-3\n\n## Tareas\n\n- [ ] Nubes que se abren\n- [ ] Cabinas que se balancean al llegar\n- [ ] Billetes que se abren en abanico\n\n## Hecho cuando\n\n- [ ] Las animaciones usan solo `transform` y `opacity`\n- [ ] `npm run check` y `npm run build` pasan sin errores\n"
     },
     {
       "title": "perf: 60 fps en la animación del descenso",
-      "labels": [
-        "rendimiento",
-        "animación"
-      ],
+      "labels": ["rendimiento", "animación"],
       "milestone": "Fase 4 · El descenso",
       "body": "## Contexto\n\nMedir y ajustar la animación en un portátil medio y en móvil.\n\n## Tareas\n\n- [ ] Grabar con el panel Performance de Chrome\n- [ ] `will-change` solo donde haga falta\n- [ ] Reducir capas en móvil\n\n## Hecho cuando\n\n- [ ] Sin caídas por debajo de 50 fps en el recorrido completo\n- [ ] `npm run check` y `npm run build` pasan sin errores\n"
     },
     {
       "title": "feat: página de forfaits con cálculo y compra simulada",
-      "labels": [
-        "feature",
-        "forfaits"
-      ],
+      "labels": ["feature", "forfaits"],
       "milestone": "Fase 5 · Páginas",
       "body": "## Contexto\n\nIsla React con el formulario, el cálculo de precios y la confirmación.\n\n## Diseño en Figma\n\n- https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra?node-id=28-580\n- https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra?node-id=29-2\n\n## Tareas\n\n- [ ] Fecha y días, con temporada alta y baja\n- [ ] Personas por tipo y descuento familia\n- [ ] Validación al salir del campo y al comprar\n- [ ] Resumen fijo con abanico de billetes\n- [ ] Confirmación simulada\n- [ ] Preguntas frecuentes en acordeón accesible\n- [ ] Tests del cálculo de precios\n\n## Hecho cuando\n\n- [ ] Los tests de precios pasan (2 adultos y 3 niños, 3 días = 785,70 CHF)\n- [ ] `npm run check` y `npm run build` pasan sin errores\n"
     },
     {
       "title": "feat: página del tiempo con Open-Meteo",
-      "labels": [
-        "feature",
-        "tiempo"
-      ],
+      "labels": ["feature", "tiempo"],
       "milestone": "Fase 5 · Páginas",
       "body": "## Contexto\n\nIsla React que pide el tiempo de las tres cotas.\n\n## Diseño en Figma\n\n- https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra?node-id=27-567\n- https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra?node-id=29-2\n\n## Tareas\n\n- [ ] Petición a Open-Meteo para cumbre, Gornergrat y pueblo\n- [ ] Estado de carga con las gafas empañadas\n- [ ] Estado de error con el último parte guardado y reintentar\n- [ ] Previsión de cinco días\n- [ ] Códigos WMO desde `tiempo.json`\n\n## Hecho cuando\n\n- [ ] Con la red cortada se ve el último parte y el botón de reintentar\n- [ ] `npm run check` y `npm run build` pasan sin errores\n"
     },
     {
       "title": "feat: efectos de tiempo en pantalla",
-      "labels": [
-        "feature",
-        "tiempo",
-        "animación"
-      ],
+      "labels": ["feature", "tiempo", "animación"],
       "milestone": "Fase 5 · Páginas",
       "body": "## Contexto\n\nNieve, niebla y viento según el parte, con interruptor para apagarlos.\n\n## Diseño en Figma\n\n- https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra?node-id=27-567\n\n## Tareas\n\n- [ ] Partículas de nieve en canvas\n- [ ] Niebla y viento\n- [ ] Interruptor recordado\n- [ ] Apagado con movimiento reducido\n\n## Hecho cuando\n\n- [ ] Los efectos no bajan de 50 fps en móvil\n- [ ] `npm run check` y `npm run build` pasan sin errores\n"
     },
     {
       "title": "feat: mapa interactivo de pistas",
-      "labels": [
-        "feature",
-        "mapa"
-      ],
+      "labels": ["feature", "mapa"],
       "milestone": "Fase 5 · Páginas",
       "body": "## Contexto\n\nLa página Mapa sobre el SVG definitivo.\n\n## Diseño en Figma\n\n- https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra?node-id=26-520\n- https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra?node-id=29-2\n\n## Tareas\n\n- [ ] Zoom y desplazamiento con ratón, táctil y teclado\n- [ ] Filtros por dificultad y solo abiertas\n- [ ] Vista lista accesible\n- [ ] Ficha de pista\n- [ ] Estado sin resultados\n\n## Hecho cuando\n\n- [ ] Todo lo que se hace en el mapa se puede hacer en la lista\n- [ ] `npm run check` y `npm run build` pasan sin errores\n"
     },
     {
       "title": "feat: página 404",
-      "labels": [
-        "feature",
-        "sistema"
-      ],
+      "labels": ["feature", "sistema"],
       "milestone": "Fase 5 · Páginas",
       "body": "## Contexto\n\n\"Te has salido de pista\", con la escena y los enlaces de vuelta.\n\n## Diseño en Figma\n\n- https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra?node-id=29-2\n\n## Tareas\n\n- [ ] Página `404.astro` en los dos idiomas\n\n## Hecho cuando\n\n- [ ] Una ruta inventada muestra la 404 en GitHub Pages\n- [ ] `npm run check` y `npm run build` pasan sin errores\n"
     },
     {
       "title": "feat: View Transitions y aviso de proyecto ficticio",
-      "labels": [
-        "feature",
-        "pulido"
-      ],
+      "labels": ["feature", "pulido"],
       "milestone": "Fase 6 · Pulido y publicación",
       "body": "## Contexto\n\nTransiciones entre páginas y el aviso de la primera visita.\n\n## Diseño en Figma\n\n- https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra?node-id=29-2\n\n## Tareas\n\n- [ ] View Transitions de Astro\n- [ ] Aviso con \"Entendido\" recordado\n- [ ] Respetar movimiento reducido\n\n## Hecho cuando\n\n- [ ] El aviso solo aparece la primera vez\n- [ ] `npm run check` y `npm run build` pasan sin errores\n"
     },
     {
       "title": "feat: SEO, Open Graph, hreflang, sitemap y favicon",
-      "labels": [
-        "feature",
-        "seo"
-      ],
+      "labels": ["feature", "seo"],
       "milestone": "Fase 6 · Pulido y publicación",
       "body": "## Contexto\n\nQue la web se vea bien en buscadores y al compartirla.\n\n## Diseño en Figma\n\n- https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra?node-id=29-2\n\n## Tareas\n\n- [ ] Títulos y descripciones por página e idioma\n- [ ] Imagen Open Graph\n- [ ] `hreflang` entre /es y /en\n- [ ] Sitemap\n- [ ] Favicon de día y de noche\n\n## Hecho cuando\n\n- [ ] La vista previa al compartir el enlace muestra la imagen y el título\n- [ ] `npm run check` y `npm run build` pasan sin errores\n"
     },
     {
       "title": "test: auditoría de accesibilidad WCAG 2.2 AA y Lighthouse",
-      "labels": [
-        "a11y",
-        "rendimiento"
-      ],
+      "labels": ["a11y", "rendimiento"],
       "milestone": "Fase 6 · Pulido y publicación",
       "body": "## Contexto\n\nRevisión final antes de la versión 1.0.\n\n## Tareas\n\n- [ ] axe en todas las páginas\n- [ ] Recorrido completo con teclado\n- [ ] Lector de pantalla (NVDA)\n- [ ] Lighthouse en móvil y escritorio\n- [ ] Pruebas en un móvil real\n\n## Hecho cuando\n\n- [ ] Lighthouse 90 o más en las cuatro categorías\n- [ ] Ningún error grave de axe\n- [ ] `npm run check` y `npm run build` pasan sin errores\n"
     },
     {
       "title": "docs: README de portfolio y caso de estudio",
-      "labels": [
-        "docs"
-      ],
+      "labels": ["docs"],
       "milestone": "Fase 6 · Pulido y publicación",
       "body": "## Contexto\n\nEl README es lo primero que ve un recruiter: tiene que contar el proyecto y el proceso.\n\n## Diseño en Figma\n\n- https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra?node-id=0-1\n- https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra?node-id=20-3\n\n## Tareas\n\n- [ ] Captura animada de la home\n- [ ] Enlace a la web y al Figma\n- [ ] Proceso: wireframes, sistema de diseño, alta fidelidad y código\n- [ ] Comparativas Figma frente a web\n- [ ] Decisiones técnicas y estándares\n- [ ] Cómo ejecutarlo en local\n\n## Hecho cuando\n\n- [ ] Se entiende el proyecto sin abrir el código\n- [ ] `npm run check` y `npm run build` pasan sin errores\n"
     }

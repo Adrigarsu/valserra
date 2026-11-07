@@ -1,0 +1,7 @@
+# Generado
+dist/
+.astro/
+package-lock.json
+
+# Markdown escrito a mano: no se formatea
+*.md
