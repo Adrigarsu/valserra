@@ -8,7 +8,7 @@ Las variables de Figma se traducen a variables CSS en `src/styles/tokens.css`. E
 - **Modo noche.** Solo cambian las colecciones Color e Ilustración. Se activa solo con `prefers-color-scheme: dark`, salvo que `<html>` tenga `data-theme="light"`, o a mano con `data-theme="dark"`. El bloque de noche está repetido en el CSS (dentro de la media query y con el atributo): si se cambia uno, hay que cambiar el otro.
 - **Unidades.** Figma trabaja en px. Los espacios pasan a rem (px / 16) para que crezcan con el tamaño de letra del navegador. Radios, bordes y área táctil se quedan en px.
 - **Cambios.** Si cambia una variable en Figma, se cambia aquí y en `tokens.css` en el mismo commit. Una variable nueva en Figma necesita su sintaxis WEB antes de pasar al código.
-- **Tipografía.** Los estilos de texto de Figma no son variables; llegan con las fuentes (issue #4).
+- **Tipografía.** Los estilos de texto de Figma no son variables: sus valores pasan a tokens `--text-*`, `--leading-*` y `--tracking-*`, y cada estilo tiene una clase en `src/styles/typography.css`. Ver la sección Tipografía.
 
 ## Primitivos
 
@@ -135,3 +135,40 @@ No está en Figma: sale del lenguaje de movimiento de `docs/ideario.md`.
 | `--ease-in` | cubic-bezier(0.7, 0, 0.84, 0) | Salidas |
 
 Las salidas duran un 70 % de su entrada (`calc(var(--dur-base) * 0.7)`). Con `prefers-reduced-motion: reduce`, cada animación deja solo el fundido de opacidad.
+
+## Tipografía
+
+Estilos de texto de Figma. Las fuentes se sirven desde el proyecto con Fontsource (`src/styles/fonts.css`), con `font-display: swap`, y la página precarga Yellowtail y Josefin Sans, que son las del hero.
+
+| CSS | Valor |
+| --- | --- |
+| `--font-display` | Yellowtail, con `cursive` de respaldo |
+| `--font-sans` | Josefin Sans Variable, con Futura, Century Gothic y `sans-serif` de respaldo |
+| `--font-serif` | Fraunces Variable, con Georgia y `serif` de respaldo |
+| `--font-serif-variation` | `'WONK' 1`: las variantes "wonky" de Fraunces, como en Figma (SOFT se queda en 0) |
+| `--font-weight-regular` / `-medium` / `-semibold` | 400 / 500 / 600 |
+
+Fraunces usa el archivo `wonk` de Fontsource (pesos y eje WONK, 37 KB) y no el `full` (121 KB): a 15–18 px el eje de tamaño óptico casi no cambia nada.
+
+Conversión: tamaño en rem (px / 16), interlineado sin unidad (porcentaje / 100) e interletrado en em (porcentaje / 100). Los estilos en mayúsculas llevan `text-transform: uppercase` en su clase.
+
+| Figma | Clase | Fuente y peso | Tamaño | Interlineado | Interletrado | Mayúsculas |
+| --- | --- | --- | --- | --- | --- | --- |
+| Display/XL | `.text-display-xl` | Yellowtail 400 | 72 → 124 px (fluido) | 0.95 | — | No |
+| Display/L | `.text-display-l` | Yellowtail 400 | 72 px · 4.5rem | 0.95 | — | No |
+| Display/M | `.text-display-m` | Yellowtail 400 | 48 px · 3rem | 1 | — | No |
+| Display/S | `.text-display-s` | Yellowtail 400 | 34 px · 2.125rem | 1 | — | No |
+| Título/H2 | `.text-titulo-h2` | Josefin Sans 600 | 30 px · 1.875rem | 1.25 | 0.18em | Sí |
+| Título/H3 | `.text-titulo-h3` | Josefin Sans 600 | 20 px · 1.25rem | 1.3 | 0.12em | Sí |
+| Etiqueta/Antetítulo | `.text-etiqueta-antetitulo` | Josefin Sans 600 | 13 px · 0.8125rem | 1.3 | 0.3em | Sí |
+| Etiqueta/Pequeña | `.text-etiqueta-pequena` | Josefin Sans 600 | 11 px · 0.6875rem | 1.3 | 0.2em | Sí |
+| Botón | `.text-boton` | Josefin Sans 600 | 14 px · 0.875rem | 1 | 0.2em | Sí |
+| Dato/Grande | `.text-dato-grande` | Josefin Sans 500 | 44 px · 2.75rem | 1 | -0.01em | No |
+| Dato/Medio | `.text-dato-medio` | Josefin Sans 600 | 26 px · 1.625rem | 1.1 | — | No |
+| Cuerpo/Base | `.text-cuerpo-base` | Fraunces 400 | 18 px · 1.125rem | 1.65 | — | No |
+| Cuerpo/Pequeño | `.text-cuerpo-pequeno` | Fraunces 400 | 15 px · 0.9375rem | 1.6 | — | No |
+| Cuerpo/Nota | `.text-cuerpo-nota` | Fraunces 400 itálica | 15 px · 0.9375rem | 1.6 | — | No |
+
+Cada fila tiene sus tokens con el mismo sufijo: `--text-titulo-h2`, `--leading-titulo-h2` y `--tracking-titulo-h2`.
+
+Display/XL es el único estilo fluido. En Figma, la home de móvil (390 px) usa Display/L para el titular que en escritorio (1440 px) es Display/XL, así que el token crece entre los dos con `clamp(4.5rem, 3.2929rem + 4.9524vw, 7.75rem)`. El texto de `body` usa Cuerpo/Base.
