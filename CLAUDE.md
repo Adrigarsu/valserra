@@ -15,6 +15,7 @@ Web de una estación de esquí ficticia inspirada en Zermatt. Proyecto de portfo
 
 - `docs/ideario.md`: concepto, dirección de arte, paleta, tipografía, movimiento, arquitectura, reglas de ilustración, alcance y plan por fases. Es la fuente de verdad del diseño.
 - `docs/flujo-de-trabajo.md`: GitHub Flow, ramas, commits y definición de hecho.
+- `docs/tokens.md`: equivalencias de las variables de Figma con las variables CSS.
 - Figma: https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra (páginas Componentes básicos, Componentes Valserra, Ilustración, Alta fidelidad y Estados y piezas). Cada issue enlaza el frame que implementa.
 - Issues e hitos en GitHub (`Adrigarsu/valserra`): un hito por fase, de la Fase 0 a la Fase 6.
 
@@ -36,8 +37,8 @@ Web de una estación de esquí ficticia inspirada en Zermatt. Proyecto de portfo
 
 ## Reglas de código
 
-- Tokens: las variables de Figma se traducen a variables CSS con el mismo nombre (`bg/page` → `--bg-page`, `ilus/cielo` → `--ilus-cielo`). Nada de colores, tamaños o duraciones sueltos en los componentes.
-- Modo noche: solo cambian los tokens semánticos y de ilustración, nunca los componentes.
+- Tokens: las variables de Figma se traducen a variables CSS en `src/styles/tokens.css` con el nombre de su sintaxis WEB en Figma (`bg/page` → `--color-bg-page`, `espacio/16` → `--space-16`, `ilus/cielo` → `--ilus-cielo`). La tabla completa está en `docs/tokens.md`. Los componentes usan los tokens semánticos (`--color-*`, `--ilus-*`), nunca los primitivos (`--azul-800`). Nada de colores, tamaños o duraciones sueltos en los componentes.
+- Modo noche: solo cambian los tokens semánticos y de ilustración, nunca los componentes. Se activa con `prefers-color-scheme` o con `data-theme="dark"` en `<html>` (`data-theme="light"` fuerza el día). El bloque de noche está repetido en `tokens.css`: si cambias uno, cambia el otro.
 - Datos en `src/data/*.json` y textos en `src/i18n/{es,en}.json`. Las dos lenguas tienen las mismas claves. Los textos usan huecos `{nombre}` y plurales ICU.
 - Números sin formato en los datos; se formatean con `Intl` según el idioma. Importes en céntimos de CHF.
 - Las etiquetas en mayúsculas se escriben en minúscula y se transforman con CSS (`text-transform: uppercase`).
@@ -57,7 +58,7 @@ Web de una estación de esquí ficticia inspirada en Zermatt. Proyecto de portfo
 
 Fase 0 · Montaje (hito en GitHub). Última actualización: 7 de noviembre de 2026.
 
-- Hecho: #1 proyecto Astro con TypeScript estricto y React (PR #35); #2 ESLint, Prettier, EditorConfig y `.gitattributes`.
-- Siguiente: #3 pasar los tokens de Figma a variables CSS. Después, #4 fuentes, #5 datos y textos con tipos, #6 CI y GitHub Pages, #7 preparar Figma.
-- Estructura: `src/{components,layouts,lib,styles}` y `src/pages/{es,en}` están vacías (con `.gitkeep`). `src/pages/index.astro` es una página provisional con el título.
+- Hecho: #1 proyecto Astro con TypeScript estricto y React (PR #35); #2 ESLint, Prettier, EditorConfig y `.gitattributes` (PR #36); #3 tokens de Figma en `src/styles/tokens.css` (primitivos, color, dimensiones, ilustración y movimiento) y reset con estilos base en `src/styles/base.css`.
+- Siguiente: #4 fuentes. Figma ya tiene los estilos de texto (Display XL/L/M/S en Yellowtail; Título H2/H3, Etiqueta, Botón y Dato en Josefin Sans; Cuerpo en Fraunces): se pueden leer con el MCP de Figma (`getLocalTextStylesAsync`) y pasar a tokens de tipografía en `tokens.css` y `docs/tokens.md`; el `font-family` de `body` en `base.css` está pendiente de este issue. Después, #5 datos y textos con tipos, #6 CI y GitHub Pages, #7 preparar Figma.
+- Estructura: `src/{components,layouts,lib}` y `src/pages/{es,en}` están vacías (con `.gitkeep`). `src/pages/index.astro` es una página provisional que importa `tokens.css` y `base.css`; cuando exista el layout base, las importaciones pasan allí.
 - Pendiente para fases siguientes: las rutas `/es` y `/en` (configuración `i18n` de Astro y redirección desde la raíz) son de la Fase 1. La CI (#6) tiene que usar Node 22.23.4 o superior.
