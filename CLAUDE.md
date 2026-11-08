@@ -57,7 +57,7 @@ Web de una estación de esquí ficticia inspirada en Zermatt. Proyecto de portfo
 
 ## Estado del proyecto
 
-Fase 1 · Base y componentes (hito en GitHub), en curso. Última actualización: 8 de noviembre de 2026 (#11).
+Fase 1 · Base y componentes (hito en GitHub), en curso. Última actualización: 8 de noviembre de 2026 (#12).
 
 - Hecho en la Fase 0 (#1 a #7): proyecto Astro con TypeScript estricto y React; ESLint, Prettier, EditorConfig y `.gitattributes`; tokens de Figma en `src/styles/tokens.css` y reset en `src/styles/base.css`; fuentes con Fontsource en `src/styles/fonts.css` y una clase por cada uno de los 14 estilos de texto en `src/styles/typography.css` (`.text-display-xl`, `.text-titulo-h2`…; tabla en `docs/tokens.md`); esquemas Zod de los datos y comprobación de los textos con el script `validar`; CI (`.github/workflows/ci.yml`, job `Comprobar`) y publicación en GitHub Pages (`.github/workflows/deploy.yml`); Figma preparado para enseñarlo (Portada y Fundamentos).
 - Hecho en la Fase 1: #8 layout base con navegación y footer.
@@ -93,10 +93,19 @@ Fase 1 · Base y componentes (hito en GitHub), en curso. Última actualización:
   - `src/components/Precio.astro`: importe del HTML estático. Pinta las dos monedas y el CSS enseña la de `data-moneda`, así que no parpadea ni necesita JavaScript por precio. Props `idioma` y `centimos` (de CHF); hereda el estilo de texto.
   - `src/components/SelectorMoneda.astro`: fila "Moneda" entre Idioma y Modo, en el menú y en el footer de escritorio. Se ve "CHF" y "€"; el lector oye el nombre de la moneda.
   - La portada provisional enseña el total de ejemplo con `Precio`: 785,70 CHF o 840,70 € (CHF 785.70 o €840.70 en inglés).
-- Siguiente: #12 componentes básicos (botón, chip, segmento, interruptor y botón de cantidad).
+- Hecho en la Fase 1: #12 componentes básicos (Figma: Componentes básicos y Componentes Valserra › Interruptor).
+  - `Boton.astro`: props `estilo` (`primario`, por defecto; `secundario`; `texto`) e `icono` (cualquier nombre de `Icono`, detrás del texto y a 1em, porque en Figma la flecha es un carácter del texto). Con `href` es `<a>` y no admite `disabled` (el tipo lo impide); sin `href`, `<button>`. Mide 46 px como en Figma: el borde de 1,5 px se descuenta del relleno. En Chromium a 1× mide 45 px porque redondea el borde a 1 px.
+  - `ChipFiltro.astro`: `<button aria-pressed>` (botón de alternancia). Props `seleccionado`, `freeride` (borde discontinuo) y `contador` (opacidad 0.7, como en Figma, sin token). Los estilos cuelgan de `aria-pressed`: el script que lo use solo cambia ese atributo.
+  - `BotonCantidad.astro`: 44 × 44 px, props `accion` (`menos`, `mas`) y `etiqueta` (nombre accesible: `forfaits.unDiaMas`…). El signo es aria-hidden y usa Dato/Medio.
+  - Deshabilitado en `Boton` y `BotonCantidad`: vale `disabled` o `aria-disabled="true"`, con el mismo aspecto. Para el − y + de Forfaits, `aria-disabled` (con `disabled` se pierde el foco al llegar al mínimo) y que el script ignore el clic.
+  - `Interruptor.astro`: contenedor con borde tinta y Segmentos. `tipo="radio"` (con `name`; radios nativos en `role="radiogroup"`) o `tipo="enlace"` (lista de enlaces con `aria-current="page"`, `lang` y `hreflang`). Props `etiquetadoPor` (id del texto que lo nombra) y `opciones` (`texto`, `nombre` accesible, `actual`, `valor` o `href` e `idioma`). Ya lo usan `AjusteRadio` y `SelectorIdioma`, que solo ponen la fila con su etiqueta.
+  - Foco como en Figma: en botón y botón de cantidad el anillo va por dentro (ocupa el sitio del borde), en el chip tapa el borde y sale 1,5 px, y en el segmento va pegado por fuera.
+  - Icono nuevo: `flecha-abajo` (ArrowDown).
+  - La portada provisional enseña todas las variantes encima del muestrario de texto (los chips se pueden pulsar).
+- Siguiente: #13 componentes de Valserra (fila de persona, forfait y ficha de pista).
 - Decisiones del #8 que afectan a lo siguiente:
   - El estado del cartel y del menú solo enseña los remontes ("13/15 remontes"); la temperatura de la cumbre se añade en la fase del Tiempo con Open-Meteo (textos `nav.estado` y `nav.estadoCorto`, ya preparados).
-  - Cuando el #12 haga el componente Interruptor, `SelectorIdioma` y `AjusteRadio` pueden usarlo para los estilos de Segmento (ahora están copiados en los dos).
-  - `Boton.astro` y `BotonIcono.astro` se completan en el #12 (Secundario, Texto y estados).
+  - `BotonIcono.astro` no está en Componentes básicos de Figma: sigue con normal y hover (el foco es el global).
+  - Los estilos del Segmento están en `Interruptor.astro` (CSS con ámbito de Astro). Si el interruptor Cumbre/Pueblo de la isla de React del Tiempo los necesita, habrá que sacarlos a una hoja compartida.
   - Diferencias con Figma: el logo del cartel compacto y móvil usa Display/S (34 px) porque el de Figma (28 px) no tiene estilo de texto; los enlaces del footer miden 44 px de alto por el área táctil (en Figma, 33 px); el footer móvil usa el texto completo de `footer.proyecto`. El margen de página sigue la regla `6vw` de Fundamentos, que en 1440 px da 86 px, mientras que las maquetas de 1440 usan 120 px: pendiente de decidir con Adri.
 - Estructura: las páginas nuevas se crean en `src/pages/[idioma]/` con el mismo `getStaticPaths` que la portada y pasan `idioma` y `pagina` a `Base`.
