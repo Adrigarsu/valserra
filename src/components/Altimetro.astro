@@ -1,0 +1,173 @@
+---
+/*
+ * Altímetro lateral de la home (Figma: Componentes Valserra › Altímetro):
+ * el único sitio donde aparece la altitud. Raíl vertical con una marca por
+ * parada (el mar de nubes no lleva), marcador que baja, tramo recorrido en
+ * tinta y la cota y el lugar en vertical junto al marcador. En móvil (por
+ * debajo de 1024 px) queda solo el raíl con el marcador.
+ *
+ * Recibe la parada y, si hace falta, una cota intermedia (al hacer scroll
+ * la escena interpola entre paradas). La posición va en la variable
+ * --altimetro-progreso (0 en la cumbre, 1 en el pueblo), y el marcador, el
+ * tramo y el texto se mueven solo con transform, así que la escena puede
+ * cambiarla en cada fotograma sin recalcular la maqueta.
+ *
+ * Para el lector es una imagen con nombre: "Altímetro: 3.883 m, Cumbre".
+ */
+import type { HTMLAttributes } from 'astro/types';
+import type { IdParada } from '../lib/esquemas.ts';
+import { paradas } from '../lib/datos.ts';
+import { formatearNumero } from '../lib/formato.ts';
+import { traductor, type Idioma } from '../lib/i18n.ts';
+
+type Props = HTMLAttributes<'div'> & {
+  idioma: Idioma;
+  /** Parada más cercana: da el lugar y, si no se pasa cota, la cota. */
+  parada?: IdParada;
+  /** Cota en metros; por defecto, la de la parada. */
+  cota?: number;
+};
+
+const arriba = paradas[0].cota;
+const abajo = paradas[paradas.length - 1].cota;
+const progresoDe = (cota: number) =>
+  Math.min(Math.max((arriba - cota) / (arriba - abajo), 0), 1);
+
+const {
+  idioma,
+  parada = 'cumbre',
+  cota = paradas.find((p) => p.id === parada)?.cota ?? arriba,
+  class: clase,
+  ...resto
+} = Astro.props;
+
+const t = traductor(idioma);
+const lugar = t(`altimetro.paradas.${parada}`);
+const marcador = t('altimetro.marcador', {
+  cota: formatearNumero(idioma, cota, { style: 'unit', unit: 'meter' }),
+  lugar,
+});
+---
+
+<div
+  class:list={['altimetro', clase]}
+  role="img"
+  aria-label={t('altimetro.etiqueta', { cota, lugar })}
+  {...resto}
+  style={`--altimetro-progreso: ${progresoDe(cota)}`}
+>
+  <div class="altimetro__rail" aria-hidden="true">
+    <div class="altimetro__recorrido"></div>
+    {paradas
+      .filter((p) => p.marca)
+      .map((p) => (
+        <div
+          class="altimetro__marca"
+          data-parada={p.id}
+          style={`--altimetro-marca: ${progresoDe(p.cota)}`}
+        />
+      ))}
+    <div class="altimetro__marcador"></div>
+    <p class="altimetro__texto text-etiqueta-pequena">{marcador}</p>
+  </div>
+</div>
+
+<style>
+  /*
+   * Medidas de Figma escritas con la escala de espacios: 56 px de ancho,
+   * raíl de 420 × 2 px (el alto lo puede cambiar la escena con
+   * --altimetro-alto), marcas de 12 × 2 px y marcador de 16 px. El raíl
+   * empieza y acaba a 8 px del borde para que quepa el marcador.
+   */
+  .altimetro {
+    --altimetro-alto: calc(
+      2 * var(--space-192) + var(--space-32) + var(--space-4)
+    );
+    --altimetro-trazo: calc(var(--space-4) / 2);
+
+    inline-size: calc(var(--space-48) + var(--space-8));
+    block-size: calc(var(--altimetro-alto) + var(--space-16));
+    padding-block: var(--space-8);
+  }
+
+  .altimetro__rail {
+    position: relative;
+    block-size: 100%;
+  }
+
+  /* Raíl y tramo recorrido: el tramo es el raíl en tinta, escalado */
+  .altimetro__rail::before,
+  .altimetro__recorrido {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: calc(var(--space-8) - var(--altimetro-trazo) / 2);
+    inline-size: var(--altimetro-trazo);
+  }
+
+  .altimetro__rail::before {
+    content: '';
+    background-color: var(--color-border-subtle);
+  }
+
+  .altimetro__recorrido {
+    background-color: var(--color-border-strong);
+    transform-origin: top;
+    transform: scaleY(var(--altimetro-progreso));
+  }
+
+  .altimetro__marca {
+    position: absolute;
+    inset-block-start: calc(var(--altimetro-marca) * var(--altimetro-alto));
+    inset-inline-start: calc(var(--space-8) - var(--space-12) / 2);
+    inline-size: var(--space-12);
+    block-size: var(--altimetro-trazo);
+    background-color: var(--color-border-strong);
+    transform: translateY(-50%);
+  }
+
+  .altimetro__marcador {
+    position: absolute;
+    inset-block-start: calc(-1 * var(--space-8));
+    inset-inline-start: 0;
+    inline-size: var(--space-16);
+    block-size: var(--space-16);
+    border-radius: var(--radius-pill);
+    background-color: var(--color-border-strong);
+    transform: translateY(
+      calc(var(--altimetro-progreso) * var(--altimetro-alto))
+    );
+  }
+
+  /*
+   * Texto en vertical, de abajo arriba, centrado en el marcador pero sin
+   * salirse del raíl. Los porcentajes de translate son del propio texto,
+   * así que el centrado y el tope no dependen de lo que mida.
+   */
+  /*
+   * top y left físicos: en un texto vertical, inset-inline-start sería el
+   * de arriba, porque los lógicos siguen su propio modo de escritura.
+   */
+  .altimetro__texto {
+    position: absolute;
+    top: 0;
+    left: var(--space-24);
+    margin: 0;
+    color: var(--color-text-primary);
+    white-space: nowrap;
+    writing-mode: vertical-rl;
+    transform: translateY(
+        clamp(
+          0px,
+          var(--altimetro-progreso) * var(--altimetro-alto) - 50%,
+          var(--altimetro-alto) - 100%
+        )
+      )
+      rotate(180deg);
+  }
+
+  @media (width < 64rem) {
+    .altimetro__texto {
+      display: none;
+    }
+  }
+</style>
