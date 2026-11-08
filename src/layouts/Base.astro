@@ -23,6 +23,7 @@ import {
   type Idioma,
 } from '../lib/i18n.ts';
 import { rutaEnIdioma, type Pagina } from '../lib/rutas.ts';
+import { claveTema } from '../lib/tema.ts';
 
 interface Props {
   idioma?: Idioma;
@@ -59,6 +60,28 @@ const preloads = [yellowtail, josefinSans];
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {/*
+      La página sabe pintarse en los dos modos: el navegador elige el fondo
+      y los controles nativos según el sistema antes de que llegue el CSS.
+      El color-scheme de tokens.css lo ajusta después al modo elegido.
+    */}
+    <meta name="color-scheme" content="light dark" />
+    {/*
+      Modo elegido con el interruptor (src/lib/tema.ts). Va en línea y antes
+      del CSS para que se aplique antes de pintar: si esperase al script
+      del selector, la página saldría un instante en el modo del sistema
+      (el parpadeo de colores al cargar).
+    */}
+    <script is:inline define:vars={{ claveTema }}>
+      try {
+        const tema = localStorage.getItem(claveTema);
+        if (tema === 'light' || tema === 'dark') {
+          document.documentElement.dataset.theme = tema;
+        }
+      } catch {
+        // Sin almacenamiento manda la preferencia del sistema
+      }
+    </script>
     {preloads.map((href) => (
       <link rel="preload" href={href} as="font" type="font/woff2" crossorigin />
     ))}
