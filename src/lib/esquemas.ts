@@ -92,8 +92,14 @@ export const esquemaRemontes = z
 
 /* Sectores */
 
+const slug = z
+  .string()
+  .regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, 'El slug va en minúsculas y con guiones');
+
 export const esquemaSector = z.strictObject({
   id: idSector,
+  // Segmento de su página del mapa: /mapa/sunnegga-rothorn/
+  slug,
   numero: z.int().positive(),
   nombre: texto,
   cotaMax: cota,
@@ -110,6 +116,43 @@ export const esquemaSectores = z.array(esquemaSector).refine(
     message: `Tiene que haber un sector por id: ${idsSector.join(', ')}`,
   },
 );
+
+/* Paradas del descenso de la home (altímetro) */
+
+export const idsParada = [
+  'cumbre',
+  'nubes',
+  'gornergrat',
+  'riffelberg',
+  'sunnegga',
+  'pueblo',
+] as const;
+
+export const esquemaParadas = z
+  .array(
+    z.strictObject({
+      id: z.enum(idsParada),
+      cota,
+      // Si lleva marca en el raíl del altímetro (el mar de nubes no)
+      marca: z.boolean(),
+    }),
+  )
+  .refine(
+    (paradas) =>
+      mismosElementos(
+        paradas.map((p) => p.id),
+        idsParada,
+      ),
+    { message: `Tiene que haber una parada por id: ${idsParada.join(', ')}` },
+  )
+  .refine(
+    (paradas) =>
+      paradas.every((p, i) => i === 0 || p.cota < paradas[i - 1].cota),
+    {
+      message:
+        'Las paradas van de arriba abajo: cada cota, menor que la anterior',
+    },
+  );
 
 /* Resumen de la estación */
 
@@ -272,6 +315,8 @@ export type Dificultad = (typeof dificultades)[number];
 export type Pista = z.infer<typeof esquemaPista>;
 export type Remonte = z.infer<typeof esquemaRemonte>;
 export type Sector = z.infer<typeof esquemaSector>;
+export type Parada = z.infer<typeof esquemaParadas>[number];
+export type IdParada = (typeof idsParada)[number];
 export type Resumen = z.infer<typeof esquemaResumen>;
 export type Tarifas = z.infer<typeof esquemaTarifas>;
 export type TipoForfait = Tarifas['tipos'][number];

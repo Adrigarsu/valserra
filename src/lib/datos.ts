@@ -7,6 +7,7 @@
 import type { z } from 'astro/zod';
 import { prettifyError } from 'astro/zod';
 
+import paradasJson from '../data/paradas.json' with { type: 'json' };
 import pistasJson from '../data/pistas.json' with { type: 'json' };
 import remontesJson from '../data/remontes.json' with { type: 'json' };
 import resumenJson from '../data/resumen.json' with { type: 'json' };
@@ -16,6 +17,7 @@ import tiempoJson from '../data/tiempo.json' with { type: 'json' };
 
 import {
   dificultades,
+  esquemaParadas,
   esquemaPistas,
   esquemaRemontes,
   esquemaResumen,
@@ -44,6 +46,7 @@ export const sectores = validar(esquemaSectores, sectoresJson, 'sectores.json');
 export const resumen = validar(esquemaResumen, resumenJson, 'resumen.json');
 export const tarifas = validar(esquemaTarifas, tarifasJson, 'tarifas.json');
 export const tiempo = validar(esquemaTiempo, tiempoJson, 'tiempo.json');
+export const paradas = validar(esquemaParadas, paradasJson, 'paradas.json');
 
 /*
  * resumen.json repite cifras que salen de pistas y remontes (se muestran
@@ -75,6 +78,18 @@ const descuadres = [
     );
   }),
 ].filter((d): d is string => typeof d === 'string');
+
+/*
+ * El altímetro va de la cota más alta a la más baja de la estación: la
+ * primera parada es la cumbre y la última, el pueblo.
+ */
+const primera = paradas[0];
+const ultima = paradas[paradas.length - 1];
+if (primera.cota !== resumen.cotaMax || ultima.cota !== resumen.cotaMin) {
+  descuadres.push(
+    `paradas.json va de ${primera.cota} a ${ultima.cota} m, pero la estación va de ${resumen.cotaMax} a ${resumen.cotaMin} m`,
+  );
+}
 
 if (descuadres.length > 0) {
   throw new Error(
