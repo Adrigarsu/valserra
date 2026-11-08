@@ -1,0 +1,84 @@
+---
+/*
+ * Una muestra del catálogo de componentes: título con el nombre de Figma,
+ * qué variantes enseña, enlace al frame de Figma y el componente (slot).
+ * Solo la usa src/pages/[idioma]/componentes.astro. El nombre y la nota
+ * son los de Figma, en español en los dos idiomas (lang="es").
+ */
+import { traductor, type Idioma } from '../lib/i18n.ts';
+
+interface Props {
+  idioma: Idioma;
+  /** Ancla de la muestra, para el índice: #boton. */
+  id: string;
+  /** Nombre del componente en Figma: "Botón". */
+  nombre: string;
+  /** Qué variantes y estados enseña. */
+  nota: string;
+  /** Nodo de Figma ("3:40"); sin él, no se pinta el enlace. */
+  figma?: string;
+}
+
+const { idioma, id, nombre, nota, figma } = Astro.props;
+const t = traductor(idioma);
+const archivo = 'https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra';
+const enlace = figma && `${archivo}?node-id=${figma.replace(':', '-')}`;
+---
+
+<section class="muestra" id={id} aria-labelledby={`${id}-titulo`}>
+  <header class="muestra__cabecera">
+    <h3 class="text-titulo-h3" id={`${id}-titulo`} lang="es">
+      {nombre}
+    </h3>
+    {enlace && (
+      <a class="muestra__figma text-cuerpo-nota" href={enlace}>
+        {t('componentes.verEnFigma')}
+      </a>
+    )}
+  </header>
+  <p class="muestra__nota text-cuerpo-nota" lang="es">
+    {nota}
+  </p>
+  <div class="muestra__contenido">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .muestra {
+    display: grid;
+    gap: var(--space-12);
+    padding-block-start: var(--space-16);
+    border-block-start: var(--border-thin) solid var(--color-border-subtle);
+    /* El cartel fijo no tapa el título al saltar desde el índice */
+    scroll-margin-block-start: var(--space-96);
+  }
+
+  .muestra__cabecera {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-8) var(--space-16);
+  }
+
+  .muestra__cabecera h3,
+  .muestra__nota {
+    margin: 0;
+  }
+
+  .muestra__figma {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--touch-min);
+    color: var(--color-text-accent);
+  }
+
+  .muestra__nota {
+    color: var(--color-text-secondary);
+  }
+
+  .muestra__contenido {
+    padding-block-start: var(--space-12);
+  }
+</style>

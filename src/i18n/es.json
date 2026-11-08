@@ -7,6 +7,7 @@
       "mapa": "Mapa de pistas · Valserra",
       "tiempo": "El parte de hoy · Valserra",
       "forfaits": "Forfaits · Valserra",
+      "componentes": "Catálogo de componentes · Valserra",
       "noEncontrada": "Te has salido de pista · Valserra"
     }
   },
@@ -35,6 +36,13 @@
     "noche": "Noche",
     "modoNocheActivar": "Activar el modo noche",
     "modoNocheDesactivar": "Volver al modo día"
+  },
+  "componentes": {
+    "titulo": "Catálogo de componentes",
+    "texto": "Página interna para revisar cada componente frente a Figma, con sus variantes y estados. No sale en los buscadores.",
+    "ajustes": "Ajustes de la revisión",
+    "indice": "Índice",
+    "verEnFigma": "Ver en Figma"
   },
   "altimetro": {
     "etiqueta": "Altímetro: {cota} m, {lugar}",
