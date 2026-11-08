@@ -3,402 +3,46 @@
  * Portada en cada idioma: /es/ y /en/. getStaticPaths genera una página
  * por idioma a partir del mismo archivo, así las dos son siempre iguales.
  *
- * Contenido provisional: el muestrario de los componentes básicos y de
- * Valserra, de los
- * 14 estilos de texto y de los formatos con Intl. Se sustituye por el descenso (Fase 3); el muestrario
- * pasa al catálogo de componentes (#15).
+ * Contenido provisional: el texto del hero. Se sustituye por el descenso
+ * (Fase 3). El muestrario de componentes está en el catálogo
+ * (/componentes/).
  */
 import type { GetStaticPaths } from 'astro';
 import Base from '../../layouts/Base.astro';
 import { idiomas, traductor, type Idioma } from '../../lib/i18n.ts';
-import Precio from '../../components/Precio.astro';
-import Boton from '../../components/Boton.astro';
-import BotonCantidad from '../../components/BotonCantidad.astro';
-import ChipFiltro from '../../components/ChipFiltro.astro';
-import Interruptor from '../../components/Interruptor.astro';
-import FilaPersona from '../../components/FilaPersona.tsx';
-import Forfait from '../../components/Forfait.tsx';
-import FichaPista from '../../components/FichaPista.astro';
-import Cabina from '../../components/Cabina.astro';
-import Instrumento from '../../components/Instrumento.tsx';
-import Altimetro from '../../components/Altimetro.astro';
-import { dificultades } from '../../lib/esquemas.ts';
-import { paradas, pistas, sectores, tarifas } from '../../lib/datos.ts';
-import { formatearPrecio } from '../../lib/precios.ts';
-import { formatearFecha, formatearNumero } from '../../lib/formato.ts';
 
 export const getStaticPaths = (() =>
   idiomas.map((idioma) => ({ params: { idioma } }))) satisfies GetStaticPaths;
 
 const idioma = Astro.params.idioma as Idioma;
 const t = traductor(idioma);
-
-// Formatos de ejemplo, con los datos de las maquetas
-const formatos = [
-  { nombre: 'Número · 2263', valor: formatearNumero(idioma, 2263) },
-  { nombre: 'Fecha · 2027-02-12', valor: formatearFecha(idioma, '2027-02-12') },
-  {
-    nombre: 'Plural · n = 1',
-    valor: t('forfaits.comprar', { n: 1 }),
-  },
-  {
-    nombre: 'Plural · n = 5',
-    valor: t('forfaits.comprar', { n: 5 }),
-  },
-];
-
-// Cabinas en el orden de la escena (3, 2 y 1), con la central abierta
-const cabinas = sectores.toSorted((a, b) => b.numero - a.numero);
-
-// Instrumentos con valores de ejemplo; los rangos los fijará la isla del Tiempo
-const unidad = (valor: number, unit: string) =>
-  formatearNumero(idioma, valor, { style: 'unit', unit });
-const instrumentos = [
-  {
-    tipo: 'esfera',
-    valor: -12,
-    min: -30,
-    max: 20,
-    unit: 'celsius',
-    clave: 'inicio.hoy.temperatura',
-  },
-  {
-    tipo: 'esfera',
-    valor: 30,
-    min: 0,
-    max: 100,
-    unit: 'kilometer-per-hour',
-    clave: 'inicio.hoy.viento',
-  },
-  {
-    tipo: 'esfera',
-    valor: 20,
-    min: 0,
-    max: 50,
-    unit: 'kilometer',
-    clave: 'inicio.hoy.visibilidad',
-  },
-  {
-    tipo: 'columna',
-    valor: 185,
-    min: 0,
-    max: 300,
-    unit: 'centimeter',
-    clave: 'inicio.hoy.nieve',
-  },
-] as const;
-
-// Componentes de Valserra: una fila por tipo, como la maqueta de Forfaits
-// (2 adultos y 3 niños, 3 días), y una pista de cada dificultad
-const diasMuestra = 3;
-const cantidades = { adulto: 2, joven: 0, nino: 3, senior: 0 } as const;
-const filas = tarifas.tipos.map((tipo) => ({
-  tipo: tipo.id,
-  edad: tipo.edad[idioma],
-  precio: formatearPrecio(
-    idioma,
-    tipo.precios[String(diasMuestra)] ?? 0,
-    'CHF',
-  ),
-  cantidad: cantidades[tipo.id],
-}));
-const pistasMuestra = dificultades.flatMap((dificultad) =>
-  pistas.filter((p) => p.dificultad === dificultad).slice(0, 1),
-);
-
-const estilosBoton = ['primario', 'secundario', 'texto'] as const;
-
-const chips = [
-  { dificultad: 'roja', contador: 8, seleccionado: false },
-  { dificultad: 'roja', contador: 8, seleccionado: true },
-  { dificultad: 'freeride', contador: 3, seleccionado: false },
-  { dificultad: 'freeride', contador: 3, seleccionado: true },
-] as const;
-
-const estilos = [
-  { clase: 'text-display-xl', nombre: 'Display/XL', texto: 'Valserra' },
-  { clase: 'text-display-l', nombre: 'Display/L', texto: 'Baja la montaña' },
-  { clase: 'text-display-m', nombre: 'Display/M', texto: 'Cabinas y sectores' },
-  {
-    clase: 'text-display-s',
-    nombre: 'Display/S',
-    texto: 'El pueblo, a 1.620 m',
-  },
-  {
-    clase: 'text-titulo-h2',
-    nombre: 'Título/H2',
-    texto: 'forfaits de temporada',
-  },
-  { clase: 'text-titulo-h3', nombre: 'Título/H3', texto: 'sector cumbre' },
-  {
-    clase: 'text-etiqueta-antetitulo',
-    nombre: 'Etiqueta/Antetítulo',
-    texto: 'empieza el descenso',
-  },
-  {
-    clase: 'text-etiqueta-pequena',
-    nombre: 'Etiqueta/Pequeña',
-    texto: 'pista roja · abierta',
-  },
-  { clase: 'text-boton', nombre: 'Botón', texto: 'empezar el descenso' },
-  { clase: 'text-dato-grande', nombre: 'Dato/Grande', texto: '3.883 m' },
-  {
-    clase: 'text-dato-medio',
-    nombre: 'Dato/Medio',
-    texto: '−4 °C · 28 pistas',
-  },
-  {
-    clase: 'text-cuerpo-base',
-    nombre: 'Cuerpo/Base',
-    texto:
-      'Desde la cumbre se ve el valle entero: los alerces, el río helado y los tejados del pueblo, mil metros más abajo.',
-  },
-  {
-    clase: 'text-cuerpo-pequeno',
-    nombre: 'Cuerpo/Pequeño',
-    texto:
-      'Los remontes abren a las 8:30 y cierran a las 16:30. Con viento fuerte, la cabina de la cumbre puede parar.',
-  },
-  {
-    clase: 'text-cuerpo-nota',
-    nombre: 'Cuerpo/Nota',
-    texto:
-      'Precios por persona, en francos suizos. Niños menores de nueve años, gratis.',
-  },
-];
 ---
 
 <Base idioma={idioma} titulo={t('meta.titulos.inicio')} pagina="inicio">
-  <div class="muestrario">
-    <section class="muestra">
-      <p class="text-etiqueta-pequena nombre">
-        Botón · normal, con icono y deshabilitado
-      </p>
-      {estilosBoton.map((estilo) => (
-        <div class="fila">
-          <Boton estilo={estilo}>{t('inicio.hero.secundaria')}</Boton>
-          <Boton estilo={estilo} icono="flecha-abajo">
-            {t('inicio.hero.accion')}
-          </Boton>
-          <Boton estilo={estilo} icono="flecha-abajo" disabled>
-            {t('inicio.hero.accion')}
-          </Boton>
-        </div>
-      ))}
-    </section>
-    <section class="muestra">
-      <p class="text-etiqueta-pequena nombre">
-        Chip de filtro · normal y freeride, sin y con seleccionar (se pueden
-        pulsar)
-      </p>
-      <div class="fila">
-        {chips.map(({ dificultad, contador, seleccionado }) => (
-          <ChipFiltro
-            freeride={dificultad === 'freeride'}
-            contador={contador}
-            seleccionado={seleccionado}
-            data-muestra-chip
-          >
-            {t(`mapa.dificultades.${dificultad}`)}
-          </ChipFiltro>
-        ))}
-      </div>
-    </section>
-    <section class="muestra">
-      <p class="text-etiqueta-pequena nombre">
-        Botón cantidad · menos y más, normal y deshabilitado
-      </p>
-      <div class="fila">
-        <BotonCantidad accion="menos" etiqueta={t('forfaits.unDiaMenos')} />
-        <BotonCantidad accion="mas" etiqueta={t('forfaits.unDiaMas')} />
-        <BotonCantidad
-          accion="menos"
-          etiqueta={t('forfaits.unDiaMenos')}
-          aria-disabled="true"
-        />
-        <BotonCantidad
-          accion="mas"
-          etiqueta={t('forfaits.unDiaMas')}
-          disabled
-        />
-      </div>
-    </section>
-    <section class="muestra">
-      <p class="text-etiqueta-pequena nombre" id="muestra-interruptor">
-        Interruptor · segmentos de radio
-      </p>
-      <Interruptor
-        tipo="radio"
-        name="muestra-interruptor"
-        etiquetadoPor="muestra-interruptor"
-        opciones={[
-          { valor: 'cumbre', texto: t('inicio.hoy.cumbre'), actual: true },
-          { valor: 'pueblo', texto: t('inicio.hoy.pueblo') },
-        ]}
-      />
-    </section>
-    <section class="muestra">
-      <p class="text-etiqueta-pequena nombre">
-        Fila de persona · con el mínimo (0) el − sale deshabilitado
-      </p>
-      <div class="filas">
-        {filas.map((fila) => (
-          <FilaPersona idioma={idioma} {...fila} />
-        ))}
-      </div>
-    </section>
-    <section class="muestra">
-      <p class="text-etiqueta-pequena nombre">Forfait · resguardo troquelado</p>
-      <Forfait idioma={idioma} tipo="nino" dias={diasMuestra} numero={5} />
-    </section>
-    <section class="muestra">
-      <p class="text-etiqueta-pequena nombre">
-        Ficha de pista · cuatro dificultades, abierta y cerrada
-      </p>
-      <div class="fichas">
-        {[true, false].map((abierta) =>
-          pistasMuestra.map((pista) => (
-            <FichaPista
-              idioma={idioma}
-              pista={pista}
-              abierta={abierta}
-              tiempo="−14° · 30 km/h"
-              nivel={3}
-            />
-          )),
-        )}
-      </div>
-    </section>
-    <section class="muestra">
-      <p class="text-etiqueta-pequena nombre">
-        Cabina · 3, 2 y 1; la central abierta, las otras se abren con el ratón o
-        el foco
-      </p>
-      <div class="cabinas">
-        {cabinas.map((sector) => (
-          <Cabina
-            idioma={idioma}
-            sector={sector}
-            abierta={sector.numero === 2}
-          />
-        ))}
-      </div>
-    </section>
-    <section class="muestra">
-      <p class="text-etiqueta-pequena nombre">
-        Instrumento · tres esferas y una columna
-      </p>
-      <div class="fila instrumentos">
-        {instrumentos.map(({ tipo, valor, min, max, unit, clave }) => (
-          <Instrumento
-            tipo={tipo}
-            valor={valor}
-            min={min}
-            max={max}
-            texto={unidad(valor, unit)}
-            etiqueta={t(clave)}
-          />
-        ))}
-      </div>
-    </section>
-    <section class="muestra">
-      <p class="text-etiqueta-pequena nombre">
-        Altímetro · las seis paradas (en móvil, sin texto)
-      </p>
-      <div class="fila altimetros">
-        {paradas.map((parada) => (
-          <Altimetro idioma={idioma} parada={parada.id} />
-        ))}
-      </div>
-    </section>
-    {formatos.map(({ nombre, valor }) => (
-      <section class="muestra">
-        <p class="text-etiqueta-pequena nombre">{nombre}</p>
-        <p class="text-dato-medio">{valor}</p>
-      </section>
-    ))}
-    <section class="muestra">
-      <p class="text-etiqueta-pequena nombre">
-        Precio · 78570 céntimos de CHF (cambia con el selector de moneda)
-      </p>
-      <p class="text-dato-medio">
-        <Precio idioma={idioma} centimos={78570} />
-      </p>
-    </section>
-    {estilos.map(({ clase, nombre, texto }) => (
-      <section class="muestra">
-        <p class="text-etiqueta-pequena nombre">{nombre}</p>
-        <p class={clase}>{texto}</p>
-      </section>
-    ))}
+  <div class="provisional">
+    <p class="antetitulo text-etiqueta-antetitulo">
+      {t('inicio.hero.antetitulo')}
+    </p>
+    <h1 class="titulo text-display-xl">{t('inicio.hero.titulo')}</h1>
+    <p class="text-cuerpo-base">{t('inicio.hero.texto')}</p>
   </div>
 </Base>
 
-<script>
-  // Solo para el muestrario: los chips cambian aria-pressed al pulsarlos
-  for (const chip of document.querySelectorAll('[data-muestra-chip]')) {
-    chip.addEventListener('click', () => {
-      const pulsado = chip.getAttribute('aria-pressed') === 'true';
-      chip.setAttribute('aria-pressed', String(!pulsado));
-    });
-  }
-</script>
-
 <style>
-  .muestrario {
+  .provisional {
     display: grid;
-    gap: var(--space-48);
-    padding: var(--space-64) var(--space-24);
+    gap: var(--space-24);
+    max-inline-size: var(--ancho-contenido);
+    padding: var(--space-96) var(--margen-pagina);
   }
 
-  .muestra {
-    display: grid;
-    gap: var(--space-12);
-    padding-block-start: var(--space-16);
-    border-block-start: var(--border-thin) solid var(--color-border-subtle);
+  .provisional p,
+  .provisional h1 {
+    margin: 0;
   }
 
-  .fila {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--space-16);
-  }
-
-  .filas {
-    max-inline-size: calc(
-      var(--space-192) * 2 + var(--space-48) + var(--space-8)
-    );
-  }
-
-  .fichas {
-    display: grid;
-    grid-template-columns: repeat(
-      auto-fill,
-      minmax(min(100%, calc(var(--space-192) * 2 + var(--space-16))), 1fr)
-    );
-    gap: var(--space-32);
-  }
-
-  .cabinas {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: start;
-    gap: var(--space-32);
-  }
-
-  .instrumentos {
-    align-items: end;
-    gap: var(--space-48);
-  }
-
-  .altimetros {
-    align-items: start;
-    gap: var(--space-48);
-  }
-
-  .nombre {
-    color: var(--color-text-secondary);
-    text-transform: none;
+  .antetitulo,
+  .titulo {
+    color: var(--color-text-accent);
   }
 </style>
