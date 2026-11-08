@@ -19,8 +19,11 @@ import Interruptor from '../../components/Interruptor.astro';
 import FilaPersona from '../../components/FilaPersona.tsx';
 import Forfait from '../../components/Forfait.tsx';
 import FichaPista from '../../components/FichaPista.astro';
+import Cabina from '../../components/Cabina.astro';
+import Instrumento from '../../components/Instrumento.tsx';
+import Altimetro from '../../components/Altimetro.astro';
 import { dificultades } from '../../lib/esquemas.ts';
-import { pistas, tarifas } from '../../lib/datos.ts';
+import { paradas, pistas, sectores, tarifas } from '../../lib/datos.ts';
 import { formatearPrecio } from '../../lib/precios.ts';
 import { formatearFecha, formatearNumero } from '../../lib/formato.ts';
 
@@ -43,6 +46,47 @@ const formatos = [
     valor: t('forfaits.comprar', { n: 5 }),
   },
 ];
+
+// Cabinas en el orden de la escena (3, 2 y 1), con la central abierta
+const cabinas = sectores.toSorted((a, b) => b.numero - a.numero);
+
+// Instrumentos con valores de ejemplo; los rangos los fijará la isla del Tiempo
+const unidad = (valor: number, unit: string) =>
+  formatearNumero(idioma, valor, { style: 'unit', unit });
+const instrumentos = [
+  {
+    tipo: 'esfera',
+    valor: -12,
+    min: -30,
+    max: 20,
+    unit: 'celsius',
+    clave: 'inicio.hoy.temperatura',
+  },
+  {
+    tipo: 'esfera',
+    valor: 30,
+    min: 0,
+    max: 100,
+    unit: 'kilometer-per-hour',
+    clave: 'inicio.hoy.viento',
+  },
+  {
+    tipo: 'esfera',
+    valor: 20,
+    min: 0,
+    max: 50,
+    unit: 'kilometer',
+    clave: 'inicio.hoy.visibilidad',
+  },
+  {
+    tipo: 'columna',
+    valor: 185,
+    min: 0,
+    max: 300,
+    unit: 'centimeter',
+    clave: 'inicio.hoy.nieve',
+  },
+] as const;
 
 // Componentes de Valserra: una fila por tipo, como la maqueta de Forfaits
 // (2 adultos y 3 niños, 3 días), y una pista de cada dificultad
@@ -225,6 +269,48 @@ const estilos = [
         )}
       </div>
     </section>
+    <section class="muestra">
+      <p class="text-etiqueta-pequena nombre">
+        Cabina · 3, 2 y 1; la central abierta, las otras se abren con el ratón o
+        el foco
+      </p>
+      <div class="cabinas">
+        {cabinas.map((sector) => (
+          <Cabina
+            idioma={idioma}
+            sector={sector}
+            abierta={sector.numero === 2}
+          />
+        ))}
+      </div>
+    </section>
+    <section class="muestra">
+      <p class="text-etiqueta-pequena nombre">
+        Instrumento · tres esferas y una columna
+      </p>
+      <div class="fila instrumentos">
+        {instrumentos.map(({ tipo, valor, min, max, unit, clave }) => (
+          <Instrumento
+            tipo={tipo}
+            valor={valor}
+            min={min}
+            max={max}
+            texto={unidad(valor, unit)}
+            etiqueta={t(clave)}
+          />
+        ))}
+      </div>
+    </section>
+    <section class="muestra">
+      <p class="text-etiqueta-pequena nombre">
+        Altímetro · las seis paradas (en móvil, sin texto)
+      </p>
+      <div class="fila altimetros">
+        {paradas.map((parada) => (
+          <Altimetro idioma={idioma} parada={parada.id} />
+        ))}
+      </div>
+    </section>
     {formatos.map(({ nombre, valor }) => (
       <section class="muestra">
         <p class="text-etiqueta-pequena nombre">{nombre}</p>
@@ -292,6 +378,23 @@ const estilos = [
       minmax(min(100%, calc(var(--space-192) * 2 + var(--space-16))), 1fr)
     );
     gap: var(--space-32);
+  }
+
+  .cabinas {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: start;
+    gap: var(--space-32);
+  }
+
+  .instrumentos {
+    align-items: end;
+    gap: var(--space-48);
+  }
+
+  .altimetros {
+    align-items: start;
+    gap: var(--space-48);
   }
 
   .nombre {
