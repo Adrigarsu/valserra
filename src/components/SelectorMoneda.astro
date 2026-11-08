@@ -1,0 +1,69 @@
+---
+/*
+ * Selector de moneda CHF / € (Figma: Estados y piezas › Menú móvil
+ * abierto, fila Moneda, y Alta fidelidad › Home, 07 · Footer). Cambia la
+ * moneda de toda la página con src/lib/moneda.ts.
+ *
+ * Se ve "CHF" y "€"; el lector de pantalla oye el nombre de la moneda en
+ * el idioma de la página ("franco suizo", "euro"), sacado de Intl.
+ */
+import AjusteRadio from './AjusteRadio.astro';
+import { nombreMoneda, simboloMoneda } from '../lib/formato.ts';
+import { traductor, type Idioma } from '../lib/i18n.ts';
+import { monedas } from '../lib/moneda.ts';
+
+interface Props {
+  idioma: Idioma;
+  /** id de la etiqueta "Moneda"; distinto en cada sitio donde se usa. */
+  id: string;
+}
+
+const { idioma, id } = Astro.props;
+const t = traductor(idioma);
+
+const opciones = monedas.map((moneda) => ({
+  valor: moneda,
+  texto: simboloMoneda(idioma, moneda),
+  nombre: nombreMoneda(idioma, moneda),
+}));
+---
+
+<AjusteRadio
+  id={id}
+  etiqueta={t('ajustes.moneda')}
+  ajuste="moneda"
+  opciones={opciones}
+/>
+
+<script>
+  import {
+    alCambiarMoneda,
+    elegirMoneda,
+    monedaActual,
+    monedas,
+  } from '../lib/moneda.ts';
+
+  const selectores = document.querySelectorAll<HTMLElement>(
+    '[data-ajuste="moneda"]',
+  );
+  const radios = [...selectores].flatMap((s) => [
+    ...s.querySelectorAll<HTMLInputElement>('input[type="radio"]'),
+  ]);
+
+  // Los selectores del menú y del footer marcan siempre lo mismo
+  function marcar(): void {
+    const moneda = monedaActual();
+    for (const radio of radios) radio.checked = radio.value === moneda;
+  }
+
+  for (const radio of radios) {
+    radio.addEventListener('change', () => {
+      const moneda = monedas.find((m) => m === radio.value);
+      if (moneda) elegirMoneda(moneda);
+    });
+  }
+
+  alCambiarMoneda(marcar);
+  marcar();
+  for (const selector of selectores) selector.hidden = false;
+</script>

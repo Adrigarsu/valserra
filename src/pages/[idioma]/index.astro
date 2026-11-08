@@ -10,11 +10,8 @@
 import type { GetStaticPaths } from 'astro';
 import Base from '../../layouts/Base.astro';
 import { idiomas, traductor, type Idioma } from '../../lib/i18n.ts';
-import {
-  formatearFecha,
-  formatearMoneda,
-  formatearNumero,
-} from '../../lib/formato.ts';
+import Precio from '../../components/Precio.astro';
+import { formatearFecha, formatearNumero } from '../../lib/formato.ts';
 
 export const getStaticPaths = (() =>
   idiomas.map((idioma) => ({ params: { idioma } }))) satisfies GetStaticPaths;
@@ -25,11 +22,6 @@ const t = traductor(idioma);
 // Formatos de ejemplo, con los datos de las maquetas
 const formatos = [
   { nombre: 'Número · 2263', valor: formatearNumero(idioma, 2263) },
-  { nombre: 'Moneda · 78570 CHF', valor: formatearMoneda(idioma, 78570) },
-  {
-    nombre: 'Moneda · 78570 EUR',
-    valor: formatearMoneda(idioma, 78570, 'EUR'),
-  },
   { nombre: 'Fecha · 2027-02-12', valor: formatearFecha(idioma, '2027-02-12') },
   {
     nombre: 'Plural · n = 1',
@@ -102,6 +94,14 @@ const estilos = [
         <p class="text-dato-medio">{valor}</p>
       </section>
     ))}
+    <section class="muestra">
+      <p class="text-etiqueta-pequena nombre">
+        Precio · 78570 céntimos de CHF (cambia con el selector de moneda)
+      </p>
+      <p class="text-dato-medio">
+        <Precio idioma={idioma} centimos={78570} />
+      </p>
+    </section>
     {estilos.map(({ clase, nombre, texto }) => (
       <section class="muestra">
         <p class="text-etiqueta-pequena nombre">{nombre}</p>
