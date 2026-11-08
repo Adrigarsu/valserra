@@ -11,8 +11,12 @@
  * aspecto. Mejor aria-disabled: con disabled el botón deja de recibir el
  * foco, y quien baja los días con el teclado hasta el mínimo pierde el
  * foco justo al llegar. Con aria-disabled, el script ignora el clic.
+ *
+ * Tiene una versión de React, BotonCantidad.tsx, para la isla de Forfaits.
+ * Las dos comparten los estilos de src/styles/componentes/boton-cantidad.css.
  */
 import type { HTMLAttributes } from 'astro/types';
+import '../styles/componentes/boton-cantidad.css';
 
 type Props = Omit<HTMLAttributes<'button'>, 'type'> & {
   accion: 'menos' | 'mas';
@@ -27,7 +31,7 @@ const signo = accion === 'mas' ? '+' : '−';
 
 <button
   type="button"
-  class:list={['cantidad', clase]}
+  class:list={['boton-cantidad', clase]}
   aria-label={etiqueta}
   {...resto}
 >
@@ -35,34 +39,3 @@ const signo = accion === 'mas' ? '+' : '−';
     {signo}
   </span>
 </button>
-
-<style>
-  .cantidad {
-    display: grid;
-    place-items: center;
-    flex-shrink: 0;
-    inline-size: var(--touch-min);
-    block-size: var(--touch-min);
-    padding: 0;
-    border: var(--border-thin) solid var(--color-border-strong);
-    border-radius: var(--radius-pill);
-    background-color: transparent;
-    color: var(--color-text-primary);
-    cursor: pointer;
-  }
-
-  .cantidad:not(:disabled, [aria-disabled='true']):hover {
-    background-color: var(--color-bg-subtle);
-  }
-
-  /* En Figma el anillo ocupa el sitio del borde: el botón sigue en 44 px */
-  .cantidad:focus-visible {
-    outline-offset: calc(-1 * var(--border-thick));
-  }
-
-  .cantidad:is(:disabled, [aria-disabled='true']) {
-    border-color: var(--color-border-subtle);
-    color: var(--color-text-disabled);
-    cursor: not-allowed;
-  }
-</style>
