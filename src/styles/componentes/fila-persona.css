@@ -1,0 +1,42 @@
+/*
+ * Fila de persona (Figma: Componentes Valserra › Fila de persona).
+ * Hoja de FilaPersona.tsx: un componente de React no tiene CSS con ámbito
+ * como los .astro, así que las clases llevan el prefijo del componente.
+ */
+.fila-persona {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-16);
+  padding-block: var(--space-8);
+  border-block-end: var(--border-thin) solid var(--color-border-subtle);
+}
+
+.fila-persona__info {
+  display: grid;
+  gap: calc(var(--space-4) / 2);
+}
+
+.fila-persona__tipo {
+  color: var(--color-text-primary);
+}
+
+.fila-persona__detalle {
+  color: var(--color-text-secondary);
+}
+
+/* 14 px entre los botones y el número, como en Figma */
+.fila-persona__contador {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: calc(var(--space-12) + var(--space-4) / 2);
+}
+
+/* Ancho fijo de dos cifras: pasar de 9 a 10 no mueve los botones */
+.fila-persona__cantidad {
+  min-inline-size: 2ch;
+  color: var(--color-text-primary);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
