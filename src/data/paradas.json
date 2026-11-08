@@ -1,0 +1,8 @@
+[
+  { "id": "cumbre", "cota": 3883, "marca": true },
+  { "id": "nubes", "cota": 3412, "marca": false },
+  { "id": "gornergrat", "cota": 3089, "marca": true },
+  { "id": "riffelberg", "cota": 2582, "marca": true },
+  { "id": "sunnegga", "cota": 2288, "marca": true },
+  { "id": "pueblo", "cota": 1620, "marca": true }
+]

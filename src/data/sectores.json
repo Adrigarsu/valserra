@@ -1,6 +1,7 @@
 [
   {
     "id": "sunnegga",
+    "slug": "sunnegga-rothorn",
     "numero": 1,
     "nombre": "Sunnegga – Rothorn",
     "cotaMax": 3103,
@@ -11,6 +12,7 @@
   },
   {
     "id": "gornergrat",
+    "slug": "gornergrat",
     "numero": 2,
     "nombre": "Gornergrat",
     "cotaMax": 3286,
@@ -21,6 +23,7 @@
   },
   {
     "id": "glacier-paradise",
+    "slug": "matterhorn-glacier",
     "numero": 3,
     "nombre": "Matterhorn Glacier Paradise",
     "cotaMax": 3883,

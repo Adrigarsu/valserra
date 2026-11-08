@@ -38,6 +38,7 @@
   },
   "altimetro": {
     "etiqueta": "Altímetro: {cota} m, {lugar}",
+    "marcador": "{cota} · {lugar}",
     "paradas": {
       "cumbre": "Cumbre",
       "nubes": "Mar de nubes",

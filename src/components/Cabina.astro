@@ -1,0 +1,221 @@
+---
+/*
+ * Cabina de teleférico que presenta un sector en la home (Figma:
+ * Componentes Valserra › Cabina). El número del sector va pintado en la
+ * placa del techo.
+ *
+ * Cerrada enseña solo la cota y el nombre; abierta, además, la
+ * descripción, las pistas y remontes y el enlace al mapa del sector.
+ * Se abre con la prop abierta (la cabina central de la escena) o al pasar
+ * el ratón o el foco por encima. Cerrada, el resto del contenido sigue en
+ * el HTML oculto solo a la vista: el lector lo lee y el enlace se puede
+ * alcanzar con el teclado, y al llegar a él la cabina se abre.
+ *
+ * La escena puede cambiar la cabina abierta con el atributo data-abierta.
+ */
+import type { HTMLAttributes } from 'astro/types';
+import type { Sector } from '../lib/esquemas.ts';
+import { pistas, remontes } from '../lib/datos.ts';
+import { traductor, type Idioma } from '../lib/i18n.ts';
+import { rutaSector } from '../lib/rutas.ts';
+import Icono from './Icono.astro';
+
+type Props = HTMLAttributes<'article'> & {
+  idioma: Idioma;
+  sector: Sector;
+  abierta?: boolean;
+  /** Nivel del título con el nombre: depende de dónde vaya la cabina. */
+  nivel?: 2 | 3;
+};
+
+const {
+  idioma,
+  sector,
+  abierta = false,
+  nivel = 3,
+  class: clase,
+  ...resto
+} = Astro.props;
+
+const t = traductor(idioma);
+const Titulo = `h${nivel}` as const;
+
+// Los remontes que unen dos sectores ("puente") no cuentan en ninguno
+const resumen = t('inicio.cabinas.resumen', {
+  pistas: pistas.filter((p) => p.sector === sector.id).length,
+  remontes: remontes.filter((r) => r.sector === sector.id).length,
+});
+---
+
+<article
+  class:list={['cabina', clase]}
+  data-abierta={abierta ? 'true' : 'false'}
+  {...resto}
+>
+  <div class="cabina__colgador" aria-hidden="true"></div>
+  <p class="cabina__placa text-dato-medio" aria-hidden="true">
+    {sector.numero}
+  </p>
+  <div class="cabina__cuerpo">
+    <div class="cabina__ventana">
+      <p class="cabina__cota text-etiqueta-pequena">
+        {t('inicio.cabinas.hasta', { cota: sector.cotaMax })}
+      </p>
+      <Titulo class="cabina__nombre text-display-s">{sector.nombre}</Titulo>
+      <div class="cabina__detalle">
+        <p class="text-cuerpo-pequeno">{sector.descripcion[idioma]}</p>
+        <p class="cabina__resumen text-etiqueta-pequena">{resumen}</p>
+        <a
+          class="cabina__enlace text-cuerpo-pequeno"
+          href={rutaSector(idioma, sector)}
+        >
+          {t('inicio.cabinas.explorar')}
+          <Icono nombre="flecha-derecha" tamano={16} />
+        </a>
+      </div>
+    </div>
+  </div>
+</article>
+
+<style>
+  /*
+   * Medidas de Figma escritas con la escala de espacios: colgador de
+   * 4 × 48 px, placa de 120 × 44 px con radio de 10 px y cuerpo de 400 px
+   * con radio de 28 px arriba. En pantallas estrechas el cuerpo encoge.
+   */
+  .cabina {
+    --cabina-ancho: calc(2 * var(--space-192) + var(--space-16));
+    --cabina-radio-techo: calc(var(--radius-xl) + var(--space-8));
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Con un ancho fijo, la cabina ensancharía una rejilla en móvil */
+    inline-size: 100%;
+    max-inline-size: var(--cabina-ancho);
+    color: var(--color-text-primary);
+  }
+
+  .cabina p,
+  .cabina__nombre {
+    margin: 0;
+  }
+
+  .cabina__colgador {
+    inline-size: var(--space-4);
+    block-size: var(--space-48);
+    background-color: var(--color-border-strong);
+  }
+
+  .cabina__placa {
+    display: grid;
+    place-items: center;
+    inline-size: calc(var(--space-96) + var(--space-24));
+    block-size: calc(var(--space-32) + var(--space-12));
+    border-start-start-radius: calc(var(--radius-sm) + var(--space-4));
+    border-start-end-radius: calc(var(--radius-sm) + var(--space-4));
+    background-color: var(--color-bg-inverse);
+    color: var(--color-text-on-inverse);
+  }
+
+  .cabina__cuerpo {
+    align-self: stretch;
+    padding: var(--space-16);
+    border: var(--border-thick) solid var(--color-border-strong);
+    border-radius: var(--cabina-radio-techo) var(--cabina-radio-techo)
+      var(--radius-xl) var(--radius-xl);
+    background-color: var(--color-bg-surface);
+  }
+
+  /*
+   * El filete de la ventana mide 2 px en Figma, sin variable: se usa
+   * --border-thin (1,5 px), como en la ficha de pista.
+   */
+  .cabina__ventana {
+    display: grid;
+    gap: var(--space-12);
+    justify-items: start;
+    padding: var(--space-24);
+    border: var(--border-thin) solid var(--color-border-subtle);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-bg-subtle);
+    transition: background-color var(--dur-micro) var(--ease-out);
+  }
+
+  .cabina__cota {
+    color: var(--color-text-secondary);
+  }
+
+  .cabina__detalle {
+    display: grid;
+    gap: var(--space-12);
+    justify-items: start;
+  }
+
+  /*
+   * Enlace de 44 px de alto sin mover el texto: el margen negativo
+   * descuenta lo que el área táctil sobresale de la línea.
+   */
+  .cabina__enlace {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-4);
+    min-block-size: var(--touch-min);
+    margin-block: calc(
+      (
+          var(--text-cuerpo-pequeno) * var(--leading-cuerpo-pequeno) -
+            var(--touch-min)
+        ) /
+        2
+    );
+    color: var(--color-text-accent);
+    text-decoration: underline;
+  }
+
+  .cabina__enlace:hover {
+    color: var(--color-text-primary);
+  }
+
+  /* En Figma la flecha es un carácter del texto: mide lo mismo (1em) */
+  .cabina__enlace :global(.icono) {
+    inline-size: 1em;
+    block-size: 1em;
+  }
+
+  /* Abierta: ventana blanca y todo el contenido */
+  .cabina:is([data-abierta='true'], :focus-within) .cabina__ventana {
+    background-color: var(--color-bg-card);
+  }
+
+  /* Cerrada: el detalle sigue en el HTML, oculto solo a la vista */
+  .cabina:not([data-abierta='true'], :focus-within) .cabina__detalle {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* El hover solo abre con ratón; en táctil no hay hover que deshacer */
+  @media (hover: hover) {
+    .cabina:hover .cabina__ventana {
+      background-color: var(--color-bg-card);
+    }
+
+    .cabina:hover .cabina__detalle {
+      position: static;
+      inline-size: auto;
+      block-size: auto;
+      overflow: visible;
+      clip-path: none;
+      white-space: normal;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cabina__ventana {
+      transition: none;
+    }
+  }
+</style>

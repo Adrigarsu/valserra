@@ -4,6 +4,7 @@
  * issue #9; las demás páginas llegan con cada fase y, hasta entonces,
  * los enlaces apuntan a su dirección definitiva.
  */
+import type { Sector } from './esquemas.ts';
 import { esIdioma, type Idioma } from './i18n.ts';
 
 export const paginas = ['inicio', 'mapa', 'tiempo', 'forfaits'] as const;
@@ -16,6 +17,14 @@ export function ruta(idioma: Idioma, pagina: Pagina): string {
   return pagina === 'inicio'
     ? `${base}${idioma}/`
     : `${base}${idioma}/${pagina}/`;
+}
+
+/** Mapa ya ampliado en un sector: /valserra/es/mapa/gornergrat/. */
+export function rutaSector(
+  idioma: Idioma,
+  sector: Pick<Sector, 'slug'>,
+): string {
+  return `${ruta(idioma, 'mapa')}${sector.slug}/`;
 }
 
 /**

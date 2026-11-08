@@ -38,6 +38,7 @@
   },
   "altimetro": {
     "etiqueta": "Altimeter: {cota} m, {lugar}",
+    "marcador": "{cota} · {lugar}",
     "paradas": {
       "cumbre": "Summit",
       "nubes": "Sea of clouds",
