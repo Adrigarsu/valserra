@@ -1,45 +1,132 @@
 ---
 /*
  * Botón de Valserra (Figma: Componentes básicos › Botón).
- * Por ahora solo el estilo Primario, que es el que usan la navegación y el
- * menú; Secundario, Texto y los estados llegan con el issue #12.
+ * Tres estilos: Primario (la acción principal, una por pantalla), Secundario
+ * (acciones de apoyo, con contorno) y Texto (enlaces de acción).
+ * Estados: normal, hover, foco y deshabilitado.
+ *
  * Con href es un enlace (<a>); sin href, un <button type="button">.
+ * Solo el botón se puede deshabilitar: un enlace que no lleva a ningún
+ * sitio no debería ser un enlace, así que el tipo no deja combinarlos.
+ * Vale disabled o aria-disabled="true" (este deja el botón en el orden
+ * del foco; ver BotonCantidad).
  */
-import type { HTMLAttributes } from 'astro/types';
+import type { ComponentProps, HTMLAttributes } from 'astro/types';
+import Icono from './Icono.astro';
 
-type Props = HTMLAttributes<'a'> & HTMLAttributes<'button'>;
+interface Comunes {
+  estilo?: 'primario' | 'secundario' | 'texto';
+  /** Icono después del texto, como la flecha de "Empezar el descenso". */
+  icono?: ComponentProps<typeof Icono>['nombre'];
+}
 
-const { href, ...resto } = Astro.props;
+type Props = Comunes &
+  (
+    | (Omit<HTMLAttributes<'a'>, 'type'> & { href: string })
+    | (Omit<HTMLAttributes<'button'>, 'type'> & { href?: undefined })
+  );
+
+const {
+  href,
+  estilo = 'primario',
+  icono,
+  class: clase,
+  ...resto
+} = Astro.props;
 const Etiqueta = href ? 'a' : 'button';
 ---
 
 <Etiqueta
-  class="boton text-boton"
+  class:list={['boton', `boton--${estilo}`, 'text-boton', clase]}
   href={href}
   type={href ? undefined : 'button'}
   {...resto}
 >
   <slot />
+  {icono && <Icono nombre={icono} tamano={16} />}
 </Etiqueta>
 
 <style>
+  /*
+   * Figma dibuja el contorno por dentro, así que los tres estilos miden
+   * 46 px de alto (14 px de texto + 16 px arriba y abajo). En CSS el borde
+   * suma, y por eso el relleno descuenta lo que mide el borde.
+   */
   .boton {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: var(--space-8);
     min-block-size: var(--touch-min);
-    padding: var(--space-16) var(--space-24);
-    border: 0;
+    padding: calc(var(--space-16) - var(--border-thin))
+      calc(var(--space-24) - var(--border-thin));
+    border: var(--border-thin) solid transparent;
     border-radius: var(--radius-pill);
-    background-color: var(--color-bg-accent);
-    color: var(--color-text-on-accent);
+    background-color: transparent;
     text-decoration: none;
     white-space: nowrap;
     cursor: pointer;
   }
 
-  .boton:hover {
+  /*
+   * En Figma la flecha es un carácter del propio texto (↓), del tamaño de
+   * la letra. El icono mide lo mismo (1em) para que el botón no crezca.
+   */
+  .boton :global(.icono) {
+    inline-size: 1em;
+    block-size: 1em;
+  }
+
+  /* En Figma el anillo de foco ocupa el sitio del borde: va por dentro */
+  .boton:focus-visible {
+    outline-offset: calc(-1 * var(--border-thick));
+  }
+
+  .boton:is(:disabled, [aria-disabled='true']) {
+    cursor: not-allowed;
+  }
+
+  /* Primario: relleno burdeos */
+  .boton--primario {
+    background-color: var(--color-bg-accent);
+    color: var(--color-text-on-accent);
+  }
+
+  .boton--primario:not(:disabled, [aria-disabled='true']):hover {
     background-color: var(--color-bg-accent-hover);
+  }
+
+  .boton--primario:is(:disabled, [aria-disabled='true']) {
+    background-color: var(--color-bg-disabled);
+    color: var(--color-text-disabled);
+  }
+
+  /* Secundario: contorno tinta */
+  .boton--secundario {
+    border-color: var(--color-border-strong);
+    color: var(--color-text-primary);
+  }
+
+  .boton--secundario:not(:disabled, [aria-disabled='true']):hover {
+    background-color: var(--color-bg-subtle);
+  }
+
+  .boton--secundario:is(:disabled, [aria-disabled='true']) {
+    border-color: var(--color-border-subtle);
+    color: var(--color-text-disabled);
+  }
+
+  /* Texto: sin caja, 8 px a los lados para que el foco no pise las letras */
+  .boton--texto {
+    padding-inline: calc(var(--space-8) - var(--border-thin));
+    color: var(--color-text-accent);
+  }
+
+  .boton--texto:not(:disabled, [aria-disabled='true']):hover {
+    color: var(--color-text-primary);
+  }
+
+  .boton--texto:is(:disabled, [aria-disabled='true']) {
+    color: var(--color-text-disabled);
   }
 </style>
