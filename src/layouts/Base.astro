@@ -33,9 +33,11 @@ interface Props {
   descripcion?: string;
   /** Página actual, para marcar su enlace en la navegación. */
   pagina?: Pagina;
+  /** false en las páginas internas, como el catálogo de componentes. */
+  indexar?: boolean;
 }
 
-const { idioma = idiomaPorDefecto, pagina } = Astro.props;
+const { idioma = idiomaPorDefecto, pagina, indexar = true } = Astro.props;
 const t = traductor(idioma);
 const titulo = Astro.props.titulo ?? t('meta.titulo');
 const descripcion = Astro.props.descripcion ?? t('meta.descripcion');
@@ -97,6 +99,11 @@ const preferencias = [
     ))}
     <title>{titulo}</title>
     <meta name="description" content={descripcion} />
+    {/*
+      robots noindex: los buscadores no la enseñan en sus resultados.
+      nofollow: tampoco siguen sus enlaces desde aquí.
+    */}
+    {!indexar && <meta name="robots" content="noindex, nofollow" />}
     {alternativas.map(({ hreflang, href }) => (
       <link rel="alternate" hreflang={hreflang} href={href} />
     ))}
