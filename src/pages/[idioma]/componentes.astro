@@ -1,0 +1,748 @@
+---
+/*
+ * Catálogo de componentes: /es/componentes/ y /en/componentes/.
+ * Página interna para revisar cada componente frente a Figma, con sus
+ * variantes y estados, en los dos idiomas y en los dos modos. No se
+ * indexa (robots noindex) y ninguna página pública enlaza aquí.
+ *
+ * Las muestras van agrupadas como las páginas de Figma (Fundamentos,
+ * Componentes básicos y Componentes Valserra) y cada una enlaza a su
+ * frame. Los nombres y las notas de las muestras son los de Figma, en
+ * español en los dos idiomas (lang="es"); lo que cambia con el idioma es
+ * el texto de los componentes.
+ */
+import type { GetStaticPaths } from 'astro';
+import type { ComponentProps } from 'astro/types';
+import Base from '../../layouts/Base.astro';
+import { idiomas, traductor, type Idioma } from '../../lib/i18n.ts';
+import MuestraCatalogo from '../../components/MuestraCatalogo.astro';
+import SelectorIdioma from '../../components/SelectorIdioma.astro';
+import SelectorMoneda from '../../components/SelectorMoneda.astro';
+import SelectorModo from '../../components/SelectorModo.astro';
+import Precio from '../../components/Precio.astro';
+import Boton from '../../components/Boton.astro';
+import BotonIcono from '../../components/BotonIcono.astro';
+import BotonCantidad from '../../components/BotonCantidad.astro';
+import ChipFiltro from '../../components/ChipFiltro.astro';
+import Icono from '../../components/Icono.astro';
+import Interruptor from '../../components/Interruptor.astro';
+import FilaPersona from '../../components/FilaPersona.tsx';
+import Forfait from '../../components/Forfait.tsx';
+import FichaPista from '../../components/FichaPista.astro';
+import Cabina from '../../components/Cabina.astro';
+import Instrumento from '../../components/Instrumento.tsx';
+import Altimetro from '../../components/Altimetro.astro';
+import { dificultades } from '../../lib/esquemas.ts';
+import { paradas, pistas, sectores, tarifas } from '../../lib/datos.ts';
+import { formatearPrecio } from '../../lib/precios.ts';
+import { formatearFecha, formatearNumero } from '../../lib/formato.ts';
+
+export const getStaticPaths = (() =>
+  idiomas.map((idioma) => ({ params: { idioma } }))) satisfies GetStaticPaths;
+
+const idioma = Astro.params.idioma as Idioma;
+const t = traductor(idioma);
+
+/*
+ * Índice: grupos y muestras en el orden de la página. Cada muestra toma
+ * de aquí su ancla, su nombre, su nota y su nodo de Figma.
+ */
+const grupos = [
+  {
+    id: 'fundamentos',
+    nombre: 'Fundamentos',
+    muestras: [
+      {
+        id: 'texto',
+        nombre: 'Estilos de texto',
+        nota: 'Los 14 estilos de texto, con su clase de typography.css.',
+        figma: '100:2',
+      },
+      {
+        id: 'formatos',
+        nombre: 'Formatos',
+        nota: 'Número, fecha, plural y precio con Intl. El precio cambia con el selector de moneda.',
+      },
+      {
+        id: 'iconos',
+        nombre: 'Iconos',
+        nota: 'Phosphor Regular a 24 px, copiados a mano en Icono.astro.',
+      },
+    ],
+  },
+  {
+    id: 'basicos',
+    nombre: 'Componentes básicos',
+    muestras: [
+      {
+        id: 'boton',
+        nombre: 'Botón',
+        nota: 'Primario, secundario y texto: normal, con icono y deshabilitado.',
+        figma: '3:40',
+      },
+      {
+        id: 'boton-icono',
+        nombre: 'Botón de icono',
+        nota: 'Menú y cerrar, 44 px. No está en Figma: normal y hover.',
+      },
+      {
+        id: 'chip',
+        nombre: 'Chip de filtro',
+        nota: 'Normal y freeride, sin y con seleccionar. Se pueden pulsar.',
+        figma: '4:38',
+      },
+      {
+        id: 'boton-cantidad',
+        nombre: 'Botón cantidad',
+        nota: 'Menos y más, normal y deshabilitado (aria-disabled y disabled).',
+        figma: '4:55',
+      },
+      {
+        id: 'segmento',
+        nombre: 'Segmento',
+        nota: 'Interruptor de radios: se cambia con las flechas del teclado.',
+        figma: '4:68',
+      },
+    ],
+  },
+  {
+    id: 'valserra',
+    nombre: 'Componentes Valserra',
+    muestras: [
+      {
+        id: 'cartel',
+        nombre: 'Cartel de navegación',
+        nota: 'Es el cartel de esta página: escritorio desde 1024 px, compacto al bajar más de 120 px y móvil por debajo de 1024 px. El botón de menú abre el menú a pantalla completa, y el pie va al final de la página.',
+        figma: '5:58',
+      },
+      {
+        id: 'interruptor',
+        nombre: 'Interruptor',
+        nota: 'Filas de ajuste de idioma (enlaces), moneda y modo (radios), como en el menú y el pie. Son los mismos que los ajustes de arriba.',
+        figma: '5:12',
+      },
+      {
+        id: 'fila-persona',
+        nombre: 'Fila de persona',
+        nota: 'Los cuatro tipos (2 adultos y 3 niños, 3 días). Con el mínimo (0), el − sale deshabilitado.',
+        figma: '5:13',
+      },
+      {
+        id: 'forfait',
+        nombre: 'Forfait',
+        nota: 'Cuerpo y resguardo troquelado.',
+        figma: '7:56',
+      },
+      {
+        id: 'ficha-pista',
+        nombre: 'Ficha de pista',
+        nota: 'Cuatro dificultades, abierta y cerrada.',
+        figma: '6:224',
+      },
+      {
+        id: 'cabina',
+        nombre: 'Cabina',
+        nota: '3, 2 y 1, como en la escena. La central, abierta; las otras se abren con el ratón o con el foco.',
+        figma: '7:31',
+      },
+      {
+        id: 'instrumento',
+        nombre: 'Instrumento',
+        nota: 'Tres esferas y una columna, con valores de ejemplo.',
+        figma: '7:55',
+      },
+      {
+        id: 'altimetro',
+        nombre: 'Altímetro',
+        nota: 'Las seis paradas. Por debajo de 1024 px, sin texto.',
+        figma: '6:71',
+      },
+    ],
+  },
+] as const;
+
+const muestra = Object.fromEntries(
+  grupos.flatMap((g) => g.muestras.map((m) => [m.id, m])),
+) as Record<
+  (typeof grupos)[number]['muestras'][number]['id'],
+  { id: string; nombre: string; nota: string; figma?: string }
+>;
+
+/* Datos de las muestras */
+
+const estilos = [
+  { clase: 'text-display-xl', nombre: 'Display/XL', texto: 'Valserra' },
+  { clase: 'text-display-l', nombre: 'Display/L', texto: 'Baja la montaña' },
+  { clase: 'text-display-m', nombre: 'Display/M', texto: 'Cabinas y sectores' },
+  {
+    clase: 'text-display-s',
+    nombre: 'Display/S',
+    texto: 'El pueblo, a 1.620 m',
+  },
+  {
+    clase: 'text-titulo-h2',
+    nombre: 'Título/H2',
+    texto: 'forfaits de temporada',
+  },
+  { clase: 'text-titulo-h3', nombre: 'Título/H3', texto: 'sector cumbre' },
+  {
+    clase: 'text-etiqueta-antetitulo',
+    nombre: 'Etiqueta/Antetítulo',
+    texto: 'empieza el descenso',
+  },
+  {
+    clase: 'text-etiqueta-pequena',
+    nombre: 'Etiqueta/Pequeña',
+    texto: 'pista roja · abierta',
+  },
+  { clase: 'text-boton', nombre: 'Botón', texto: 'empezar el descenso' },
+  { clase: 'text-dato-grande', nombre: 'Dato/Grande', texto: '3.883 m' },
+  {
+    clase: 'text-dato-medio',
+    nombre: 'Dato/Medio',
+    texto: '−4 °C · 28 pistas',
+  },
+  {
+    clase: 'text-cuerpo-base',
+    nombre: 'Cuerpo/Base',
+    texto:
+      'Desde la cumbre se ve el valle entero: los alerces, el río helado y los tejados del pueblo, mil metros más abajo.',
+  },
+  {
+    clase: 'text-cuerpo-pequeno',
+    nombre: 'Cuerpo/Pequeño',
+    texto:
+      'Los remontes abren a las 8:30 y cierran a las 16:30. Con viento fuerte, la cabina de la cumbre puede parar.',
+  },
+  {
+    clase: 'text-cuerpo-nota',
+    nombre: 'Cuerpo/Nota',
+    texto:
+      'Precios por persona, en francos suizos. Niños menores de nueve años, gratis.',
+  },
+];
+
+const formatos = [
+  { nombre: 'Número · 2263', valor: formatearNumero(idioma, 2263) },
+  { nombre: 'Fecha · 2027-02-12', valor: formatearFecha(idioma, '2027-02-12') },
+  { nombre: 'Plural · n = 1', valor: t('forfaits.comprar', { n: 1 }) },
+  { nombre: 'Plural · n = 5', valor: t('forfaits.comprar', { n: 5 }) },
+];
+
+const iconos = [
+  'menu',
+  'cerrar',
+  'flecha-derecha',
+  'flecha-abajo',
+] as const satisfies ComponentProps<typeof Icono>['nombre'][];
+
+const estilosBoton = ['primario', 'secundario', 'texto'] as const;
+
+const chips = [
+  { dificultad: 'roja', contador: 8, seleccionado: false },
+  { dificultad: 'roja', contador: 8, seleccionado: true },
+  { dificultad: 'freeride', contador: 3, seleccionado: false },
+  { dificultad: 'freeride', contador: 3, seleccionado: true },
+] as const;
+
+// Fila de persona y forfait: la maqueta de Forfaits (2 adultos y 3 niños, 3 días)
+const diasMuestra = 3;
+const cantidades = { adulto: 2, joven: 0, nino: 3, senior: 0 } as const;
+const filas = tarifas.tipos.map((tipo) => ({
+  tipo: tipo.id,
+  edad: tipo.edad[idioma],
+  precio: formatearPrecio(
+    idioma,
+    tipo.precios[String(diasMuestra)] ?? 0,
+    'CHF',
+  ),
+  cantidad: cantidades[tipo.id],
+}));
+
+// Una pista de cada dificultad
+const pistasMuestra = dificultades.flatMap((dificultad) =>
+  pistas.filter((p) => p.dificultad === dificultad).slice(0, 1),
+);
+
+// Cabinas en el orden de la escena (3, 2 y 1), con la central abierta
+const cabinas = sectores.toSorted((a, b) => b.numero - a.numero);
+
+// Instrumentos con valores de ejemplo; los rangos los fijará la isla del Tiempo
+const unidad = (valor: number, unit: string) =>
+  formatearNumero(idioma, valor, { style: 'unit', unit });
+const instrumentos = [
+  {
+    tipo: 'esfera',
+    valor: -12,
+    min: -30,
+    max: 20,
+    unit: 'celsius',
+    clave: 'inicio.hoy.temperatura',
+  },
+  {
+    tipo: 'esfera',
+    valor: 30,
+    min: 0,
+    max: 100,
+    unit: 'kilometer-per-hour',
+    clave: 'inicio.hoy.viento',
+  },
+  {
+    tipo: 'esfera',
+    valor: 20,
+    min: 0,
+    max: 50,
+    unit: 'kilometer',
+    clave: 'inicio.hoy.visibilidad',
+  },
+  {
+    tipo: 'columna',
+    valor: 185,
+    min: 0,
+    max: 300,
+    unit: 'centimeter',
+    clave: 'inicio.hoy.nieve',
+  },
+] as const;
+---
+
+<Base
+  idioma={idioma}
+  titulo={t('meta.titulos.componentes')}
+  descripcion={t('componentes.texto')}
+  indexar={false}
+>
+  <div class="catalogo">
+    <header class="catalogo__cabecera">
+      <h1 class="text-display-l">{t('componentes.titulo')}</h1>
+      <p class="text-cuerpo-base">{t('componentes.texto')}</p>
+    </header>
+
+    <section class="catalogo__ajustes" aria-labelledby="catalogo-ajustes">
+      <h2 class="text-etiqueta-antetitulo" id="catalogo-ajustes">
+        {t('componentes.ajustes')}
+      </h2>
+      <SelectorIdioma idioma={idioma} id="catalogo-idioma" />
+      <SelectorMoneda idioma={idioma} id="catalogo-moneda" />
+      <SelectorModo idioma={idioma} id="catalogo-modo" />
+    </section>
+
+    <nav class="catalogo__indice" aria-labelledby="catalogo-indice">
+      <h2 class="text-etiqueta-antetitulo" id="catalogo-indice">
+        {t('componentes.indice')}
+      </h2>
+      <ol class="catalogo__grupos" lang="es">
+        {grupos.map((grupo) => (
+          <li>
+            <a class="text-cuerpo-pequeno" href={`#${grupo.id}`}>
+              {grupo.nombre}
+            </a>
+            <ol>
+              {grupo.muestras.map((m) => (
+                <li>
+                  <a class="text-cuerpo-nota" href={`#${m.id}`}>
+                    {m.nombre}
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </li>
+        ))}
+      </ol>
+    </nav>
+
+    {/* Fundamentos */}
+    <section
+      class="grupo"
+      id="fundamentos"
+      aria-labelledby="fundamentos-titulo"
+    >
+      <h2 class="text-titulo-h2" id="fundamentos-titulo" lang="es">
+        Fundamentos
+      </h2>
+
+      <MuestraCatalogo idioma={idioma} {...muestra.texto}>
+        <dl class="estilos">
+          {estilos.map(({ clase, nombre, texto }) => (
+            <div class="estilo">
+              <dt class="text-cuerpo-nota" lang="es">
+                {nombre} · <code>.{clase}</code>
+              </dt>
+              <dd class={clase} lang="es">
+                {texto}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </MuestraCatalogo>
+
+      <MuestraCatalogo idioma={idioma} {...muestra.formatos}>
+        <dl class="estilos">
+          {formatos.map(({ nombre, valor }) => (
+            <div class="estilo">
+              <dt class="text-cuerpo-nota" lang="es">
+                {nombre}
+              </dt>
+              <dd class="text-dato-medio">{valor}</dd>
+            </div>
+          ))}
+          <div class="estilo">
+            <dt class="text-cuerpo-nota" lang="es">
+              Precio · 78570 céntimos de CHF
+            </dt>
+            <dd class="text-dato-medio">
+              <Precio idioma={idioma} centimos={78570} />
+            </dd>
+          </div>
+        </dl>
+      </MuestraCatalogo>
+
+      <MuestraCatalogo idioma={idioma} {...muestra.iconos}>
+        <ul class="fila iconos">
+          {iconos.map((nombre) => (
+            <li class="icono-muestra">
+              <Icono nombre={nombre} />
+              <code class="text-cuerpo-nota">{nombre}</code>
+            </li>
+          ))}
+        </ul>
+      </MuestraCatalogo>
+    </section>
+
+    {/* Componentes básicos */}
+    <section class="grupo" id="basicos" aria-labelledby="basicos-titulo">
+      <h2 class="text-titulo-h2" id="basicos-titulo" lang="es">
+        Componentes básicos
+      </h2>
+
+      <MuestraCatalogo idioma={idioma} {...muestra.boton}>
+        <div class="columna">
+          {estilosBoton.map((estilo) => (
+            <div class="fila">
+              <Boton estilo={estilo}>{t('inicio.hero.secundaria')}</Boton>
+              <Boton estilo={estilo} icono="flecha-abajo">
+                {t('inicio.hero.accion')}
+              </Boton>
+              <Boton estilo={estilo} icono="flecha-abajo" disabled>
+                {t('inicio.hero.accion')}
+              </Boton>
+            </div>
+          ))}
+        </div>
+      </MuestraCatalogo>
+
+      <MuestraCatalogo idioma={idioma} {...muestra['boton-icono']}>
+        <div class="fila">
+          <BotonIcono icono="menu" etiqueta={t('nav.abrirMenu')} />
+          <BotonIcono icono="cerrar" etiqueta={t('nav.cerrarMenu')} />
+        </div>
+      </MuestraCatalogo>
+
+      <MuestraCatalogo idioma={idioma} {...muestra.chip}>
+        <div class="fila">
+          {chips.map(({ dificultad, contador, seleccionado }) => (
+            <ChipFiltro
+              freeride={dificultad === 'freeride'}
+              contador={contador}
+              seleccionado={seleccionado}
+              data-catalogo-chip
+            >
+              {t(`mapa.dificultades.${dificultad}`)}
+            </ChipFiltro>
+          ))}
+        </div>
+      </MuestraCatalogo>
+
+      <MuestraCatalogo idioma={idioma} {...muestra['boton-cantidad']}>
+        <div class="fila">
+          <BotonCantidad accion="menos" etiqueta={t('forfaits.unDiaMenos')} />
+          <BotonCantidad accion="mas" etiqueta={t('forfaits.unDiaMas')} />
+          <BotonCantidad
+            accion="menos"
+            etiqueta={t('forfaits.unDiaMenos')}
+            aria-disabled="true"
+          />
+          <BotonCantidad
+            accion="mas"
+            etiqueta={t('forfaits.unDiaMas')}
+            disabled
+          />
+        </div>
+      </MuestraCatalogo>
+
+      <MuestraCatalogo idioma={idioma} {...muestra.segmento}>
+        <p class="visually-hidden" id="catalogo-segmento">
+          {t('inicio.hoy.antetitulo')}
+        </p>
+        <Interruptor
+          tipo="radio"
+          name="catalogo-segmento"
+          etiquetadoPor="catalogo-segmento"
+          opciones={[
+            { valor: 'cumbre', texto: t('inicio.hoy.cumbre'), actual: true },
+            { valor: 'pueblo', texto: t('inicio.hoy.pueblo') },
+          ]}
+        />
+      </MuestraCatalogo>
+    </section>
+
+    {/* Componentes Valserra */}
+    <section class="grupo" id="valserra" aria-labelledby="valserra-titulo">
+      <h2 class="text-titulo-h2" id="valserra-titulo" lang="es">
+        Componentes Valserra
+      </h2>
+
+      <MuestraCatalogo idioma={idioma} {...muestra.cartel} />
+
+      <MuestraCatalogo idioma={idioma} {...muestra.interruptor}>
+        <div class="ajustes-muestra">
+          <SelectorIdioma idioma={idioma} id="catalogo-muestra-idioma" />
+          <SelectorMoneda idioma={idioma} id="catalogo-muestra-moneda" />
+          <SelectorModo idioma={idioma} id="catalogo-muestra-modo" />
+        </div>
+      </MuestraCatalogo>
+
+      <MuestraCatalogo idioma={idioma} {...muestra['fila-persona']}>
+        <div class="filas">
+          {filas.map((fila) => (
+            <FilaPersona idioma={idioma} {...fila} />
+          ))}
+        </div>
+      </MuestraCatalogo>
+
+      <MuestraCatalogo idioma={idioma} {...muestra.forfait}>
+        <Forfait idioma={idioma} tipo="nino" dias={diasMuestra} numero={5} />
+      </MuestraCatalogo>
+
+      <MuestraCatalogo idioma={idioma} {...muestra['ficha-pista']}>
+        <div class="fichas">
+          {[true, false].map((abierta) =>
+            pistasMuestra.map((pista) => (
+              <FichaPista
+                idioma={idioma}
+                pista={pista}
+                abierta={abierta}
+                tiempo="−14° · 30 km/h"
+                nivel={4}
+              />
+            )),
+          )}
+        </div>
+      </MuestraCatalogo>
+
+      <MuestraCatalogo idioma={idioma} {...muestra.cabina}>
+        <div class="cabinas">
+          {cabinas.map((sector) => (
+            <Cabina
+              idioma={idioma}
+              sector={sector}
+              abierta={sector.numero === 2}
+              nivel={4}
+            />
+          ))}
+        </div>
+      </MuestraCatalogo>
+
+      <MuestraCatalogo idioma={idioma} {...muestra.instrumento}>
+        <div class="fila instrumentos">
+          {instrumentos.map(({ tipo, valor, min, max, unit, clave }) => (
+            <Instrumento
+              tipo={tipo}
+              valor={valor}
+              min={min}
+              max={max}
+              texto={unidad(valor, unit)}
+              etiqueta={t(clave)}
+            />
+          ))}
+        </div>
+      </MuestraCatalogo>
+
+      <MuestraCatalogo idioma={idioma} {...muestra.altimetro}>
+        <div class="fila altimetros">
+          {paradas.map((parada) => (
+            <Altimetro idioma={idioma} parada={parada.id} />
+          ))}
+        </div>
+      </MuestraCatalogo>
+    </section>
+  </div>
+</Base>
+
+<script>
+  // Solo para el catálogo: los chips cambian aria-pressed al pulsarlos
+  for (const chip of document.querySelectorAll('[data-catalogo-chip]')) {
+    chip.addEventListener('click', () => {
+      const pulsado = chip.getAttribute('aria-pressed') === 'true';
+      chip.setAttribute('aria-pressed', String(!pulsado));
+    });
+  }
+</script>
+
+<style>
+  .catalogo {
+    display: grid;
+    gap: var(--space-64);
+    inline-size: 100%;
+    max-inline-size: var(--ancho-max);
+    margin-inline: auto;
+    padding: var(--space-64) var(--margen-pagina);
+  }
+
+  .catalogo h1,
+  .catalogo h2,
+  .catalogo p,
+  .catalogo dl,
+  .catalogo dd,
+  .catalogo ol,
+  .catalogo ul {
+    margin: 0;
+  }
+
+  .catalogo__cabecera {
+    display: grid;
+    gap: var(--space-16);
+    max-inline-size: var(--ancho-contenido);
+  }
+
+  .catalogo__cabecera h1 {
+    color: var(--color-text-heading);
+  }
+
+  .catalogo__ajustes,
+  .catalogo__indice {
+    display: grid;
+    gap: var(--space-8);
+    padding: var(--space-24);
+    border: var(--border-thin) solid var(--color-border-strong);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-bg-surface);
+  }
+
+  .catalogo__ajustes {
+    max-inline-size: calc(var(--space-192) * 2 + var(--space-48));
+  }
+
+  .catalogo__ajustes h2,
+  .catalogo__indice h2 {
+    color: var(--color-text-secondary);
+  }
+
+  .catalogo__grupos {
+    display: grid;
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(min(100%, var(--space-192)), 1fr)
+    );
+    gap: var(--space-24);
+    padding: 0;
+    list-style: none;
+  }
+
+  .catalogo__grupos ol {
+    padding: 0;
+    list-style: none;
+  }
+
+  .catalogo__grupos a {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--touch-min);
+    color: var(--color-text-primary);
+  }
+
+  .catalogo__grupos a:hover {
+    color: var(--color-text-accent);
+  }
+
+  .grupo {
+    display: grid;
+    gap: var(--space-48);
+    scroll-margin-block-start: var(--space-96);
+  }
+
+  .grupo h2 {
+    color: var(--color-text-heading);
+  }
+
+  .columna {
+    display: grid;
+    gap: var(--space-16);
+  }
+
+  .fila {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-16);
+  }
+
+  .estilos {
+    display: grid;
+    gap: var(--space-24);
+  }
+
+  .estilo {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .estilo dt {
+    color: var(--color-text-secondary);
+  }
+
+  .iconos {
+    gap: var(--space-32);
+    padding: 0;
+    list-style: none;
+  }
+
+  .icono-muestra {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-8);
+    color: var(--color-text-primary);
+  }
+
+  .icono-muestra code {
+    color: var(--color-text-secondary);
+  }
+
+  .ajustes-muestra {
+    display: grid;
+    gap: var(--space-8);
+    max-inline-size: calc(var(--space-192) * 2 + var(--space-48));
+  }
+
+  .filas {
+    max-inline-size: calc(
+      var(--space-192) * 2 + var(--space-48) + var(--space-8)
+    );
+  }
+
+  .fichas {
+    display: grid;
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(min(100%, calc(var(--space-192) * 2 + var(--space-16))), 1fr)
+    );
+    gap: var(--space-32);
+  }
+
+  .cabinas {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: start;
+    gap: var(--space-32);
+  }
+
+  .instrumentos {
+    align-items: end;
+    gap: var(--space-48);
+  }
+
+  .altimetros {
+    align-items: start;
+    gap: var(--space-48);
+  }
+</style>

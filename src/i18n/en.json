@@ -7,6 +7,7 @@
       "mapa": "Piste map · Valserra",
       "tiempo": "Today's report · Valserra",
       "forfaits": "Lift passes · Valserra",
+      "componentes": "Component catalogue · Valserra",
       "noEncontrada": "You've gone off-piste · Valserra"
     }
   },
@@ -35,6 +36,13 @@
     "noche": "Night",
     "modoNocheActivar": "Turn on night mode",
     "modoNocheDesactivar": "Back to day mode"
+  },
+  "componentes": {
+    "titulo": "Component catalogue",
+    "texto": "Internal page to check every component against Figma, with its variants and states. It is hidden from search engines.",
+    "ajustes": "Review settings",
+    "indice": "Contents",
+    "verEnFigma": "View in Figma"
   },
   "altimetro": {
     "etiqueta": "Altimeter: {cota} m, {lugar}",

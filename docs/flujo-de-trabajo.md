@@ -68,3 +68,5 @@ Una pull request se une cuando:
 ## 6. Del diseño al código
 
 El diseño vive en [Figma](https://www.figma.com/design/u5PvQSj9xywRUVwQMVygGE/Valserra). Las variables CSS usan el nombre de la sintaxis WEB de cada variable de Figma (`bg/page` → `--color-bg-page`; tabla en [tokens.md](tokens.md)), cada issue enlaza su frame y cada pull request compara Figma con la web.
+
+Los componentes se revisan en el catálogo, `/valserra/es/componentes/` (y `/en/`): una página interna, sin indexar, con cada componente, sus variantes y estados, un enlace a su frame de Figma y los ajustes de idioma, moneda y modo arriba. Cada componente nuevo se añade allí, a su grupo y al índice (`grupos` en `src/pages/[idioma]/componentes.astro`).
