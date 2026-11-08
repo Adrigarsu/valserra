@@ -1,0 +1,220 @@
+---
+/*
+ * Ficha de una pista del mapa (Figma: Componentes Valserra › Ficha de
+ * pista): lateral en escritorio e inferior en móvil.
+ *
+ * El color del número es el de la dificultad; freeride lleva un aro
+ * discontinuo, igual que su trazo en el mapa. El estado abierto va en
+ * verde pino y el cerrado en burdeos.
+ *
+ * El número y "Pista · Roja" son solo visuales (aria-hidden): el lector
+ * oye el texto completo, "Pista 28 · Roja", que está oculto a la vista.
+ *
+ * El tiempo a la cota de salida llega en la fase del Tiempo (Open-Meteo);
+ * mientras no se pase, la fila no se pinta.
+ */
+import type { HTMLAttributes } from 'astro/types';
+import type { Pista } from '../lib/esquemas.ts';
+import { formatearNumero } from '../lib/formato.ts';
+import { traductor, type Idioma } from '../lib/i18n.ts';
+
+type Props = HTMLAttributes<'article'> & {
+  idioma: Idioma;
+  pista: Pista;
+  /** Por defecto, el estado de demostración de pistas.json. */
+  abierta?: boolean;
+  /** Ya formateado: "−14° · 30 km/h". */
+  tiempo?: string;
+  /** Nivel del título con el nombre: depende de dónde vaya la ficha. */
+  nivel?: 2 | 3;
+};
+
+const {
+  idioma,
+  pista,
+  abierta = pista.estadoDemo === 'abierta',
+  tiempo,
+  nivel = 2,
+  class: clase,
+  ...resto
+} = Astro.props;
+
+const t = traductor(idioma);
+const dificultad = t(`mapa.dificultades.${pista.dificultad}`);
+const Titulo = `h${nivel}` as const;
+
+// 2,4 km y 704 m (2.4 km en inglés); siempre con un decimal en los km
+const longitud = formatearNumero(idioma, pista.longitudKm, {
+  style: 'unit',
+  unit: 'kilometer',
+  minimumFractionDigits: 1,
+  maximumFractionDigits: 1,
+});
+const desnivel = formatearNumero(idioma, pista.desnivel, {
+  style: 'unit',
+  unit: 'meter',
+});
+---
+
+<article
+  class:list={['ficha', clase]}
+  data-dificultad={pista.dificultad}
+  data-estado={abierta ? 'abierta' : 'cerrada'}
+  {...resto}
+>
+  <p class="ficha__cabecera">
+    <span class="ficha__numero text-etiqueta-pequena" aria-hidden="true">
+      {pista.numero}
+    </span>
+    <span class="text-etiqueta-antetitulo" aria-hidden="true">
+      {t('mapa.ficha.pistaCorta', { dificultad })}
+    </span>
+    <span class="visually-hidden">
+      {t('mapa.ficha.pista', { numero: String(pista.numero), dificultad })}
+    </span>
+  </p>
+  <Titulo class="ficha__nombre text-display-m">{pista.nombre}</Titulo>
+  <p class="ficha__estado text-etiqueta-pequena">
+    {t(abierta ? 'mapa.ficha.abierta' : 'mapa.ficha.cerrada')}
+  </p>
+  <dl class="ficha__datos">
+    <div class="ficha__dato">
+      <dt class="text-etiqueta-pequena">{t('mapa.ficha.longitud')}</dt>
+      <dd class="text-dato-medio">{longitud}</dd>
+    </div>
+    <div class="ficha__dato">
+      <dt class="text-etiqueta-pequena">{t('mapa.ficha.desnivel')}</dt>
+      <dd class="text-dato-medio">{desnivel}</dd>
+    </div>
+  </dl>
+  {tiempo && (
+    <p class="ficha__tiempo">
+      <span class="text-etiqueta-pequena">
+        {t('mapa.ficha.ahoraEnLaSalida')}
+      </span>
+      <span class="ficha__tiempo-valor text-etiqueta-antetitulo">{tiempo}</span>
+    </p>
+  )}
+</article>
+
+<style>
+  /* 400 px de ancho en Figma; en móvil ocupa lo que haya */
+  .ficha {
+    display: grid;
+    gap: var(--space-16);
+    justify-items: start;
+    max-inline-size: calc(2 * var(--space-192) + var(--space-16));
+    padding: var(--space-24);
+    border: var(--border-thin) solid var(--color-border-strong);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-bg-surface);
+    color: var(--color-text-primary);
+  }
+
+  .ficha p,
+  .ficha dl,
+  .ficha dd {
+    margin: 0;
+  }
+
+  /* 10 px entre el número y el texto, como en Figma */
+  .ficha__cabecera {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--space-4) + var(--space-12) / 2);
+  }
+
+  /* Color de la dificultad; el texto, del color que contrasta con él */
+  .ficha__numero {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    inline-size: var(--space-32);
+    block-size: var(--space-32);
+    border-radius: var(--radius-pill);
+    background-color: var(--ficha-color);
+    color: var(--color-text-on-inverse);
+    /* El interletrado del estilo empujaría las dos cifras a la izquierda */
+    letter-spacing: 0;
+  }
+
+  .ficha[data-dificultad='azul'] {
+    --ficha-color: var(--color-pista-azul);
+  }
+
+  .ficha[data-dificultad='roja'] {
+    --ficha-color: var(--color-pista-roja);
+  }
+
+  .ficha[data-dificultad='negra'] {
+    --ficha-color: var(--color-pista-negra);
+  }
+
+  .ficha[data-dificultad='freeride'] .ficha__numero {
+    border: var(--border-thick) dashed var(--color-pista-freeride);
+    background-color: transparent;
+    color: var(--color-text-primary);
+  }
+
+  .ficha__nombre {
+    color: var(--color-text-primary);
+  }
+
+  .ficha__estado {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-8);
+    padding: calc(var(--space-12) / 2) var(--space-12);
+    border: var(--border-thin) solid currentcolor;
+    border-radius: var(--radius-pill);
+    color: var(--color-estado-abierto);
+  }
+
+  .ficha[data-estado='cerrada'] .ficha__estado {
+    color: var(--color-estado-cerrado);
+  }
+
+  /* Punto de estado: un círculo de 8 px del color del texto */
+  .ficha__estado::before {
+    content: '';
+    inline-size: var(--space-8);
+    block-size: var(--space-8);
+    border-radius: var(--radius-pill);
+    background-color: currentcolor;
+  }
+
+  .ficha__datos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-24);
+    justify-self: stretch;
+  }
+
+  .ficha__dato {
+    display: grid;
+    gap: calc(var(--space-4) / 2);
+    padding-block-start: var(--space-8);
+    border-block-start: var(--border-thin) solid var(--color-border-strong);
+  }
+
+  .ficha__dato dt {
+    color: var(--color-text-secondary);
+  }
+
+  .ficha__tiempo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-8);
+    justify-self: stretch;
+    padding: var(--space-12);
+    border-radius: var(--radius-md);
+    background-color: var(--color-bg-subtle);
+    color: var(--color-text-secondary);
+  }
+
+  .ficha__tiempo-valor {
+    color: var(--color-text-primary);
+  }
+</style>

@@ -146,6 +146,7 @@
     },
     "ficha": {
       "pista": "Pista {numero} · {dificultad}",
+      "pistaCorta": "Pista · {dificultad}",
       "abierta": "Abierta",
       "cerrada": "Cerrada",
       "longitud": "Longitud",

@@ -1,0 +1,105 @@
+/*
+ * Forfait (Figma: Componentes Valserra › Forfait). Hoja de Forfait.tsx.
+ *
+ * Medidas de Figma escritas con la escala de espacios:
+ * cuerpo de 400 × 220 px, resguardo de 100 px y perforación de 15 trazos
+ * de 3 × 8 px separados 6 px. El cuerpo encoge en pantallas estrechas; el
+ * resguardo no.
+ */
+.forfait {
+  --forfait-alto: calc(var(--space-192) + var(--space-24) + var(--space-4));
+  --forfait-cuerpo: calc(2 * var(--space-192) + var(--space-16));
+  --forfait-resguardo: calc(var(--space-96) + var(--space-4));
+  --forfait-hueco: calc(var(--space-12) / 2);
+
+  display: flex;
+  align-items: center;
+  max-inline-size: 100%;
+}
+
+.forfait p {
+  margin: 0;
+}
+
+.forfait__cuerpo,
+.forfait__resguardo {
+  min-block-size: var(--forfait-alto);
+  border: var(--border-thick) solid var(--color-border-strong);
+  background-color: var(--color-bg-card);
+}
+
+.forfait__cuerpo {
+  display: flex;
+  flex: 0 1 var(--forfait-cuerpo);
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-16);
+  min-inline-size: 0;
+  padding: var(--space-24);
+  border-inline-end: 0;
+  border-start-start-radius: var(--radius-lg);
+  border-end-start-radius: var(--radius-lg);
+}
+
+.forfait__cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+  justify-content: space-between;
+  gap: var(--space-8);
+}
+
+/*
+ * El logo de Figma mide 38 px, que no es ningún estilo de texto: se usa la
+ * familia Display con el tamaño de Display/S (34 px), como en el cartel.
+ */
+.forfait__marca {
+  font-family: var(--font-display);
+  font-size: var(--text-display-s);
+  line-height: var(--leading-display-s);
+  color: var(--color-text-accent);
+}
+
+.forfait__datos {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.forfait__etiqueta {
+  color: var(--color-text-secondary);
+}
+
+.forfait__dato {
+  color: var(--color-text-primary);
+}
+
+/*
+ * Trazos de la perforación con un degradado que se repite: 8 px de tinta
+ * y 6 px de hueco. El alto útil (220 − 2 × 8 px) da justo 15 trazos.
+ */
+.forfait__perforacion {
+  flex-shrink: 0;
+  align-self: stretch;
+  inline-size: var(--border-thick);
+  margin-block: var(--space-8);
+  margin-inline: calc(var(--space-4) / 2);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--color-border-strong) 0 var(--space-8),
+    transparent var(--space-8) calc(var(--space-8) + var(--forfait-hueco))
+  );
+}
+
+.forfait__resguardo {
+  display: flex;
+  flex: 0 0 var(--forfait-resguardo);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--forfait-hueco);
+  padding-inline: var(--space-8);
+  border-inline-start: 0;
+  border-start-end-radius: var(--radius-lg);
+  border-end-end-radius: var(--radius-lg);
+  text-align: center;
+}

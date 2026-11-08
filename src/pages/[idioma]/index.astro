@@ -3,7 +3,8 @@
  * Portada en cada idioma: /es/ y /en/. getStaticPaths genera una página
  * por idioma a partir del mismo archivo, así las dos son siempre iguales.
  *
- * Contenido provisional: el muestrario de los componentes básicos, de los
+ * Contenido provisional: el muestrario de los componentes básicos y de
+ * Valserra, de los
  * 14 estilos de texto y de los formatos con Intl. Se sustituye por el descenso (Fase 3); el muestrario
  * pasa al catálogo de componentes (#15).
  */
@@ -15,6 +16,12 @@ import Boton from '../../components/Boton.astro';
 import BotonCantidad from '../../components/BotonCantidad.astro';
 import ChipFiltro from '../../components/ChipFiltro.astro';
 import Interruptor from '../../components/Interruptor.astro';
+import FilaPersona from '../../components/FilaPersona.tsx';
+import Forfait from '../../components/Forfait.tsx';
+import FichaPista from '../../components/FichaPista.astro';
+import { dificultades } from '../../lib/esquemas.ts';
+import { pistas, tarifas } from '../../lib/datos.ts';
+import { formatearPrecio } from '../../lib/precios.ts';
 import { formatearFecha, formatearNumero } from '../../lib/formato.ts';
 
 export const getStaticPaths = (() =>
@@ -36,6 +43,24 @@ const formatos = [
     valor: t('forfaits.comprar', { n: 5 }),
   },
 ];
+
+// Componentes de Valserra: una fila por tipo, como la maqueta de Forfaits
+// (2 adultos y 3 niños, 3 días), y una pista de cada dificultad
+const diasMuestra = 3;
+const cantidades = { adulto: 2, joven: 0, nino: 3, senior: 0 } as const;
+const filas = tarifas.tipos.map((tipo) => ({
+  tipo: tipo.id,
+  edad: tipo.edad[idioma],
+  precio: formatearPrecio(
+    idioma,
+    tipo.precios[String(diasMuestra)] ?? 0,
+    'CHF',
+  ),
+  cantidad: cantidades[tipo.id],
+}));
+const pistasMuestra = dificultades.flatMap((dificultad) =>
+  pistas.filter((p) => p.dificultad === dificultad).slice(0, 1),
+);
 
 const estilosBoton = ['primario', 'secundario', 'texto'] as const;
 
@@ -168,6 +193,38 @@ const estilos = [
         ]}
       />
     </section>
+    <section class="muestra">
+      <p class="text-etiqueta-pequena nombre">
+        Fila de persona · con el mínimo (0) el − sale deshabilitado
+      </p>
+      <div class="filas">
+        {filas.map((fila) => (
+          <FilaPersona idioma={idioma} {...fila} />
+        ))}
+      </div>
+    </section>
+    <section class="muestra">
+      <p class="text-etiqueta-pequena nombre">Forfait · resguardo troquelado</p>
+      <Forfait idioma={idioma} tipo="nino" dias={diasMuestra} numero={5} />
+    </section>
+    <section class="muestra">
+      <p class="text-etiqueta-pequena nombre">
+        Ficha de pista · cuatro dificultades, abierta y cerrada
+      </p>
+      <div class="fichas">
+        {[true, false].map((abierta) =>
+          pistasMuestra.map((pista) => (
+            <FichaPista
+              idioma={idioma}
+              pista={pista}
+              abierta={abierta}
+              tiempo="−14° · 30 km/h"
+              nivel={3}
+            />
+          )),
+        )}
+      </div>
+    </section>
     {formatos.map(({ nombre, valor }) => (
       <section class="muestra">
         <p class="text-etiqueta-pequena nombre">{nombre}</p>
@@ -220,6 +277,21 @@ const estilos = [
     flex-wrap: wrap;
     align-items: center;
     gap: var(--space-16);
+  }
+
+  .filas {
+    max-inline-size: calc(
+      var(--space-192) * 2 + var(--space-48) + var(--space-8)
+    );
+  }
+
+  .fichas {
+    display: grid;
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(min(100%, calc(var(--space-192) * 2 + var(--space-16))), 1fr)
+    );
+    gap: var(--space-32);
   }
 
   .nombre {

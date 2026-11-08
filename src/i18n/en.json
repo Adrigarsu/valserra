@@ -146,6 +146,7 @@
     },
     "ficha": {
       "pista": "Run {numero} · {dificultad}",
+      "pistaCorta": "Run · {dificultad}",
       "abierta": "Open",
       "cerrada": "Closed",
       "longitud": "Length",

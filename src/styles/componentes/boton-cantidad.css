@@ -1,0 +1,35 @@
+/*
+ * Botón − / + de 44 × 44 px (Figma: Componentes básicos › Botón cantidad).
+ * Hoja compartida por BotonCantidad.astro y BotonCantidad.tsx: el mismo
+ * botón se usa en HTML estático y dentro de la isla de React de Forfaits,
+ * que no puede usar componentes .astro. Por eso no es CSS con ámbito de
+ * Astro sino una clase global con prefijo propio.
+ */
+.boton-cantidad {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  inline-size: var(--touch-min);
+  block-size: var(--touch-min);
+  padding: 0;
+  border: var(--border-thin) solid var(--color-border-strong);
+  border-radius: var(--radius-pill);
+  background-color: transparent;
+  color: var(--color-text-primary);
+  cursor: pointer;
+}
+
+.boton-cantidad:not(:disabled, [aria-disabled='true']):hover {
+  background-color: var(--color-bg-subtle);
+}
+
+/* En Figma el anillo ocupa el sitio del borde: el botón sigue en 44 px */
+.boton-cantidad:focus-visible {
+  outline-offset: calc(-1 * var(--border-thick));
+}
+
+.boton-cantidad:is(:disabled, [aria-disabled='true']) {
+  border-color: var(--color-border-subtle);
+  color: var(--color-text-disabled);
+  cursor: not-allowed;
+}
