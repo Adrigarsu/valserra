@@ -1,0 +1,150 @@
+---
+/*
+ * Interruptor de dos opciones (Figma: Componentes Valserra › Interruptor,
+ * hecho con Componentes básicos › Segmento): Cumbre/Pueblo, Mapa/Lista,
+ * ES/EN, CHF/€. Los segmentos van dentro de un contenedor con borde tinta
+ * y el elegido se rellena de tinta.
+ *
+ * El HTML depende de lo que haga el interruptor:
+ * - tipo="radio": elegir una opción en la misma página (modo, moneda,
+ *   cumbre/pueblo). Son radios nativos en un role="radiogroup", así el
+ *   navegador da gratis las flechas del teclado y el estado
+ *   "seleccionado" al lector de pantalla. Los círculos se ocultan y la
+ *   etiqueta hace de segmento.
+ * - tipo="enlace": cada opción lleva a otra URL (idioma). Son enlaces en
+ *   una lista, y el actual lleva aria-current="page".
+ *
+ * Las dos formas comparten los estilos del Segmento: normal, hover,
+ * seleccionado y foco.
+ */
+interface Opcion {
+  /** Lo que se ve en el segmento. */
+  texto: string;
+  /** Nombre para el lector de pantalla, si lo que se ve es una abreviatura. */
+  nombre?: string;
+  /** Si está elegida (radio) o es la página actual (enlace). */
+  actual?: boolean;
+  /** Solo tipo="radio": el value del radio. */
+  valor?: string;
+  /** Solo tipo="enlace": destino del enlace. */
+  href?: string;
+  /** Solo tipo="enlace": idioma del destino (lang y hreflang). */
+  idioma?: string;
+}
+
+type Props = {
+  /** id del texto que nombra el grupo ("Idioma", "Moneda"). */
+  etiquetadoPor: string;
+  opciones: readonly Opcion[];
+} & ({ tipo: 'radio'; name: string } | { tipo: 'enlace'; name?: undefined });
+
+const { etiquetadoPor, opciones, tipo, name } = Astro.props;
+---
+
+{tipo === 'radio' ? (
+  <div class="interruptor" role="radiogroup" aria-labelledby={etiquetadoPor}>
+    {opciones.map(({ texto, nombre, actual, valor }) => (
+      <label class="segmento text-etiqueta-pequena">
+        <input
+          class="segmento__radio"
+          type="radio"
+          name={name}
+          value={valor}
+          checked={actual}
+        />
+        {nombre ? (
+          <>
+            <span aria-hidden="true">{texto}</span>
+            <span class="visually-hidden">{nombre}</span>
+          </>
+        ) : (
+          texto
+        )}
+      </label>
+    ))}
+  </div>
+) : (
+  <ul class="interruptor" aria-labelledby={etiquetadoPor}>
+    {opciones.map(({ texto, nombre, actual, href, idioma }) => (
+      <li>
+        <a
+          class="segmento text-etiqueta-pequena"
+          href={href}
+          lang={idioma}
+          hreflang={idioma}
+          aria-current={actual ? 'page' : undefined}
+        >
+          {nombre ? (
+            <>
+              <span aria-hidden="true">{texto}</span>
+              <span class="visually-hidden">{nombre}</span>
+            </>
+          ) : (
+            texto
+          )}
+        </a>
+      </li>
+    ))}
+  </ul>
+)}
+
+<style>
+  .interruptor {
+    display: flex;
+    inline-size: fit-content;
+    padding: var(--space-4);
+    list-style: none;
+    border: var(--border-thin) solid var(--color-border-strong);
+    border-radius: var(--radius-pill);
+  }
+
+  /*
+   * Segmento: 11 px de texto + 16 px de relleno arriba y abajo = 46 px,
+   * por encima de los 44 px del área táctil.
+   */
+  .segmento {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-block-size: var(--touch-min);
+    padding: var(--space-16);
+    border-radius: var(--radius-pill);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .segmento:hover {
+    background-color: var(--color-bg-subtle);
+  }
+
+  .segmento:has(:checked),
+  .segmento[aria-current='page'] {
+    background-color: var(--color-bg-inverse);
+    color: var(--color-text-on-inverse);
+  }
+
+  /*
+   * El radio queda invisible encima del segmento pero sigue en el orden
+   * del teclado; el foco se dibuja en el segmento.
+   */
+  .segmento__radio {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* En Figma el anillo de foco va pegado al segmento, sin separación */
+  .segmento:has(:focus-visible) {
+    outline: var(--border-thick) solid var(--color-border-focus);
+  }
+
+  .segmento:focus-visible,
+  .segmento:has(:focus-visible) {
+    outline-offset: 0;
+  }
+</style>

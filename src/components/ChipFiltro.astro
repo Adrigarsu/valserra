@@ -1,0 +1,88 @@
+---
+/*
+ * Chip de filtro (Figma: Componentes básicos › Chip de filtro).
+ * Filtro de dificultad del mapa y la lista: "Roja 8".
+ *
+ * Es un botón de alternancia (toggle button): un <button> con aria-pressed,
+ * el patrón de WAI-ARIA para algo que se activa y se desactiva. El lector
+ * de pantalla anuncia "Roja 8, botón, pulsado". Quien lo use cambia
+ * aria-pressed en su script; los estilos cuelgan de ese atributo, así que
+ * el estado que se ve y el que se anuncia nunca se separan.
+ *
+ * Seleccionado = relleno tinta. Freeride lleva el borde discontinuo, igual
+ * que su trazo en el mapa.
+ */
+import type { HTMLAttributes } from 'astro/types';
+
+type Props = Omit<HTMLAttributes<'button'>, 'type'> & {
+  seleccionado?: boolean;
+  freeride?: boolean;
+  /** Cuántas pistas hay de esa dificultad; ya formateado si hace falta. */
+  contador?: string | number;
+};
+
+const {
+  seleccionado = false,
+  freeride = false,
+  contador,
+  class: clase,
+  ...resto
+} = Astro.props;
+---
+
+<button
+  type="button"
+  class:list={[
+    'chip',
+    'text-etiqueta-pequena',
+    { 'chip--freeride': freeride },
+    clase,
+  ]}
+  aria-pressed={seleccionado ? 'true' : 'false'}
+  {...resto}
+>
+  <slot />
+  {contador !== undefined && <span class="chip__contador">{contador}</span>}
+</button>
+
+<style>
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-8);
+    min-block-size: var(--touch-min);
+    padding: var(--space-16);
+    border: var(--border-thin) solid var(--color-border-strong);
+    border-radius: var(--radius-pill);
+    background-color: transparent;
+    color: var(--color-text-primary);
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .chip--freeride {
+    border-style: dashed;
+  }
+
+  .chip:hover {
+    background-color: var(--color-bg-subtle);
+  }
+
+  .chip[aria-pressed='true'] {
+    background-color: var(--color-bg-inverse);
+    color: var(--color-text-on-inverse);
+  }
+
+  /*
+   * En Figma el anillo de 3 px sustituye al borde de 1,5 px y crece hacia
+   * fuera: se mete 1,5 px para tapar el borde (también el discontinuo).
+   */
+  .chip:focus-visible {
+    outline-offset: calc(-1 * var(--border-thin));
+  }
+
+  /* 0.7 es la opacidad del contador en Figma, sin variable propia */
+  .chip__contador {
+    opacity: 0.7;
+  }
+</style>
