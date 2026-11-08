@@ -1,22 +1,12 @@
 ---
 /*
  * Selector de modo día y noche (Figma: Alta fidelidad › Home, 07 · Footer,
- * fila Modo, y Estados y piezas › Menú móvil abierto). Tiene la forma del
- * Interruptor de Figma, como SelectorIdioma.
+ * fila Modo, y Estados y piezas › Menú móvil abierto).
  *
- * Son dos botones de radio nativos dentro de un role="radiogroup": elegir
- * una de dos opciones excluyentes es justo lo que hace un grupo de radio,
- * y así el navegador da gratis las flechas del teclado y el estado
- * "seleccionado" al lector de pantalla. Los círculos se ocultan y la
- * etiqueta hace de segmento.
- *
- * El HTML sale sin ninguna opción marcada, porque al generar la página no
- * se sabe el modo de cada persona; el script de abajo marca la buena al
- * cargar. Sin JavaScript, el selector no se ve y manda el sistema.
- *
- * El Interruptor completo llega con #12; este copia los estilos de
- * Segmento de SelectorIdioma hasta entonces.
+ * Por defecto manda la preferencia del sistema; al elegir un modo se
+ * guarda y se pone data-theme en <html> (src/lib/tema.ts).
  */
+import AjusteRadio from './AjusteRadio.astro';
 import { traductor, type Idioma } from '../lib/i18n.ts';
 import { temas } from '../lib/tema.ts';
 
@@ -30,66 +20,37 @@ const { idioma, id } = Astro.props;
 const t = traductor(idioma);
 
 const opciones = temas.map((tema) => ({
-  tema,
+  valor: tema,
   texto: tema === 'light' ? t('ajustes.dia') : t('ajustes.noche'),
 }));
 ---
 
-<div class="ajuste" data-selector-modo hidden>
-  <span class="ajuste__nombre text-etiqueta-pequena" id={id}>
-    {t('ajustes.modo')}
-  </span>
-  <div class="interruptor" role="radiogroup" aria-labelledby={id}>
-    {opciones.map(({ tema, texto }) => (
-      <label class="segmento text-etiqueta-pequena">
-        <input
-          class="segmento__radio"
-          type="radio"
-          name={id}
-          value={tema}
-          data-tema
-        />
-        {texto}
-      </label>
-    ))}
-  </div>
-</div>
+<AjusteRadio
+  id={id}
+  etiqueta={t('ajustes.modo')}
+  ajuste="modo"
+  opciones={opciones}
+/>
 
 <script>
+  import { guardar, leer } from '../lib/almacen.ts';
   import { claveTema, temas, type Tema } from '../lib/tema.ts';
 
   const sistemaNoche = window.matchMedia('(prefers-color-scheme: dark)');
   const raiz = document.documentElement;
 
-  const esTema = (valor: unknown): valor is Tema =>
-    temas.includes(valor as Tema);
-
-  // localStorage puede fallar (navegación privada, cookies bloqueadas)
-  function guardado(): Tema | null {
-    try {
-      const valor = localStorage.getItem(claveTema);
-      return esTema(valor) ? valor : null;
-    } catch {
-      return null;
-    }
-  }
-
-  function guardar(tema: Tema): void {
-    try {
-      localStorage.setItem(claveTema, tema);
-    } catch {
-      // Sin almacenamiento el modo dura hasta cambiar de página
-    }
-  }
-
   /** El modo que se ve: el elegido o, si no hay, el del sistema. */
   function temaActual(): Tema {
-    const elegido = raiz.dataset.theme;
-    if (esTema(elegido)) return elegido;
-    return sistemaNoche.matches ? 'dark' : 'light';
+    const elegido = temas.find((t) => t === raiz.dataset.theme);
+    return elegido ?? (sistemaNoche.matches ? 'dark' : 'light');
   }
 
-  const radios = document.querySelectorAll<HTMLInputElement>('[data-tema]');
+  const selectores = document.querySelectorAll<HTMLElement>(
+    '[data-ajuste="modo"]',
+  );
+  const radios = [...selectores].flatMap((s) => [
+    ...s.querySelectorAll<HTMLInputElement>('input[type="radio"]'),
+  ]);
 
   // Los selectores del menú y del footer marcan siempre lo mismo
   function marcar(): void {
@@ -99,94 +60,28 @@ const opciones = temas.map((tema) => ({
 
   for (const radio of radios) {
     radio.addEventListener('change', () => {
-      if (!esTema(radio.value)) return;
-      raiz.dataset.theme = radio.value;
-      guardar(radio.value);
+      const tema = temas.find((t) => t === radio.value);
+      if (!tema) return;
+      raiz.dataset.theme = tema;
+      guardar(claveTema, tema);
       marcar();
     });
   }
 
   // Si nadie ha elegido, el selector sigue al sistema cuando este cambia
   sistemaNoche.addEventListener('change', () => {
-    if (!guardado()) marcar();
+    if (!leer(claveTema, temas)) marcar();
   });
 
   // Otra pestaña ha cambiado el modo: se aplica también en esta
-  window.addEventListener('storage', (evento) => {
-    if (evento.key !== claveTema) return;
-    const tema = guardado();
+  window.addEventListener('storage', (cambio) => {
+    if (cambio.key !== claveTema) return;
+    const tema = leer(claveTema, temas);
     if (tema) raiz.dataset.theme = tema;
     else delete raiz.dataset.theme;
     marcar();
   });
 
   marcar();
-  for (const selector of document.querySelectorAll<HTMLElement>(
-    '[data-selector-modo]',
-  )) {
-    selector.hidden = false;
-  }
+  for (const selector of selectores) selector.hidden = false;
 </script>
-
-<style>
-  .ajuste {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-24);
-  }
-
-  /* hidden pierde ante display: flex si no se repite aquí */
-  .ajuste[hidden] {
-    display: none;
-  }
-
-  .interruptor {
-    display: flex;
-    padding: var(--space-4);
-    border: var(--border-thin) solid var(--color-border-strong);
-    border-radius: var(--radius-pill);
-  }
-
-  /*
-   * Segmento: 11 px de texto + 16 px de relleno arriba y abajo = 46 px,
-   * por encima de los 44 px del área táctil.
-   */
-  .segmento {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-block-size: var(--touch-min);
-    padding: var(--space-16);
-    border-radius: var(--radius-pill);
-    color: var(--color-text-primary);
-    cursor: pointer;
-  }
-
-  .segmento:hover {
-    background-color: var(--color-bg-subtle);
-  }
-
-  .segmento:has(:checked) {
-    background-color: var(--color-bg-inverse);
-    color: var(--color-text-on-inverse);
-  }
-
-  /*
-   * El radio queda invisible pero sigue en el orden del teclado; el foco
-   * se dibuja en el segmento. En Figma el anillo va pegado, sin separación.
-   */
-  .segmento__radio {
-    position: absolute;
-    inset: 0;
-    margin: 0;
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .segmento:has(:focus-visible) {
-    outline: var(--border-thick) solid var(--color-border-focus);
-    outline-offset: 0;
-  }
-</style>

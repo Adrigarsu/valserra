@@ -1,0 +1,124 @@
+---
+/*
+ * Fila de ajuste con un interruptor de dos opciones hecho con radios
+ * (Figma: Interruptor y Segmento). La usan SelectorModo y SelectorMoneda,
+ * que ponen el script que lee y guarda su ajuste.
+ *
+ * Son radios nativos dentro de un role="radiogroup": elegir una de dos
+ * opciones excluyentes es justo lo que hace un grupo de radio, y así el
+ * navegador da gratis las flechas del teclado y el estado "seleccionado"
+ * al lector de pantalla. Los círculos se ocultan y la etiqueta hace de
+ * segmento.
+ *
+ * El HTML sale sin ninguna opción marcada y oculto (hidden), porque al
+ * generar la página no se sabe qué ha elegido cada persona: el script del
+ * selector marca la opción buena y quita hidden al cargar. Sin JavaScript
+ * no se ve, porque tampoco funcionaría.
+ *
+ * El Interruptor completo llega con #12; hasta entonces, los estilos de
+ * Segmento están aquí y en SelectorIdioma (que usa enlaces, no radios).
+ */
+interface Opcion {
+  valor: string;
+  /** Lo que se ve en el segmento. */
+  texto: string;
+  /** Nombre para el lector de pantalla, si lo que se ve es una abreviatura. */
+  nombre?: string;
+}
+
+interface Props {
+  /** id de la etiqueta; también es el name de los radios. */
+  id: string;
+  etiqueta: string;
+  /** Qué ajuste es: el script del selector lo busca con [data-ajuste]. */
+  ajuste: string;
+  opciones: readonly Opcion[];
+}
+
+const { id, etiqueta, ajuste, opciones } = Astro.props;
+---
+
+<div class="ajuste" data-ajuste={ajuste} hidden>
+  <span class="ajuste__nombre text-etiqueta-pequena" id={id}>
+    {etiqueta}
+  </span>
+  <div class="interruptor" role="radiogroup" aria-labelledby={id}>
+    {opciones.map(({ valor, texto, nombre }) => (
+      <label class="segmento text-etiqueta-pequena">
+        <input class="segmento__radio" type="radio" name={id} value={valor} />
+        {nombre ? (
+          <>
+            <span aria-hidden="true">{texto}</span>
+            <span class="visually-hidden">{nombre}</span>
+          </>
+        ) : (
+          texto
+        )}
+      </label>
+    ))}
+  </div>
+</div>
+
+<style>
+  .ajuste {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-24);
+  }
+
+  /* hidden pierde ante display: flex si no se repite aquí */
+  .ajuste[hidden] {
+    display: none;
+  }
+
+  .interruptor {
+    display: flex;
+    padding: var(--space-4);
+    border: var(--border-thin) solid var(--color-border-strong);
+    border-radius: var(--radius-pill);
+  }
+
+  /*
+   * Segmento: 11 px de texto + 16 px de relleno arriba y abajo = 46 px,
+   * por encima de los 44 px del área táctil.
+   */
+  .segmento {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-block-size: var(--touch-min);
+    padding: var(--space-16);
+    border-radius: var(--radius-pill);
+    color: var(--color-text-primary);
+    cursor: pointer;
+  }
+
+  .segmento:hover {
+    background-color: var(--color-bg-subtle);
+  }
+
+  .segmento:has(:checked) {
+    background-color: var(--color-bg-inverse);
+    color: var(--color-text-on-inverse);
+  }
+
+  /*
+   * El radio queda invisible encima del segmento pero sigue en el orden
+   * del teclado; el foco se dibuja en el segmento. En Figma el anillo va
+   * pegado, sin separación.
+   */
+  .segmento__radio {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .segmento:has(:focus-visible) {
+    outline: var(--border-thick) solid var(--color-border-focus);
+    outline-offset: 0;
+  }
+</style>

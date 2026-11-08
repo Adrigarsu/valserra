@@ -23,7 +23,8 @@ import {
   type Idioma,
 } from '../lib/i18n.ts';
 import { rutaEnIdioma, type Pagina } from '../lib/rutas.ts';
-import { claveTema } from '../lib/tema.ts';
+import { claveTema, temas } from '../lib/tema.ts';
+import { claveMoneda, monedas } from '../lib/moneda.ts';
 
 interface Props {
   idioma?: Idioma;
@@ -53,6 +54,12 @@ const alternativas = [
 }));
 
 const preloads = [yellowtail, josefinSans];
+
+// Preferencias guardadas que el script del <head> pone en <html>
+const preferencias = [
+  { clave: claveTema, valores: temas, atributo: 'theme' },
+  { clave: claveMoneda, valores: monedas, atributo: 'moneda' },
+];
 ---
 
 <!doctype html>
@@ -67,19 +74,22 @@ const preloads = [yellowtail, josefinSans];
     */}
     <meta name="color-scheme" content="light dark" />
     {/*
-      Modo elegido con el interruptor (src/lib/tema.ts). Va en línea y antes
-      del CSS para que se aplique antes de pintar: si esperase al script
-      del selector, la página saldría un instante en el modo del sistema
-      (el parpadeo de colores al cargar).
+      Modo y moneda elegidos con los interruptores (src/lib/tema.ts y
+      src/lib/moneda.ts). Va en línea y antes del CSS para que se aplique
+      antes de pintar: si esperase a los scripts de los selectores, la
+      página saldría un instante en el modo del sistema y en francos (el
+      parpadeo al cargar).
     */}
-    <script is:inline define:vars={{ claveTema }}>
+    <script is:inline define:vars={{ preferencias }}>
       try {
-        const tema = localStorage.getItem(claveTema);
-        if (tema === 'light' || tema === 'dark') {
-          document.documentElement.dataset.theme = tema;
+        for (const { clave, valores, atributo } of preferencias) {
+          const valor = localStorage.getItem(clave);
+          if (valores.includes(valor)) {
+            document.documentElement.dataset[atributo] = valor;
+          }
         }
       } catch {
-        // Sin almacenamiento manda la preferencia del sistema
+        // Sin almacenamiento: modo del sistema y francos
       }
     </script>
     {preloads.map((href) => (
