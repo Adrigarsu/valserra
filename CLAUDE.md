@@ -57,7 +57,7 @@ Web de una estación de esquí ficticia inspirada en Zermatt. Proyecto de portfo
 
 ## Estado del proyecto
 
-Fase 1 · Base y componentes (hito en GitHub), en curso. Última actualización: 8 de noviembre de 2026 (#12).
+Fase 1 · Base y componentes (hito en GitHub), en curso. Última actualización: 8 de noviembre de 2026 (#13).
 
 - Hecho en la Fase 0 (#1 a #7): proyecto Astro con TypeScript estricto y React; ESLint, Prettier, EditorConfig y `.gitattributes`; tokens de Figma en `src/styles/tokens.css` y reset en `src/styles/base.css`; fuentes con Fontsource en `src/styles/fonts.css` y una clase por cada uno de los 14 estilos de texto en `src/styles/typography.css` (`.text-display-xl`, `.text-titulo-h2`…; tabla en `docs/tokens.md`); esquemas Zod de los datos y comprobación de los textos con el script `validar`; CI (`.github/workflows/ci.yml`, job `Comprobar`) y publicación en GitHub Pages (`.github/workflows/deploy.yml`); Figma preparado para enseñarlo (Portada y Fundamentos).
 - Hecho en la Fase 1: #8 layout base con navegación y footer.
@@ -102,7 +102,15 @@ Fase 1 · Base y componentes (hito en GitHub), en curso. Última actualización:
   - Foco como en Figma: en botón y botón de cantidad el anillo va por dentro (ocupa el sitio del borde), en el chip tapa el borde y sale 1,5 px, y en el segmento va pegado por fuera.
   - Icono nuevo: `flecha-abajo` (ArrowDown).
   - La portada provisional enseña todas las variantes encima del muestrario de texto (los chips se pueden pulsar).
-- Siguiente: #13 componentes de Valserra (fila de persona, forfait y ficha de pista).
+- Hecho en la Fase 1: #13 componentes de Valserra (Figma: Componentes Valserra › Fila de persona, Forfait y Ficha de pista).
+  - Decisión: la fila de persona y el forfait son de React (`.tsx`) porque viven en la isla de Forfaits, que no puede usar componentes `.astro`. Astro pinta un componente React sin directiva `client:` como HTML sin JavaScript, así que el forfait de la home no carga React. Sus estilos van en hojas globales de `src/styles/componentes/` (clases con el prefijo del componente: `.forfait__cuerpo`), importadas desde el propio `.tsx`.
+  - `BotonCantidad.tsx`: versión React del botón − / +. Props `accion`, `etiqueta` y `deshabilitado` (pone `aria-disabled` e ignora el clic). Comparte `src/styles/componentes/boton-cantidad.css` con `BotonCantidad.astro` (clase `.boton-cantidad`).
+  - `FilaPersona.tsx`: controlado (no guarda estado). Props `idioma`, `tipo` (id de `tarifas.tipos`), `edad`, `precio` (ya formateado en la moneda elegida), `cantidad`, `min` (0), `max` y `onCambiar(n)`. Es un `role="group"` con el nombre del tipo, y la cantidad es un `<output aria-live="polite">`. El − se deshabilita en `min` y el + en `max`.
+  - `Forfait.tsx`: props `idioma`, `tipo`, `dias` y `numero` (se pinta con cuatro cifras). Cuerpo de 400 × 220 px que encoge en móvil, resguardo fijo de 100 px y perforación con `repeating-linear-gradient` (15 trazos de 3 × 8 px). Cuerpo y resguardo son piezas separadas para animar el corte en la Fase 4.
+  - `FichaPista.astro`: props `idioma`, `pista` (tipo `Pista`), `abierta` (por defecto, `estadoDemo`), `tiempo` (texto ya formateado; sin él no se pinta la fila "Ahora en la salida") y `nivel` del título (2 o 3). Colores con `data-dificultad` y `data-estado`. El número y "Pista · Roja" son aria-hidden y el lector oye "Pista 28 · Roja". Longitud y desnivel con `Intl` (`unit: kilometer` con un decimal y `meter`). Texto nuevo: `mapa.ficha.pistaCorta`.
+  - La portada provisional enseña las cuatro filas (2 adultos y 3 niños, 3 días), un forfait y las ocho fichas.
+  - Diferencias con Figma: el logo del forfait usa Display/S (34 px; en Figma, 38 px sin estilo); la línea de la fila de persona (1 px en Figma) y el filete de los datos de la ficha (2 px) usan `--border-thin` (1,5 px), porque en Figma no están enlazados a una variable. Conviene enlazarlos en Figma.
+- Siguiente: #14 componentes de Valserra (cabina, instrumento y altímetro).
 - Decisiones del #8 que afectan a lo siguiente:
   - El estado del cartel y del menú solo enseña los remontes ("13/15 remontes"); la temperatura de la cumbre se añade en la fase del Tiempo con Open-Meteo (textos `nav.estado` y `nav.estadoCorto`, ya preparados).
   - `BotonIcono.astro` no está en Componentes básicos de Figma: sigue con normal y hover (el foco es el global).
