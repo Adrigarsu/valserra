@@ -1,0 +1,15 @@
+---
+/*
+ * Raíz de la web (/valserra/): redirige a la portada en el idioma por
+ * defecto. GitHub Pages solo sirve archivos, así que Astro genera una
+ * página con <meta http-equiv="refresh"> y un enlace, el estándar para
+ * redirigir sin servidor.
+ *
+ * Con 301 (permanente) Astro pone el refresco a 0 segundos; con 302
+ * esperaría 2 segundos enseñando una página de "Redirecting".
+ */
+import { idiomaPorDefecto } from '../lib/i18n.ts';
+import { ruta } from '../lib/rutas.ts';
+
+return Astro.redirect(ruta(idiomaPorDefecto, 'inicio'), 301);
+---

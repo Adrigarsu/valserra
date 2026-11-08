@@ -16,8 +16,13 @@ import josefinSans from '@fontsource-variable/josefin-sans/files/josefin-sans-la
 import Navegacion from '../components/Navegacion.astro';
 import Menu from '../components/Menu.astro';
 import Pie from '../components/Pie.astro';
-import { idiomaPorDefecto, textos, type Idioma } from '../lib/i18n.ts';
-import type { Pagina } from '../lib/rutas.ts';
+import {
+  idiomaPorDefecto,
+  idiomas,
+  traductor,
+  type Idioma,
+} from '../lib/i18n.ts';
+import { rutaEnIdioma, type Pagina } from '../lib/rutas.ts';
 
 interface Props {
   idioma?: Idioma;
@@ -29,9 +34,22 @@ interface Props {
 }
 
 const { idioma = idiomaPorDefecto, pagina } = Astro.props;
-const { meta, nav } = textos[idioma];
-const titulo = Astro.props.titulo ?? meta.titulo;
-const descripcion = Astro.props.descripcion ?? meta.descripcion;
+const t = traductor(idioma);
+const titulo = Astro.props.titulo ?? t('meta.titulo');
+const descripcion = Astro.props.descripcion ?? t('meta.descripcion');
+
+/*
+ * La misma página en cada idioma, con URL completa: <link rel="alternate"
+ * hreflang> es el estándar para que los buscadores enseñen a cada cual la
+ * versión de su idioma. x-default es la que se da si no coincide ninguno.
+ */
+const alternativas = [
+  ...idiomas.map((i) => ({ hreflang: i, idioma: i })),
+  { hreflang: 'x-default', idioma: idiomaPorDefecto },
+].map(({ hreflang, idioma: i }) => ({
+  hreflang,
+  href: new URL(rutaEnIdioma(Astro.url.pathname, i), Astro.site).href,
+}));
 
 const preloads = [yellowtail, josefinSans];
 ---
@@ -46,10 +64,13 @@ const preloads = [yellowtail, josefinSans];
     ))}
     <title>{titulo}</title>
     <meta name="description" content={descripcion} />
+    {alternativas.map(({ hreflang, href }) => (
+      <link rel="alternate" hreflang={hreflang} href={href} />
+    ))}
   </head>
   <body>
     <a class="saltar text-boton" href="#contenido">
-      {nav.saltarAlContenido}
+      {t('nav.saltarAlContenido')}
     </a>
     <Navegacion idioma={idioma} pagina={pagina} />
     <main id="contenido">

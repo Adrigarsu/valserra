@@ -1,8 +1,45 @@
 ---
-// Página provisional: muestrario de los estilos de texto dentro del layout
-// base. Se sustituye cuando lleguen las rutas /es y /en (#9) y el
-// catálogo de componentes (#15).
-import Base from '../layouts/Base.astro';
+/*
+ * Portada en cada idioma: /es/ y /en/. getStaticPaths genera una página
+ * por idioma a partir del mismo archivo, así las dos son siempre iguales.
+ *
+ * Contenido provisional: el muestrario de los 14 estilos de texto y de los
+ * formatos con Intl. Se sustituye por el descenso (Fase 3); el muestrario
+ * pasa al catálogo de componentes (#15).
+ */
+import type { GetStaticPaths } from 'astro';
+import Base from '../../layouts/Base.astro';
+import { idiomas, traductor, type Idioma } from '../../lib/i18n.ts';
+import {
+  formatearFecha,
+  formatearMoneda,
+  formatearNumero,
+} from '../../lib/formato.ts';
+
+export const getStaticPaths = (() =>
+  idiomas.map((idioma) => ({ params: { idioma } }))) satisfies GetStaticPaths;
+
+const idioma = Astro.params.idioma as Idioma;
+const t = traductor(idioma);
+
+// Formatos de ejemplo, con los datos de las maquetas
+const formatos = [
+  { nombre: 'Número · 2263', valor: formatearNumero(idioma, 2263) },
+  { nombre: 'Moneda · 78570 CHF', valor: formatearMoneda(idioma, 78570) },
+  {
+    nombre: 'Moneda · 78570 EUR',
+    valor: formatearMoneda(idioma, 78570, 'EUR'),
+  },
+  { nombre: 'Fecha · 2027-02-12', valor: formatearFecha(idioma, '2027-02-12') },
+  {
+    nombre: 'Plural · n = 1',
+    valor: t('forfaits.comprar', { n: 1 }),
+  },
+  {
+    nombre: 'Plural · n = 5',
+    valor: t('forfaits.comprar', { n: 5 }),
+  },
+];
 
 const estilos = [
   { clase: 'text-display-xl', nombre: 'Display/XL', texto: 'Valserra' },
@@ -57,8 +94,14 @@ const estilos = [
 ];
 ---
 
-<Base pagina="inicio">
+<Base idioma={idioma} titulo={t('meta.titulos.inicio')} pagina="inicio">
   <div class="muestrario">
+    {formatos.map(({ nombre, valor }) => (
+      <section class="muestra">
+        <p class="text-etiqueta-pequena nombre">{nombre}</p>
+        <p class="text-dato-medio">{valor}</p>
+      </section>
+    ))}
     {estilos.map(({ clase, nombre, texto }) => (
       <section class="muestra">
         <p class="text-etiqueta-pequena nombre">{nombre}</p>
