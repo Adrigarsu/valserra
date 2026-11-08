@@ -4,10 +4,12 @@
  * Va siempre en paleta de noche: data-theme="dark" cambia los tokens
  * semánticos solo dentro del footer, también en modo día.
  * Incluye el aviso de proyecto ficticio y los créditos.
- * Las preferencias van en las columnas 9 a 12 de escritorio: idioma (#9);
- * moneda y modo llegan con #11 y #10. En móvil están en el menú.
+ * Las preferencias van en las columnas 9 a 12 de escritorio: idioma (#9)
+ * y modo (#10); la moneda llega con #11. En móvil están en el menú.
+ * El selector de modo cambia la página, no el footer, que sigue de noche.
  */
 import SelectorIdioma from './SelectorIdioma.astro';
+import SelectorModo from './SelectorModo.astro';
 import { traductor, type Idioma } from '../lib/i18n.ts';
 import { paginas, ruta, type Pagina } from '../lib/rutas.ts';
 
@@ -52,6 +54,7 @@ const creditos = t('footer.creditos', {
 
     <div class="pie__preferencias">
       <SelectorIdioma idioma={idioma} id="pie-idioma" />
+      <SelectorModo idioma={idioma} id="pie-modo" />
     </div>
   </div>
 
@@ -194,6 +197,11 @@ const creditos = t('footer.creditos', {
       align-content: start;
       justify-content: start;
       gap: var(--space-24);
+    }
+
+    /* Los interruptores empiezan todos a la misma altura, como en Figma */
+    .pie__preferencias :global(.ajuste) {
+      justify-content: start;
     }
 
     .pie__preferencias :global(.ajuste__nombre) {
