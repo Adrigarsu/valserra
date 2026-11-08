@@ -8,12 +8,14 @@
  * foco no puede salir del menú), lo cierra con Esc y devuelve el foco al
  * botón que lo abrió.
  *
- * Idioma, moneda y modo se añaden con los issues #9, #11 y #10.
+ * Debajo del estado de hoy van los ajustes: idioma (#9); moneda y modo
+ * llegan con #11 y #10.
  */
 import Boton from './Boton.astro';
 import BotonIcono from './BotonIcono.astro';
 import Icono from './Icono.astro';
-import { formatear, textos, type Idioma } from '../lib/i18n.ts';
+import SelectorIdioma from './SelectorIdioma.astro';
+import { traductor, type Idioma } from '../lib/i18n.ts';
 import { paginas, ruta, type Pagina } from '../lib/rutas.ts';
 import { remontesAbiertos, remontesTotal } from '../lib/estado.ts';
 
@@ -23,24 +25,28 @@ interface Props {
 }
 
 const { idioma, pagina } = Astro.props;
-const { nav } = textos[idioma];
+const t = traductor(idioma);
 
-const hoy = formatear(idioma, nav.hoy, {
+const hoy = t('nav.hoy', {
   abiertos: remontesAbiertos,
   total: remontesTotal,
 });
 ---
 
-<dialog id="menu" class="menu" aria-label={nav.menu} data-menu>
+<dialog id="menu" class="menu" aria-label={t('nav.menu')} data-menu>
   <div class="menu__contenido">
     <div class="menu__barra">
       <a class="menu__logo" href={ruta(idioma, 'inicio')}>
         Valserra
       </a>
-      <BotonIcono etiqueta={nav.cerrarMenu} icono="cerrar" data-cerrar-menu />
+      <BotonIcono
+        etiqueta={t('nav.cerrarMenu')}
+        icono="cerrar"
+        data-cerrar-menu
+      />
     </div>
 
-    <nav class="menu__cuerpo" aria-label={nav.etiqueta}>
+    <nav class="menu__cuerpo" aria-label={t('nav.etiqueta')}>
       <ul class="menu__enlaces">
         {paginas.map((p) => (
           <li>
@@ -49,7 +55,7 @@ const hoy = formatear(idioma, nav.hoy, {
               href={ruta(idioma, p)}
               aria-current={p === pagina ? 'page' : undefined}
             >
-              <span class="text-display-m">{nav[p]}</span>
+              <span class="text-display-m">{t(`nav.${p}`)}</span>
               <Icono nombre="flecha-derecha" tamano={20} />
             </a>
           </li>
@@ -59,7 +65,8 @@ const hoy = formatear(idioma, nav.hoy, {
 
     <div class="menu__cuerpo menu__pie">
       <p class="menu__hoy text-etiqueta-pequena">{hoy}</p>
-      <Boton href={ruta(idioma, 'forfaits')}>{nav.comprar}</Boton>
+      <SelectorIdioma idioma={idioma} id="menu-idioma" />
+      <Boton href={ruta(idioma, 'forfaits')}>{t('nav.comprar')}</Boton>
     </div>
   </div>
 </dialog>

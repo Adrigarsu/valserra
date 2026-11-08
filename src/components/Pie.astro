@@ -4,9 +4,11 @@
  * Va siempre en paleta de noche: data-theme="dark" cambia los tokens
  * semánticos solo dentro del footer, también en modo día.
  * Incluye el aviso de proyecto ficticio y los créditos.
- * Las preferencias (idioma, moneda y modo) llegan con #9, #11 y #10.
+ * Las preferencias van en las columnas 9 a 12 de escritorio: idioma (#9);
+ * moneda y modo llegan con #11 y #10. En móvil están en el menú.
  */
-import { formatear, textos, type Idioma } from '../lib/i18n.ts';
+import SelectorIdioma from './SelectorIdioma.astro';
+import { traductor, type Idioma } from '../lib/i18n.ts';
 import { paginas, ruta, type Pagina } from '../lib/rutas.ts';
 
 interface Props {
@@ -15,10 +17,10 @@ interface Props {
 }
 
 const { idioma, pagina } = Astro.props;
-const { nav, footer } = textos[idioma];
+const t = traductor(idioma);
 
 // El año va como texto para que Intl no lo escriba "2,026" en inglés
-const creditos = formatear(idioma, footer.creditos, {
+const creditos = t('footer.creditos', {
   anio: String(new Date().getFullYear()),
 });
 ---
@@ -27,10 +29,10 @@ const creditos = formatear(idioma, footer.creditos, {
   <div class="pie__principal">
     <div class="pie__marca">
       <p class="pie__logo">Valserra</p>
-      <p class="pie__lema text-cuerpo-base">{footer.lema}</p>
+      <p class="pie__lema text-cuerpo-base">{t('footer.lema')}</p>
     </div>
 
-    <nav class="pie__nav" aria-label={footer.etiquetaNav}>
+    <nav class="pie__nav" aria-label={t('footer.etiquetaNav')}>
       <ul class="pie__enlaces">
         {paginas.map((p) => (
           <li
@@ -41,16 +43,20 @@ const creditos = formatear(idioma, footer.creditos, {
               href={ruta(idioma, p)}
               aria-current={p === pagina ? 'page' : undefined}
             >
-              {nav[p]}
+              {t(`nav.${p}`)}
             </a>
           </li>
         ))}
       </ul>
     </nav>
+
+    <div class="pie__preferencias">
+      <SelectorIdioma idioma={idioma} id="pie-idioma" />
+    </div>
   </div>
 
   <div class="pie__legal">
-    <p class="text-cuerpo-pequeno">{footer.proyecto}</p>
+    <p class="text-cuerpo-pequeno">{t('footer.proyecto')}</p>
     <p class="pie__creditos text-cuerpo-nota">{creditos}</p>
   </div>
 </footer>
@@ -131,6 +137,11 @@ const creditos = formatear(idioma, footer.creditos, {
     color: var(--color-text-secondary);
   }
 
+  /* En móvil las preferencias están en el menú, como en Figma */
+  .pie__preferencias {
+    display: none;
+  }
+
   /*
    * Escritorio: rejilla de 12 columnas. Marca en las columnas 1 a 5,
    * enlaces desde la 6; debajo, separador y aviso (1 a 6) frente a
@@ -174,6 +185,19 @@ const creditos = formatear(idioma, footer.creditos, {
 
     .pie__item--inicio {
       display: flex;
+    }
+
+    /* Columnas 9 a 12; la etiqueta tiene ancho fijo para alinear las filas */
+    .pie__preferencias {
+      display: grid;
+      grid-column: 9 / 13;
+      align-content: start;
+      justify-content: start;
+      gap: var(--space-24);
+    }
+
+    .pie__preferencias :global(.ajuste__nombre) {
+      min-inline-size: var(--space-96);
     }
 
     .pie__item:not(.pie__item--inicio) ~ .pie__item::before {

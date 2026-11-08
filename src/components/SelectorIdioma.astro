@@ -1,0 +1,104 @@
+---
+/*
+ * Selector de idioma (Figma: Estados y piezas › Menú móvil abierto, fila
+ * Idioma, y Alta fidelidad › Home, 07 · Footer). Tiene la forma del
+ * Interruptor de Figma: dos segmentos ES y EN dentro de un borde tinta.
+ *
+ * Cada segmento es un enlace a la misma página en el otro idioma, no un
+ * botón: cambiar de idioma es navegar a otra URL. El idioma actual lleva
+ * aria-current="page", y cada enlace lleva lang y hreflang para que el
+ * lector de pantalla pronuncie "English" en inglés.
+ *
+ * Se ve "ES" y "EN", pero el nombre accesible es el idioma completo en su
+ * propia lengua ("Español", "English"), que empieza igual que lo que se ve.
+ *
+ * El Interruptor completo, con sus estados para Mapa/Lista o CHF/€, llega
+ * con #12; este usa los mismos estilos de Segmento.
+ */
+import { idiomas, nombresIdioma, traductor, type Idioma } from '../lib/i18n.ts';
+import { rutaEnIdioma } from '../lib/rutas.ts';
+
+interface Props {
+  idioma: Idioma;
+  /** id de la etiqueta "Idioma"; distinto en cada sitio donde se usa. */
+  id: string;
+}
+
+const { idioma, id } = Astro.props;
+const t = traductor(idioma);
+
+const opciones = idiomas.map((i) => ({
+  idioma: i,
+  href: rutaEnIdioma(Astro.url.pathname, i),
+  nombre: nombresIdioma[i],
+  actual: i === idioma,
+}));
+---
+
+<div class="ajuste">
+  <span class="ajuste__nombre text-etiqueta-pequena" id={id}>
+    {t('ajustes.idioma')}
+  </span>
+  <ul class="interruptor" aria-labelledby={id}>
+    {opciones.map(({ idioma: i, href, nombre, actual }) => (
+      <li>
+        <a
+          class="segmento text-etiqueta-pequena"
+          href={href}
+          lang={i}
+          hreflang={i}
+          aria-current={actual ? 'page' : undefined}
+        >
+          <span aria-hidden="true">{i}</span>
+          <span class="visually-hidden">{nombre}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</div>
+
+<style>
+  .ajuste {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-24);
+  }
+
+  .interruptor {
+    display: flex;
+    padding: var(--space-4);
+    list-style: none;
+    border: var(--border-thin) solid var(--color-border-strong);
+    border-radius: var(--radius-pill);
+  }
+
+  /*
+   * Segmento: 11 px de texto + 16 px de relleno arriba y abajo = 46 px,
+   * por encima de los 44 px del área táctil.
+   */
+  .segmento {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-block-size: var(--touch-min);
+    padding: var(--space-16);
+    border-radius: var(--radius-pill);
+    color: var(--color-text-primary);
+    text-decoration: none;
+  }
+
+  .segmento:hover {
+    background-color: var(--color-bg-subtle);
+  }
+
+  .segmento[aria-current='page'] {
+    background-color: var(--color-bg-inverse);
+    color: var(--color-text-on-inverse);
+  }
+
+  /* En Figma el anillo de foco va pegado al segmento, sin separación */
+  .segmento:focus-visible {
+    outline-offset: 0;
+  }
+</style>
