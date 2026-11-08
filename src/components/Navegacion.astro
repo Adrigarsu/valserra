@@ -10,7 +10,7 @@
  */
 import Boton from './Boton.astro';
 import BotonIcono from './BotonIcono.astro';
-import { formatear, textos, type Idioma } from '../lib/i18n.ts';
+import { traductor, type Idioma } from '../lib/i18n.ts';
 import { ruta, type Pagina } from '../lib/rutas.ts';
 import { remontesAbiertos, remontesTotal } from '../lib/estado.ts';
 
@@ -21,23 +21,23 @@ interface Props {
 }
 
 const { idioma, pagina } = Astro.props;
-const { nav } = textos[idioma];
+const t = traductor(idioma);
 
 const enlaces = (['mapa', 'tiempo', 'forfaits'] as const).map((p) => ({
   href: ruta(idioma, p),
-  texto: nav[p],
+  texto: t(`nav.${p}`),
   actual: p === pagina,
 }));
 
 const valores = { abiertos: remontesAbiertos, total: remontesTotal };
-const estado = formatear(idioma, nav.remontes, valores);
-const estadoCorto = formatear(idioma, nav.remontesCorto, valores);
+const estado = t('nav.remontes', valores);
+const estadoCorto = t('nav.remontesCorto', valores);
 ---
 
 <div class="centinela" data-centinela aria-hidden="true"></div>
 
 <header class="cabecera" data-cabecera>
-  <nav class="cartel" aria-label={nav.etiqueta}>
+  <nav class="cartel" aria-label={t('nav.etiqueta')}>
     <a
       class="cartel__logo"
       href={ruta(idioma, 'inicio')}
@@ -68,10 +68,10 @@ const estadoCorto = formatear(idioma, nav.remontesCorto, valores);
         </span>
       </p>
       <div class="cartel__comprar">
-        <Boton href={ruta(idioma, 'forfaits')}>{nav.comprar}</Boton>
+        <Boton href={ruta(idioma, 'forfaits')}>{t('nav.comprar')}</Boton>
       </div>
       <BotonIcono
-        etiqueta={nav.abrirMenu}
+        etiqueta={t('nav.abrirMenu')}
         icono="menu"
         aria-haspopup="dialog"
         aria-expanded="false"

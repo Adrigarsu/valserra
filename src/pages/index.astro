@@ -1,89 +1,15 @@
 ---
-// Página provisional: muestrario de los estilos de texto dentro del layout
-// base. Se sustituye cuando lleguen las rutas /es y /en (#9) y el
-// catálogo de componentes (#15).
-import Base from '../layouts/Base.astro';
+/*
+ * Raíz de la web (/valserra/): redirige a la portada en el idioma por
+ * defecto. GitHub Pages solo sirve archivos, así que Astro genera una
+ * página con <meta http-equiv="refresh"> y un enlace, el estándar para
+ * redirigir sin servidor.
+ *
+ * Con 301 (permanente) Astro pone el refresco a 0 segundos; con 302
+ * esperaría 2 segundos enseñando una página de "Redirecting".
+ */
+import { idiomaPorDefecto } from '../lib/i18n.ts';
+import { ruta } from '../lib/rutas.ts';
 
-const estilos = [
-  { clase: 'text-display-xl', nombre: 'Display/XL', texto: 'Valserra' },
-  { clase: 'text-display-l', nombre: 'Display/L', texto: 'Baja la montaña' },
-  { clase: 'text-display-m', nombre: 'Display/M', texto: 'Cabinas y sectores' },
-  {
-    clase: 'text-display-s',
-    nombre: 'Display/S',
-    texto: 'El pueblo, a 1.620 m',
-  },
-  {
-    clase: 'text-titulo-h2',
-    nombre: 'Título/H2',
-    texto: 'forfaits de temporada',
-  },
-  { clase: 'text-titulo-h3', nombre: 'Título/H3', texto: 'sector cumbre' },
-  {
-    clase: 'text-etiqueta-antetitulo',
-    nombre: 'Etiqueta/Antetítulo',
-    texto: 'empieza el descenso',
-  },
-  {
-    clase: 'text-etiqueta-pequena',
-    nombre: 'Etiqueta/Pequeña',
-    texto: 'pista roja · abierta',
-  },
-  { clase: 'text-boton', nombre: 'Botón', texto: 'empezar el descenso' },
-  { clase: 'text-dato-grande', nombre: 'Dato/Grande', texto: '3.883 m' },
-  {
-    clase: 'text-dato-medio',
-    nombre: 'Dato/Medio',
-    texto: '−4 °C · 28 pistas',
-  },
-  {
-    clase: 'text-cuerpo-base',
-    nombre: 'Cuerpo/Base',
-    texto:
-      'Desde la cumbre se ve el valle entero: los alerces, el río helado y los tejados del pueblo, mil metros más abajo.',
-  },
-  {
-    clase: 'text-cuerpo-pequeno',
-    nombre: 'Cuerpo/Pequeño',
-    texto:
-      'Los remontes abren a las 8:30 y cierran a las 16:30. Con viento fuerte, la cabina de la cumbre puede parar.',
-  },
-  {
-    clase: 'text-cuerpo-nota',
-    nombre: 'Cuerpo/Nota',
-    texto:
-      'Precios por persona, en francos suizos. Niños menores de nueve años, gratis.',
-  },
-];
+return Astro.redirect(ruta(idiomaPorDefecto, 'inicio'), 301);
 ---
-
-<Base pagina="inicio">
-  <div class="muestrario">
-    {estilos.map(({ clase, nombre, texto }) => (
-      <section class="muestra">
-        <p class="text-etiqueta-pequena nombre">{nombre}</p>
-        <p class={clase}>{texto}</p>
-      </section>
-    ))}
-  </div>
-</Base>
-
-<style>
-  .muestrario {
-    display: grid;
-    gap: var(--space-48);
-    padding: var(--space-64) var(--space-24);
-  }
-
-  .muestra {
-    display: grid;
-    gap: var(--space-12);
-    padding-block-start: var(--space-16);
-    border-block-start: var(--border-thin) solid var(--color-border-subtle);
-  }
-
-  .nombre {
-    color: var(--color-text-secondary);
-    text-transform: none;
-  }
-</style>

@@ -57,7 +57,7 @@ Web de una estación de esquí ficticia inspirada en Zermatt. Proyecto de portfo
 
 ## Estado del proyecto
 
-Fase 1 · Base y componentes (hito en GitHub), en curso. Última actualización: 7 de noviembre de 2026 (#8).
+Fase 1 · Base y componentes (hito en GitHub), en curso. Última actualización: 8 de noviembre de 2026 (#9).
 
 - Hecho en la Fase 0 (#1 a #7): proyecto Astro con TypeScript estricto y React; ESLint, Prettier, EditorConfig y `.gitattributes`; tokens de Figma en `src/styles/tokens.css` y reset en `src/styles/base.css`; fuentes con Fontsource en `src/styles/fonts.css` y una clase por cada uno de los 14 estilos de texto en `src/styles/typography.css` (`.text-display-xl`, `.text-titulo-h2`…; tabla en `docs/tokens.md`); esquemas Zod de los datos y comprobación de los textos con el script `validar`; CI (`.github/workflows/ci.yml`, job `Comprobar`) y publicación en GitHub Pages (`.github/workflows/deploy.yml`); Figma preparado para enseñarlo (Portada y Fundamentos).
 - Hecho en la Fase 1: #8 layout base con navegación y footer.
@@ -66,12 +66,20 @@ Fase 1 · Base y componentes (hito en GitHub), en curso. Última actualización:
   - `src/components/Menu.astro`: menú a pantalla completa con `<dialog>` y `showModal()` (foco atrapado, Esc, devuelve el foco al botón). Lo abre el botón de menú en cualquier tamaño.
   - `src/components/Pie.astro`: footer siempre en paleta de noche con `data-theme="dark"` (ahora vale en cualquier elemento, no solo en `<html>`).
   - Componentes mínimos: `Boton.astro` (solo Primario, como `<a>` con `href` o `<button>`), `BotonIcono.astro` (44 px con `aria-label`) e `Icono.astro` (Phosphor Regular copiado a mano: `menu`, `cerrar`, `flecha-derecha`).
-  - `src/lib/i18n.ts` tiene `formatear(idioma, texto, valores)`: rellena huecos `{nombre}` y formatea números con `Intl`; los plurales ICU faltan (#9). `src/lib/rutas.ts` tiene `ruta(idioma, pagina)` con la base (`/valserra/es/mapa/`); las páginas a las que apunta aún no existen. `src/lib/estado.ts` cuenta los remontes abiertos de `remontes.json`.
+  - `src/lib/estado.ts` cuenta los remontes abiertos de `remontes.json`.
   - Tokens nuevos de rejilla en `tokens.css` (`--margen-pagina`, `--ancho-max`, `--ancho-contenido`; tabla en `docs/tokens.md`) y clase `.visually-hidden` en `base.css`.
-- Siguiente: #9 rutas `/es` y `/en` con selector de idioma.
+- Hecho en la Fase 1: #9 rutas `/es` y `/en` con selector de idioma.
+  - i18n de Astro en `astro.config.mjs` (idiomas de `src/lib/i18n.ts`, `es` por defecto, `prefixDefaultLocale: true`). Las páginas van en `src/pages/[idioma]/` con `getStaticPaths` sobre `idiomas`: un archivo por página para los dos idiomas (las carpetas `es/` y `en/` ya no existen). `src/pages/index.astro` redirige la raíz a `/valserra/es/` con `Astro.redirect(..., 301)` (meta refresh a 0 s; con 302 serían 2 s).
+  - Textos: `const t = traductor(idioma)` y `t('nav.mapa')` o `t('forfaits.comprar', { n: 3 })`. La clave está tipada (`ClaveTexto`); las listas (`forfaits.faq`) se leen de `textos[idioma]`. `formatear(idioma, texto, valores)` es el motor: mensajes ICU con huecos, `plural` (`one`, `other`, `=0`…) y `#`, sin librería y sin `select` ni comillas de escape. Al importar `i18n.ts` se comprueba que todos los textos son ICU válidos (llaves cerradas, plurales con `other`). Los números de un hueco se formatean solos; un año va como cadena.
+  - `src/lib/formato.ts`: `formatearNumero`, `formatearMoneda(idioma, centimos, 'CHF' | 'EUR')` (no convierte; eso es del #11) y `formatearFecha` (zona `Europe/Zurich`, fecha larga por defecto). Los números usan `useGrouping: 'always'`, porque `Intl` en español no agrupa los de cuatro cifras (daría 2263, no 2.263).
+  - `src/lib/rutas.ts`: `ruta(idioma, pagina)` y `rutaEnIdioma(ruta, idioma)`, que cambia solo el segmento del idioma (vale para las subpáginas que lleguen, como `/mapa/gornergrat/`); sin idioma en la ruta (404), lleva a la portada.
+  - `Base.astro` añade `<link rel="alternate" hreflang>` para `es`, `en` y `x-default`.
+  - `src/components/SelectorIdioma.astro`: interruptor ES/EN con los estilos de Segmento de Figma (normal, hover, seleccionado y foco). Son enlaces con `lang`, `hreflang` y `aria-current="page"`, y su nombre accesible es el endónimo (`nombresIdioma`: "Español", "English"). Prop `id` para la etiqueta "Idioma" (distinto en cada sitio). Va en el menú, debajo del estado de hoy, y en el footer de escritorio (columnas 9 a 12); el footer móvil no lo lleva, como en Figma.
+  - La portada (`src/pages/[idioma]/index.astro`) sigue provisional: muestrario de estilos de texto y de formatos (número, monedas, fecha y plural).
+- Siguiente: #10 modo noche.
 - Decisiones del #8 que afectan a lo siguiente:
   - El estado del cartel y del menú solo enseña los remontes ("13/15 remontes"); la temperatura de la cumbre se añade en la fase del Tiempo con Open-Meteo (textos `nav.estado` y `nav.estadoCorto`, ya preparados).
-  - Idioma, moneda y modo no están todavía en el menú ni en el footer: los añaden #9, #11 y #10 con el interruptor del #12. El footer de escritorio deja libres sus columnas 9 a 12 para ellos.
+  - Moneda y modo no están todavía en el menú ni en el footer: los añaden #11 y #10 debajo del idioma, con la misma forma de fila que `SelectorIdioma` (`.ajuste`). Cuando el #12 haga el componente Interruptor, `SelectorIdioma` puede usarlo para los estilos de Segmento.
   - `Boton.astro` y `BotonIcono.astro` se completan en el #12 (Secundario, Texto y estados).
   - Diferencias con Figma: el logo del cartel compacto y móvil usa Display/S (34 px) porque el de Figma (28 px) no tiene estilo de texto; los enlaces del footer miden 44 px de alto por el área táctil (en Figma, 33 px); el footer móvil usa el texto completo de `footer.proyecto`. El margen de página sigue la regla `6vw` de Fundamentos, que en 1440 px da 86 px, mientras que las maquetas de 1440 usan 120 px: pendiente de decidir con Adri.
-- Estructura: `src/pages/{es,en}` siguen vacías (con `.gitkeep`). `src/pages/index.astro` es provisional: usa el layout base con el muestrario de los 14 estilos de texto; se sustituye con las rutas (#9) y el catálogo de componentes (#15).
+- Estructura: las páginas nuevas se crean en `src/pages/[idioma]/` con el mismo `getStaticPaths` que la portada y pasan `idioma` y `pagina` a `Base`.

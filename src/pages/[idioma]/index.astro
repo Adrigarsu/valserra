@@ -1,0 +1,132 @@
+---
+/*
+ * Portada en cada idioma: /es/ y /en/. getStaticPaths genera una página
+ * por idioma a partir del mismo archivo, así las dos son siempre iguales.
+ *
+ * Contenido provisional: el muestrario de los 14 estilos de texto y de los
+ * formatos con Intl. Se sustituye por el descenso (Fase 3); el muestrario
+ * pasa al catálogo de componentes (#15).
+ */
+import type { GetStaticPaths } from 'astro';
+import Base from '../../layouts/Base.astro';
+import { idiomas, traductor, type Idioma } from '../../lib/i18n.ts';
+import {
+  formatearFecha,
+  formatearMoneda,
+  formatearNumero,
+} from '../../lib/formato.ts';
+
+export const getStaticPaths = (() =>
+  idiomas.map((idioma) => ({ params: { idioma } }))) satisfies GetStaticPaths;
+
+const idioma = Astro.params.idioma as Idioma;
+const t = traductor(idioma);
+
+// Formatos de ejemplo, con los datos de las maquetas
+const formatos = [
+  { nombre: 'Número · 2263', valor: formatearNumero(idioma, 2263) },
+  { nombre: 'Moneda · 78570 CHF', valor: formatearMoneda(idioma, 78570) },
+  {
+    nombre: 'Moneda · 78570 EUR',
+    valor: formatearMoneda(idioma, 78570, 'EUR'),
+  },
+  { nombre: 'Fecha · 2027-02-12', valor: formatearFecha(idioma, '2027-02-12') },
+  {
+    nombre: 'Plural · n = 1',
+    valor: t('forfaits.comprar', { n: 1 }),
+  },
+  {
+    nombre: 'Plural · n = 5',
+    valor: t('forfaits.comprar', { n: 5 }),
+  },
+];
+
+const estilos = [
+  { clase: 'text-display-xl', nombre: 'Display/XL', texto: 'Valserra' },
+  { clase: 'text-display-l', nombre: 'Display/L', texto: 'Baja la montaña' },
+  { clase: 'text-display-m', nombre: 'Display/M', texto: 'Cabinas y sectores' },
+  {
+    clase: 'text-display-s',
+    nombre: 'Display/S',
+    texto: 'El pueblo, a 1.620 m',
+  },
+  {
+    clase: 'text-titulo-h2',
+    nombre: 'Título/H2',
+    texto: 'forfaits de temporada',
+  },
+  { clase: 'text-titulo-h3', nombre: 'Título/H3', texto: 'sector cumbre' },
+  {
+    clase: 'text-etiqueta-antetitulo',
+    nombre: 'Etiqueta/Antetítulo',
+    texto: 'empieza el descenso',
+  },
+  {
+    clase: 'text-etiqueta-pequena',
+    nombre: 'Etiqueta/Pequeña',
+    texto: 'pista roja · abierta',
+  },
+  { clase: 'text-boton', nombre: 'Botón', texto: 'empezar el descenso' },
+  { clase: 'text-dato-grande', nombre: 'Dato/Grande', texto: '3.883 m' },
+  {
+    clase: 'text-dato-medio',
+    nombre: 'Dato/Medio',
+    texto: '−4 °C · 28 pistas',
+  },
+  {
+    clase: 'text-cuerpo-base',
+    nombre: 'Cuerpo/Base',
+    texto:
+      'Desde la cumbre se ve el valle entero: los alerces, el río helado y los tejados del pueblo, mil metros más abajo.',
+  },
+  {
+    clase: 'text-cuerpo-pequeno',
+    nombre: 'Cuerpo/Pequeño',
+    texto:
+      'Los remontes abren a las 8:30 y cierran a las 16:30. Con viento fuerte, la cabina de la cumbre puede parar.',
+  },
+  {
+    clase: 'text-cuerpo-nota',
+    nombre: 'Cuerpo/Nota',
+    texto:
+      'Precios por persona, en francos suizos. Niños menores de nueve años, gratis.',
+  },
+];
+---
+
+<Base idioma={idioma} titulo={t('meta.titulos.inicio')} pagina="inicio">
+  <div class="muestrario">
+    {formatos.map(({ nombre, valor }) => (
+      <section class="muestra">
+        <p class="text-etiqueta-pequena nombre">{nombre}</p>
+        <p class="text-dato-medio">{valor}</p>
+      </section>
+    ))}
+    {estilos.map(({ clase, nombre, texto }) => (
+      <section class="muestra">
+        <p class="text-etiqueta-pequena nombre">{nombre}</p>
+        <p class={clase}>{texto}</p>
+      </section>
+    ))}
+  </div>
+</Base>
+
+<style>
+  .muestrario {
+    display: grid;
+    gap: var(--space-48);
+    padding: var(--space-64) var(--space-24);
+  }
+
+  .muestra {
+    display: grid;
+    gap: var(--space-12);
+    padding-block-start: var(--space-16);
+    border-block-start: var(--border-thin) solid var(--color-border-subtle);
+  }
+
+  .nombre {
+    color: var(--color-text-secondary);
+    text-transform: none;
+  }
+</style>
