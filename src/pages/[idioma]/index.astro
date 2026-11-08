@@ -3,14 +3,18 @@
  * Portada en cada idioma: /es/ y /en/. getStaticPaths genera una página
  * por idioma a partir del mismo archivo, así las dos son siempre iguales.
  *
- * Contenido provisional: el muestrario de los 14 estilos de texto y de los
- * formatos con Intl. Se sustituye por el descenso (Fase 3); el muestrario
+ * Contenido provisional: el muestrario de los componentes básicos, de los
+ * 14 estilos de texto y de los formatos con Intl. Se sustituye por el descenso (Fase 3); el muestrario
  * pasa al catálogo de componentes (#15).
  */
 import type { GetStaticPaths } from 'astro';
 import Base from '../../layouts/Base.astro';
 import { idiomas, traductor, type Idioma } from '../../lib/i18n.ts';
 import Precio from '../../components/Precio.astro';
+import Boton from '../../components/Boton.astro';
+import BotonCantidad from '../../components/BotonCantidad.astro';
+import ChipFiltro from '../../components/ChipFiltro.astro';
+import Interruptor from '../../components/Interruptor.astro';
 import { formatearFecha, formatearNumero } from '../../lib/formato.ts';
 
 export const getStaticPaths = (() =>
@@ -32,6 +36,15 @@ const formatos = [
     valor: t('forfaits.comprar', { n: 5 }),
   },
 ];
+
+const estilosBoton = ['primario', 'secundario', 'texto'] as const;
+
+const chips = [
+  { dificultad: 'roja', contador: 8, seleccionado: false },
+  { dificultad: 'roja', contador: 8, seleccionado: true },
+  { dificultad: 'freeride', contador: 3, seleccionado: false },
+  { dificultad: 'freeride', contador: 3, seleccionado: true },
+] as const;
 
 const estilos = [
   { clase: 'text-display-xl', nombre: 'Display/XL', texto: 'Valserra' },
@@ -88,6 +101,73 @@ const estilos = [
 
 <Base idioma={idioma} titulo={t('meta.titulos.inicio')} pagina="inicio">
   <div class="muestrario">
+    <section class="muestra">
+      <p class="text-etiqueta-pequena nombre">
+        Botón · normal, con icono y deshabilitado
+      </p>
+      {estilosBoton.map((estilo) => (
+        <div class="fila">
+          <Boton estilo={estilo}>{t('inicio.hero.secundaria')}</Boton>
+          <Boton estilo={estilo} icono="flecha-abajo">
+            {t('inicio.hero.accion')}
+          </Boton>
+          <Boton estilo={estilo} icono="flecha-abajo" disabled>
+            {t('inicio.hero.accion')}
+          </Boton>
+        </div>
+      ))}
+    </section>
+    <section class="muestra">
+      <p class="text-etiqueta-pequena nombre">
+        Chip de filtro · normal y freeride, sin y con seleccionar (se pueden
+        pulsar)
+      </p>
+      <div class="fila">
+        {chips.map(({ dificultad, contador, seleccionado }) => (
+          <ChipFiltro
+            freeride={dificultad === 'freeride'}
+            contador={contador}
+            seleccionado={seleccionado}
+            data-muestra-chip
+          >
+            {t(`mapa.dificultades.${dificultad}`)}
+          </ChipFiltro>
+        ))}
+      </div>
+    </section>
+    <section class="muestra">
+      <p class="text-etiqueta-pequena nombre">
+        Botón cantidad · menos y más, normal y deshabilitado
+      </p>
+      <div class="fila">
+        <BotonCantidad accion="menos" etiqueta={t('forfaits.unDiaMenos')} />
+        <BotonCantidad accion="mas" etiqueta={t('forfaits.unDiaMas')} />
+        <BotonCantidad
+          accion="menos"
+          etiqueta={t('forfaits.unDiaMenos')}
+          aria-disabled="true"
+        />
+        <BotonCantidad
+          accion="mas"
+          etiqueta={t('forfaits.unDiaMas')}
+          disabled
+        />
+      </div>
+    </section>
+    <section class="muestra">
+      <p class="text-etiqueta-pequena nombre" id="muestra-interruptor">
+        Interruptor · segmentos de radio
+      </p>
+      <Interruptor
+        tipo="radio"
+        name="muestra-interruptor"
+        etiquetadoPor="muestra-interruptor"
+        opciones={[
+          { valor: 'cumbre', texto: t('inicio.hoy.cumbre'), actual: true },
+          { valor: 'pueblo', texto: t('inicio.hoy.pueblo') },
+        ]}
+      />
+    </section>
     {formatos.map(({ nombre, valor }) => (
       <section class="muestra">
         <p class="text-etiqueta-pequena nombre">{nombre}</p>
@@ -111,6 +191,16 @@ const estilos = [
   </div>
 </Base>
 
+<script>
+  // Solo para el muestrario: los chips cambian aria-pressed al pulsarlos
+  for (const chip of document.querySelectorAll('[data-muestra-chip]')) {
+    chip.addEventListener('click', () => {
+      const pulsado = chip.getAttribute('aria-pressed') === 'true';
+      chip.setAttribute('aria-pressed', String(!pulsado));
+    });
+  }
+</script>
+
 <style>
   .muestrario {
     display: grid;
@@ -123,6 +213,13 @@ const estilos = [
     gap: var(--space-12);
     padding-block-start: var(--space-16);
     border-block-start: var(--border-thin) solid var(--color-border-subtle);
+  }
+
+  .fila {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-16);
   }
 
   .nombre {
