@@ -57,7 +57,7 @@ Web de una estación de esquí ficticia inspirada en Zermatt. Proyecto de portfo
 
 ## Estado del proyecto
 
-Fase 1 · Base y componentes (hito en GitHub), en curso. Última actualización: 8 de noviembre de 2026 (#9).
+Fase 1 · Base y componentes (hito en GitHub), en curso. Última actualización: 8 de noviembre de 2026 (#10).
 
 - Hecho en la Fase 0 (#1 a #7): proyecto Astro con TypeScript estricto y React; ESLint, Prettier, EditorConfig y `.gitattributes`; tokens de Figma en `src/styles/tokens.css` y reset en `src/styles/base.css`; fuentes con Fontsource en `src/styles/fonts.css` y una clase por cada uno de los 14 estilos de texto en `src/styles/typography.css` (`.text-display-xl`, `.text-titulo-h2`…; tabla en `docs/tokens.md`); esquemas Zod de los datos y comprobación de los textos con el script `validar`; CI (`.github/workflows/ci.yml`, job `Comprobar`) y publicación en GitHub Pages (`.github/workflows/deploy.yml`); Figma preparado para enseñarlo (Portada y Fundamentos).
 - Hecho en la Fase 1: #8 layout base con navegación y footer.
@@ -76,10 +76,17 @@ Fase 1 · Base y componentes (hito en GitHub), en curso. Última actualización:
   - `Base.astro` añade `<link rel="alternate" hreflang>` para `es`, `en` y `x-default`.
   - `src/components/SelectorIdioma.astro`: interruptor ES/EN con los estilos de Segmento de Figma (normal, hover, seleccionado y foco). Son enlaces con `lang`, `hreflang` y `aria-current="page"`, y su nombre accesible es el endónimo (`nombresIdioma`: "Español", "English"). Prop `id` para la etiqueta "Idioma" (distinto en cada sitio). Va en el menú, debajo del estado de hoy, y en el footer de escritorio (columnas 9 a 12); el footer móvil no lo lleva, como en Figma.
   - La portada (`src/pages/[idioma]/index.astro`) sigue provisional: muestrario de estilos de texto y de formatos (número, monedas, fecha y plural).
-- Siguiente: #10 modo noche.
+- Hecho en la Fase 1: #10 modo noche.
+  - `src/lib/tema.ts`: `temas` (`light`, `dark`), tipo `Tema` y `claveTema` (`valserra-tema`, la clave de `localStorage`).
+  - `Base.astro`: `<meta name="color-scheme" content="light dark">` y, antes del CSS, un script en línea (`is:inline` con `define:vars`) que pone `data-theme` en `<html>` si hay un modo guardado. Así no hay parpadeo al cargar. Sin elección guardada no hay `data-theme` y manda `prefers-color-scheme`.
+  - `src/components/SelectorModo.astro`: fila "Modo" con Día/Noche, en el menú (debajo del idioma) y en el footer de escritorio. Son radios nativos en un `role="radiogroup"` (flechas del teclado y estado gratis), con las etiquetas como segmentos. Sale oculto y sin marcar en el HTML; su script marca el modo actual, guarda la elección, sincroniza todos los selectores, sigue al sistema mientras no se elija nada y escucha `storage` para otras pestañas. Copia los estilos de Segmento de `SelectorIdioma` hasta el #12. Prop `id`, igual que `SelectorIdioma`.
+  - En el footer de escritorio los interruptores empiezan todos en la misma línea (`justify-content: start`), como en Figma; en el menú van a la derecha.
+  - El footer sigue siempre de noche: el selector cambia la página, no el footer.
+  - Una vez elegido un modo, no hay forma de volver a "seguir al sistema" (Figma solo tiene dos opciones); habría que borrar `valserra-tema` del `localStorage`.
+- Siguiente: #11 moneda CHF/€.
 - Decisiones del #8 que afectan a lo siguiente:
   - El estado del cartel y del menú solo enseña los remontes ("13/15 remontes"); la temperatura de la cumbre se añade en la fase del Tiempo con Open-Meteo (textos `nav.estado` y `nav.estadoCorto`, ya preparados).
-  - Moneda y modo no están todavía en el menú ni en el footer: los añaden #11 y #10 debajo del idioma, con la misma forma de fila que `SelectorIdioma` (`.ajuste`). Cuando el #12 haga el componente Interruptor, `SelectorIdioma` puede usarlo para los estilos de Segmento.
+  - La moneda no está todavía en el menú ni en el footer: la añade #11 entre el idioma y el modo (orden de Figma), con la misma forma de fila que `SelectorIdioma` y `SelectorModo` (`.ajuste`). Cuando el #12 haga el componente Interruptor, `SelectorIdioma` y `SelectorModo` pueden usarlo para los estilos de Segmento (ahora están copiados en los dos).
   - `Boton.astro` y `BotonIcono.astro` se completan en el #12 (Secundario, Texto y estados).
   - Diferencias con Figma: el logo del cartel compacto y móvil usa Display/S (34 px) porque el de Figma (28 px) no tiene estilo de texto; los enlaces del footer miden 44 px de alto por el área táctil (en Figma, 33 px); el footer móvil usa el texto completo de `footer.proyecto`. El margen de página sigue la regla `6vw` de Fundamentos, que en 1440 px da 86 px, mientras que las maquetas de 1440 usan 120 px: pendiente de decidir con Adri.
 - Estructura: las páginas nuevas se crean en `src/pages/[idioma]/` con el mismo `getStaticPaths` que la portada y pasan `idioma` y `pagina` a `Base`.
