@@ -1,0 +1,114 @@
+/*
+ * Instrumento (Figma: Componentes Valserra › Instrumento). Hoja de
+ * Instrumento.tsx.
+ *
+ * Medidas de Figma escritas con la escala de espacios: esfera de 190 px
+ * (140 px en móvil, como pide el ideario) y columna de 56 px de ancho y
+ * el mismo alto que la esfera. El dibujo de la esfera está en un viewBox
+ * de 190 × 190, así que sus trazos escalan con ella.
+ *
+ * --instrumento-valor (de 0 a 1) lo pone el componente: la aguja gira y
+ * el nivel sube solo con transform. En la isla del Tiempo, al cambiar de
+ * cumbre a pueblo, se mueven en 1,2 s (--dur-reveal).
+ */
+.instrumento {
+  --instrumento-tamano: calc(var(--space-128) + var(--space-12));
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-12);
+  color: var(--color-text-primary);
+}
+
+@media (width >= 48rem) {
+  .instrumento {
+    --instrumento-tamano: calc(var(--space-192) - var(--space-4) / 2);
+  }
+}
+
+.instrumento p {
+  margin: 0;
+}
+
+/* Esfera */
+
+.instrumento__esfera {
+  display: block;
+  inline-size: var(--instrumento-tamano);
+  block-size: var(--instrumento-tamano);
+}
+
+.instrumento__fondo {
+  fill: var(--color-bg-card);
+  stroke: var(--color-border-strong);
+  stroke-width: var(--border-thick);
+}
+
+.instrumento__aro {
+  fill: none;
+  stroke: var(--color-border-strong);
+  stroke-width: var(--border-thin);
+}
+
+.instrumento__marca {
+  fill: var(--color-border-subtle);
+}
+
+/* Burdeos solo en la aguja, como en Figma */
+.instrumento__aguja {
+  fill: var(--color-text-accent);
+  transform-box: view-box;
+  transform-origin: 50% 50%;
+  transform: rotate(calc(-135deg + var(--instrumento-valor) * 270deg));
+  transition: transform var(--dur-reveal) var(--ease-in-out);
+}
+
+.instrumento__eje {
+  fill: var(--color-border-strong);
+}
+
+/*
+ * Columna: tubo con borde tinta y nivel que sube desde abajo. En Figma el
+ * nivel es bg/subtle, pero de noche vale lo mismo que el tubo (bg/card) y
+ * no se vería: se usa border/subtle, que se ve en los dos modos.
+ */
+
+.instrumento__columna {
+  inline-size: calc(var(--space-48) + var(--space-8));
+  block-size: var(--instrumento-tamano);
+  padding: var(--border-thick);
+  border: var(--border-thick) solid var(--color-border-strong);
+  border-radius: var(--radius-pill);
+  background-color: var(--color-bg-card);
+}
+
+.instrumento__tubo {
+  block-size: 100%;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+}
+
+.instrumento__nivel {
+  block-size: 100%;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-border-subtle);
+  transform: translateY(calc((1 - var(--instrumento-valor)) * 100%));
+  transition: transform var(--dur-reveal) var(--ease-in-out);
+}
+
+.instrumento__valor {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.instrumento__etiqueta {
+  color: var(--color-text-secondary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .instrumento__aguja,
+  .instrumento__nivel {
+    transition: none;
+  }
+}
