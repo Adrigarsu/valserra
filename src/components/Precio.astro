@@ -1,0 +1,47 @@
+---
+/*
+ * Importe que sigue a la moneda elegida, para el HTML estático (las islas
+ * de React usan useMoneda). Se pinta en las dos monedas al generar la
+ * página y el CSS enseña la buena según data-moneda en <html>, que pone el
+ * script del <head> antes de pintar (src/lib/moneda.ts). Así no hay
+ * parpadeo y el cambio de moneda no necesita JavaScript en cada precio.
+ *
+ * El importe oculto lleva display: none, que también lo quita del árbol
+ * de accesibilidad: el lector de pantalla solo lee el que se ve.
+ *
+ * No lleva estilo de texto: hereda el de donde se use.
+ */
+import type { Idioma } from '../lib/i18n.ts';
+import { monedas } from '../lib/moneda.ts';
+import { formatearPrecio } from '../lib/precios.ts';
+
+interface Props {
+  idioma: Idioma;
+  /** Importe en céntimos de CHF, como en los datos. */
+  centimos: number;
+}
+
+const { idioma, centimos } = Astro.props;
+---
+
+<span class="precio">
+  {monedas.map((moneda) => (
+    <span class="precio__importe" data-precio={moneda}>
+      {formatearPrecio(idioma, centimos, moneda)}
+    </span>
+  ))}
+</span>
+
+<style>
+  .precio__importe[data-precio='EUR'] {
+    display: none;
+  }
+
+  :global(:root[data-moneda='EUR']) .precio__importe[data-precio='CHF'] {
+    display: none;
+  }
+
+  :global(:root[data-moneda='EUR']) .precio__importe[data-precio='EUR'] {
+    display: inline;
+  }
+</style>

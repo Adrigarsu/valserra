@@ -66,6 +66,30 @@ export function formatearMoneda(
   });
 }
 
+/** Símbolo corto de la moneda: "CHF" o "€". */
+export function simboloMoneda(idioma: Idioma, moneda: Moneda): string {
+  const partes = memo(
+    `s|${idioma}|${moneda}`,
+    () =>
+      new Intl.NumberFormat(idioma, {
+        style: 'currency',
+        currency: moneda,
+        currencyDisplay: 'narrowSymbol',
+      }),
+  ).formatToParts(0);
+  return partes.find((p) => p.type === 'currency')?.value ?? moneda;
+}
+
+/**
+ * Nombre de la moneda en el idioma: "franco suizo" o "Swiss Franc". Sale
+ * de Intl.DisplayNames, así no hace falta traducirlo en los textos.
+ */
+export function nombreMoneda(idioma: Idioma, moneda: Moneda): string {
+  return (
+    new Intl.DisplayNames(idioma, { type: 'currency' }).of(moneda) ?? moneda
+  );
+}
+
 /**
  * Fecha según el idioma, en la zona horaria de la estación. Acepta un Date
  * o una cadena ISO ("2027-02-12"). Por defecto, fecha larga:
